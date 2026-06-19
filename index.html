@@ -1,0 +1,2290 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EPARK集客でんき | 電力と集客を、ひとつに。</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Alpine.js for page transitions, modals, and menu logic -->
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- Font Awesome for modern UI icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Noto Sans JP -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            green: {
+                                DEFAULT: '#34BFA3',
+                                hover: '#29a38a',
+                                light: '#E8F9F5'
+                            },
+                            orange: {
+                                DEFAULT: '#FF7A00',
+                                hover: '#e06b00',
+                                light: '#FFF5EB'
+                            },
+                            dark: '#222222',
+                            lightBg: '#FCFAF6',
+                            forest: '#0B5C40'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Noto Sans JP', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            overflow-x: hidden;
+        }
+        .transition-all-custom {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+</head>
+<!-- Alpine.js state holding 'page' (1=TOP, 2=Pack Detail, 3=Option Details, 4=News List/Detail, 5=FAQ/About, 7=Company/Legal, 8=Partner/Agent, 9=Terms/Docs, 10=Privacy) and navigation helper -->
+<body class="bg-white text-gray-800 antialiased" x-data="{ 
+    page: 1, 
+    mobileMenuOpen: false, 
+    inquiryModalOpen: false, 
+    applyModalOpen: false, 
+    companyTab: 'overview', 
+    newsCategory: 'all', 
+    activeNewsId: null,
+    faqActive: 1,
+    
+    // Form sending states (Eliminated native popups/alerts)
+    inquirySending: false,
+    inquirySuccess: false,
+    inquiryError: false,
+    applySending: false,
+    applySuccess: false,
+    applyError: false,
+
+    changePage(pageNum) { 
+        this.page = pageNum; 
+        this.activeNewsId = null; 
+        window.scrollTo({top: 0, behavior: 'smooth'}); 
+    },
+    openNewsDetail(newsId) {
+        this.activeNewsId = newsId;
+        this.page = 4;
+        window.scrollTo({top: 0, behavior: 'smooth'});
+    },
+
+    // Elegant AJAX form submit controller using fetch API
+    submitForm(type, event) {
+        const formData = new FormData(event.target);
+        if (type === 'inquiry') {
+            this.inquirySending = true;
+            this.inquirySuccess = false;
+            this.inquiryError = false;
+            
+            fetch('send.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                this.inquirySending = false;
+                if (data.status === 'success') {
+                    this.inquirySuccess = true;
+                    event.target.reset();
+                    setTimeout(() => {
+                        this.inquiryModalOpen = false;
+                        this.inquirySuccess = false;
+                    }, 3000);
+                } else {
+                    this.inquiryError = true;
+                }
+            })
+            .catch(() => {
+                this.inquirySending = false;
+                this.inquiryError = true;
+            });
+        } else if (type === 'apply') {
+            this.applySending = true;
+            this.applySuccess = false;
+            this.applyError = false;
+            
+            fetch('send.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.json())
+            .then(data => {
+                this.applySending = false;
+                if (data.status === 'success') {
+                    this.applySuccess = true;
+                    event.target.reset();
+                    setTimeout(() => {
+                        this.applyModalOpen = false;
+                        this.applySuccess = false;
+                    }, 3000);
+                } else {
+                    this.applyError = true;
+                }
+            })
+            .catch(() => {
+                this.applySending = false;
+                this.applyError = true;
+            });
+        }
+    }
+}">
+
+    <!-- HEADER -->
+    <header class="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-md border-b border-gray-100 transition-all-custom">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- EPARK Corporate Logo -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="#" @click.prevent="changePage(1)" class="block">
+                        <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/img/rogo.png?raw=true" alt="EPARK集客でんき" class="h-10 sm:h-12 w-auto object-contain" onerror="this.onerror=null; this.src='https://placehold.co/240x60/FFFFFF/FF7A00?text=EPARK集客でんき'">
+                    </a>
+                </div>
+
+                <!-- Desktop Navigation with cut/shorter texts to prevent ugly wrap -->
+                <nav class="hidden lg:flex space-x-1 xl:space-x-4 items-center">
+                    <a href="#" @click.prevent="changePage(1)" class="px-3 py-2 text-sm font-bold transition-colors" :class="page === 1 ? 'text-brand-orange' : 'text-gray-700 hover:text-brand-orange'">TOP</a>
+                    <a href="#" @click.prevent="changePage(2)" class="px-3 py-2 text-sm font-bold transition-colors" :class="page === 2 ? 'text-brand-orange' : 'text-gray-700 hover:text-brand-orange'">サービス</a>
+                    <a href="#" @click.prevent="changePage(3)" class="px-3 py-2 text-sm font-bold transition-colors" :class="page === 3 ? 'text-brand-orange' : 'text-gray-700 hover:text-brand-orange'">オプション</a>
+                    <a href="#" @click.prevent="changePage(4)" class="px-3 py-2 text-sm font-bold transition-colors" :class="page === 4 ? 'text-brand-orange' : 'text-gray-700 hover:text-brand-orange'">お知らせ</a>
+                    <a href="#" @click.prevent="changePage(5)" class="px-3 py-2 text-sm font-bold transition-colors" :class="page === 5 ? 'text-brand-orange' : 'text-gray-700 hover:text-brand-orange'">よくあるご質問</a>
+                </nav>
+
+                <!-- Desktop Conversion Buttons -->
+                <div class="hidden lg:flex items-center h-full">
+                    <!-- My Page URL Redirect -->
+                    <a href="https://mypage.eparkdenki.jp/" target="_blank" class="bg-gray-50 hover:bg-gray-100 text-gray-600 border-l border-r border-gray-100 px-6 h-20 text-sm font-bold transition-all duration-300 flex flex-col items-center justify-center gap-1 min-w-[120px]">
+                        <i class="fa-solid fa-right-to-bracket text-lg text-gray-400"></i>
+                        <span>マイページ</span>
+                    </a>
+                    <button @click="inquiryModalOpen = true" class="bg-brand-green hover:bg-brand-green-hover text-white px-6 h-20 text-sm font-bold transition-all duration-300 flex flex-col items-center justify-center gap-1 min-w-[120px]">
+                        <i class="fa-solid fa-envelope text-lg"></i>
+                        <span>お問い合わせ</span>
+                    </button>
+                    <button @click="applyModalOpen = true" class="bg-brand-orange hover:bg-brand-orange-hover text-white px-6 h-20 text-sm font-bold transition-all duration-300 flex flex-col items-center justify-center gap-1 min-w-[120px]">
+                        <i class="fa-solid fa-file-signature text-lg"></i>
+                        <span>お申し込み</span>
+                    </button>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="flex items-center lg:hidden">
+                    <button @click="mobileMenuOpen = !mobileMenuOpen" type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none transition-colors">
+                        <span class="sr-only">メニューを開く</span>
+                        <i class="fa-solid fa-bars text-xl" x-show="!mobileMenuOpen"></i>
+                        <i class="fa-solid fa-xmark text-xl" x-show="mobileMenuOpen" style="display: none;"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Drawer Navigation -->
+        <div x-show="mobileMenuOpen" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 -translate-y-4" x-transition:enter-end="opacity-100 translate-y-0" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-4" class="lg:hidden bg-white border-b border-gray-100 shadow-lg" style="display: none;">
+            <div class="px-4 pt-2 pb-6 space-y-1.5">
+                <!-- Main Pages Group -->
+                <div class="space-y-0.5">
+                    <a @click="mobileMenuOpen = false; changePage(1)" href="#" class="block px-3 py-2.5 rounded-xl text-base font-bold text-gray-700 hover:bg-gray-50 hover:text-brand-orange" :class="page === 1 ? 'bg-orange-50 text-brand-orange' : ''">EPARK集客でんきとは (TOP)</a>
+                    <a @click="mobileMenuOpen = false; changePage(2)" href="#" class="block px-3 py-2.5 rounded-xl text-base font-bold text-gray-700 hover:bg-gray-50 hover:text-brand-orange" :class="page === 2 ? 'bg-orange-50 text-brand-orange' : ''">サービス詳細（デリバリー支援）</a>
+                    <a @click="mobileMenuOpen = false; changePage(3)" href="#" class="block px-3 py-2.5 rounded-xl text-base font-bold text-gray-700 hover:bg-gray-50 hover:text-brand-orange" :class="page === 3 ? 'bg-orange-50 text-brand-orange' : ''">オプションサービス一覧</a>
+                    <a @click="mobileMenuOpen = false; changePage(4)" href="#" class="block px-3 py-2.5 rounded-xl text-base font-bold text-gray-700 hover:bg-gray-50 hover:text-brand-orange" :class="page === 4 ? 'bg-orange-50 text-brand-orange' : ''">新着お知らせ</a>
+                    <a @click="mobileMenuOpen = false; changePage(5)" href="#" class="block px-3 py-2.5 rounded-xl text-base font-bold text-gray-700 hover:bg-gray-50 hover:text-brand-orange" :class="page === 5 ? 'bg-orange-50 text-brand-orange' : ''">よくあるご質問 (FAQ)</a>
+                </div>
+
+                <!-- Separator -->
+                <div class="border-t border-gray-100 my-3"></div>
+
+                <!-- Support & Legal Group -->
+                <div class="space-y-0.5 bg-gray-50/50 p-2.5 rounded-2xl">
+                    <span class="block px-3 text-[10px] font-bold text-gray-400 tracking-wider uppercase mb-1">運営会社・サポート規約</span>
+                    <a @click="mobileMenuOpen = false; changePage(7); companyTab = 'overview'" href="#" class="block px-3 py-2 rounded-lg text-xs font-bold text-gray-600 hover:bg-gray-100 hover:text-brand-orange" :class="page === 7 && companyTab === 'overview' ? 'text-brand-orange' : ''">
+                        <i class="fa-solid fa-building mr-2 text-gray-400"></i>運営会社情報 (会社概要)
+                    </a>
+                    <a @click="mobileMenuOpen = false; changePage(7); companyTab = 'specified'" href="#" class="block px-3 py-2 rounded-lg text-xs font-bold text-gray-600 hover:bg-gray-100 hover:text-brand-orange" :class="page === 7 && companyTab === 'specified' ? 'text-brand-orange' : ''">
+                        <i class="fa-solid fa-balance-scale mr-2 text-gray-400"></i>特定商取引法に基づく表記
+                    </a>
+                    <a @click="mobileMenuOpen = false; changePage(7); companyTab = 'harassment'" href="#" class="block px-3 py-2 rounded-lg text-xs font-bold text-gray-600 hover:bg-gray-100 hover:text-brand-orange" :class="page === 7 && companyTab === 'harassment' ? 'text-brand-orange' : ''">
+                        <i class="fa-solid fa-user-shield mr-2 text-gray-400"></i>カスタマーハラスメント基本方針
+                    </a>
+                    <a @click="mobileMenuOpen = false; changePage(7); companyTab = 'antisocial'" href="#" class="block px-3 py-2 rounded-lg text-xs font-bold text-gray-600 hover:bg-gray-100 hover:text-brand-orange" :class="page === 7 && companyTab === 'antisocial' ? 'text-brand-orange' : ''">
+                        <i class="fa-solid fa-hand-fist mr-2 text-gray-400"></i>反社会的勢力排除宣言
+                    </a>
+                    <a @click="mobileMenuOpen = false; changePage(9)" href="#" class="block px-3 py-2 rounded-lg text-xs font-bold text-gray-600 hover:bg-gray-100 hover:text-brand-orange" :class="page === 9 ? 'text-brand-orange' : ''">
+                        <i class="fa-solid fa-file-pdf mr-2 text-gray-400"></i>重要約款・各種重要説明書
+                    </a>
+                    <a @click="mobileMenuOpen = false; changePage(8)" href="#" class="block px-3 py-2 rounded-lg text-xs font-brand-orange hover:bg-gray-100" :class="page === 8 ? 'underline' : ''">
+                        <i class="fa-solid fa-handshake-angle mr-2"></i>代理店・パートナー募集
+                    </a>
+                    <a @click="mobileMenuOpen = false; changePage(10)" href="#" class="block px-3 py-2 rounded-lg text-xs font-bold text-gray-600 hover:bg-gray-100 hover:text-brand-orange" :class="page === 10 ? 'text-brand-orange' : ''">
+                        <i class="fa-solid fa-shield-halved mr-2 text-gray-400"></i>プライバシーポリシー
+                    </a>
+                </div>
+                
+                <div class="pt-3">
+                    <a href="https://mypage.eparkdenki.jp/" target="_blank" @click="mobileMenuOpen = false" class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 text-center py-3 rounded-xl text-sm font-bold transition-colors flex items-center justify-center gap-1.5 shadow-sm">
+                        <i class="fa-solid fa-right-to-bracket text-gray-500"></i> マイページ ログイン
+                    </a>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 pt-3">
+                    <button @click="mobileMenuOpen = false; inquiryModalOpen = true" class="w-full bg-brand-green hover:bg-brand-green-hover text-white text-center py-3 rounded-full text-sm font-bold transition-colors flex items-center justify-center gap-1.5 shadow-sm">
+                        <i class="fa-solid fa-envelope"></i> お問い合わせ
+                    </button>
+                    <button @click="mobileMenuOpen = false; applyModalOpen = true" class="w-full bg-brand-orange hover:bg-brand-orange-hover text-white text-center py-3 rounded-full text-sm font-bold transition-colors flex items-center justify-center gap-1.5 shadow-sm">
+                        <i class="fa-solid fa-file-signature"></i> お申し込み
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN BODY ROUTER -->
+    <main>
+
+        <!-- ================= PAGE 01: TOP PAGE ================= -->
+        <div x-show="page === 1" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-12" x-transition:enter-end="opacity-100 translate-x-0" style="display: block;">
+            
+            <!-- HERO SECTION with hero4.png & exact responsive absolute clickable buttons -->
+            <section class="relative bg-white pt-0 mt-0 overflow-hidden w-full">
+                <!-- Outer alignment wrapper that matches header grid perfectly -->
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative w-full">
+                    <!-- Responsive aspect-ratio container holding the hero image -->
+                    <div class="relative w-full overflow-hidden">
+                        <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/img/hero4.png?raw=true" alt="EPARK集客でんき" class="w-full h-auto block" onerror="this.onerror=null; this.src='https://placehold.co/1200x500/FFFFFF/FF7A00?text=EPARK集客でんき+HERO'">
+                        
+                        <!-- Precise overlay container for the CTA buttons that remains aligned dynamically -->
+                        <div class="absolute bottom-[2%] sm:bottom-[3.5%] left-[4.5%] sm:left-[8.5%] w-[50%] sm:w-[42%] grid grid-cols-2 gap-2 sm:gap-4 z-10">
+                            <!-- Contact/Inquiry Button -->
+                            <button @click="inquiryModalOpen = true" class="w-full aspect-[4.8/1] bg-brand-green hover:bg-brand-green-hover text-white font-extrabold rounded-full transition-all duration-300 flex items-center justify-center gap-1 sm:gap-1.5 shadow-md hover:scale-105 border-0 text-[10px] sm:text-xs md:text-sm lg:text-base">
+                                <i class="fa-solid fa-envelope"></i>
+                                <span>お問い合わせ</span>
+                            </button>
+                            <!-- Apply/Order Button -->
+                            <button @click="applyModalOpen = true" class="w-full aspect-[4.8/1] bg-brand-orange hover:bg-brand-orange-hover text-white font-extrabold rounded-full transition-all duration-300 flex items-center justify-center gap-1 sm:gap-1.5 shadow-md hover:scale-105 border-0 text-[10px] sm:text-xs md:text-sm lg:text-base">
+                                <i class="fa-solid fa-file-signature"></i>
+                                <span>お申し込み</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ABOUT SECTION (EPARK集客でんきとは？) -->
+            <section id="about" class="pt-6 pb-16 bg-white">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center max-w-3xl mx-auto mb-6">
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">EPARK集客でんきとは？</h2>
+                        <div class="w-12 h-1 bg-brand-orange mx-auto mt-4 rounded-full"></div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                        <div class="lg:col-span-5 space-y-6 text-gray-800 text-left">
+                            <h3 class="text-xl sm:text-2xl font-black text-gray-900 leading-tight">
+                                飲食店の集客を支援する<br>新しい電力サービスです。
+                            </h3>
+                            <p class="text-base sm:text-lg font-bold text-gray-800 leading-relaxed">
+                                電力の切り替えをきっかけに、EPARKの会員基盤やメディアを活用し、飲食店の集客・売上向上をサポートします。
+                            </p>
+                            <p class="text-base sm:text-lg font-bold text-gray-800 leading-relaxed">
+                                まずは「デリバリー支援パック」からスタート。今後も飲食店の課題に合わせたさまざまな集客支援サービスを展開していきます。
+                            </p>
+                        </div>
+
+                        <!-- Right visual diagram with part1.png -->
+                        <div class="lg:col-span-7 flex justify-center items-center">
+                            <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/img/part1.png?raw=true" alt="EPARKの集客支援フロー" class="w-full h-auto block rounded-2xl" onerror="this.onerror=null; this.src='https://placehold.co/600x300/FFFFFF/FF7A00?text=EPARK+Flow+part1.png'">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SERVICE WRAPPER WITH CENTERED SERVICES h2 -->
+            <section class="pt-12 pb-16 bg-brand-lightBg border-t border-gray-50">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center max-w-3xl mx-auto mb-10">
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">サービス</h2>
+                        <div class="w-12 h-1 bg-brand-orange mx-auto mt-4 rounded-full"></div>
+                    </div>
+
+                    <div class="mb-2">
+                        <h3 class="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">
+                            デリバリー支援パック ———
+                        </h3>
+                    </div>
+
+                    <!-- Delivery support image with absolute details button -->
+                    <div class="w-full mt-2 relative overflow-hidden">
+                        <div class="relative w-full overflow-hidden">
+                            <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/img/part.2.png?raw=true" alt="デリバリー支援パック詳細" class="w-full h-auto block" onerror="this.onerror=null; this.src='https://placehold.co/1200x500/FFFFFF/34BFA3?text=EPARK+Delivery+Support+Pack'">
+                            
+                            <!-- Absolute redirect button aligned precisely at the bottom left -->
+                            <div class="absolute bottom-[4.5%] left-[4.5%] sm:left-[5.5%] z-10">
+                                <button @click="changePage(2)" class="bg-[#FF7A00] hover:bg-[#e06b00] text-white font-extrabold px-6 py-2 sm:py-3 rounded-full text-xs sm:text-sm md:text-base tracking-wide shadow-md hover:scale-105 transition-all flex items-center gap-1">
+                                    <span>詳細はこちら</span>
+                                    <i class="fa-solid fa-chevron-right text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- OPTION SERVICES SECTION -->
+            <section id="options" class="py-16 bg-white">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="mb-12">
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight flex items-center gap-3">
+                            オプションサービス <span class="w-12 h-[2px] bg-brand-orange inline-block"></span>
+                        </h2>
+                    </div>
+
+                    <!-- Direct image grids as total unified card items (Using homepage.png, sns.png, meo.png, inful.png) -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <!-- Option 1 Card Image -->
+                        <div class="transition-all duration-300 hover:scale-105 cursor-pointer" @click="changePage(3)">
+                            <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/img/homepage.png?raw=true" alt="ホームページ制作オプション" class="w-full h-auto block rounded-2xl shadow-sm hover:shadow-md" onerror="this.onerror=null; this.src='https://placehold.co/280x320/FFFFFF/34BFA3?text=Website+Production'">
+                        </div>
+
+                        <!-- Option 2 Card Image -->
+                        <div class="transition-all duration-300 hover:scale-105 cursor-pointer" @click="changePage(3)">
+                            <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/img/sns.png?raw=true" alt="SNS運用代行オプション" class="w-full h-auto block rounded-2xl shadow-sm hover:shadow-md" onerror="this.onerror=null; this.src='https://placehold.co/280x320/FFFFFF/34BFA3?text=SNS+Management'">
+                        </div>
+
+                        <!-- Option 3 Card Image -->
+                        <div class="transition-all duration-300 hover:scale-105 cursor-pointer" @click="changePage(3)">
+                            <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/img/meo.png?raw=true" alt="MEO対策オプション" class="w-full h-auto block rounded-2xl shadow-sm hover:shadow-md" onerror="this.onerror=null; this.src='https://placehold.co/280x320/FFFFFF/34BFA3?text=MEO+Optimization'">
+                        </div>
+
+                        <!-- Option 4 Card Image -->
+                        <div class="transition-all duration-300 hover:scale-105 cursor-pointer" @click="changePage(3)">
+                            <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/img/inful.png?raw=true" alt="インフルエンサー広告オプション" class="w-full h-auto block rounded-2xl shadow-sm hover:shadow-md" onerror="this.onerror=null; this.src='https://placehold.co/280x320/FFFFFF/34BFA3?text=Influencer+Ad'">
+                        </div>
+                    </div>
+                    
+                    <div class="text-center mt-12">
+                        <button @click="changePage(3)" class="bg-brand-orange hover:bg-brand-orange-hover text-white font-extrabold px-8 py-3 rounded-full text-sm shadow-md tracking-wide hover:scale-105 transition-all">
+                            オプションサービス一覧・料金プランはこちら <i class="fa-solid fa-chevron-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- NEWS SECTION -->
+            <section id="news" class="py-16 bg-white border-t border-gray-50">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="mb-12 flex justify-between items-end">
+                        <h2 class="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight flex items-center gap-3">
+                            お知らせ <span class="w-12 h-[2px] bg-brand-orange inline-block"></span>
+                        </h2>
+                        <a href="#" @click.prevent="changePage(4)" class="text-xs sm:text-sm font-bold text-brand-orange hover:underline">
+                            すべてのお知らせを見る <i class="fa-solid fa-chevron-right text-[10px]"></i>
+                        </a>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                        <div class="lg:col-span-7 divide-y divide-gray-100">
+                            <!-- News Item 1 -->
+                            <a href="#" @click.prevent="openNewsDetail(1)" class="block py-5 flex items-center justify-between group">
+                                <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+                                    <span class="text-sm text-gray-500 font-bold tracking-wider">2026.06.01</span>
+                                    <span class="inline-block border border-red-500 text-red-500 text-[10px] font-bold px-3 py-1 rounded w-fit">重要</span>
+                                    <h4 class="font-bold text-gray-800 text-sm sm:text-base group-hover:text-brand-orange transition-colors">【重要】電気需給約款および各種重要説明書の改定について</h4>
+                                </div>
+                                <span class="text-gray-400 text-sm font-bold group-hover:text-brand-orange transition-colors"><i class="fa-solid fa-chevron-right"></i></span>
+                            </a>
+
+                            <!-- News Item 2 -->
+                            <a href="#" @click.prevent="openNewsDetail(2)" class="block py-5 flex items-center justify-between group">
+                                <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+                                    <span class="text-sm text-gray-500 font-bold tracking-wider">2026.05.20</span>
+                                    <span class="inline-block border border-brand-orange text-brand-orange text-[10px] font-bold px-3 py-1 rounded w-fit">お知らせ</span>
+                                    <h4 class="font-bold text-gray-800 text-sm sm:text-base group-hover:text-brand-orange transition-colors">「SNS運用代行」と「MEO対策」のサービス紹介ビジュアルを刷新しました！</h4>
+                                </div>
+                                <span class="text-gray-400 text-sm font-bold group-hover:text-brand-orange transition-colors"><i class="fa-solid fa-chevron-right"></i></span>
+                            </a>
+
+                            <!-- News Item 3 -->
+                            <a href="#" @click.prevent="openNewsDetail(3)" class="block py-5 flex items-center justify-between group">
+                                <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+                                    <span class="text-sm text-gray-500 font-bold tracking-wider">2026.05.01</span>
+                                    <span class="inline-block border border-[#28A745] text-[#28A745] text-[10px] font-bold px-3 py-1 rounded w-fit">キャンペーン</span>
+                                    <h4 class="font-bold text-gray-800 text-sm sm:text-base group-hover:text-brand-orange transition-colors">「EPARK集客でんき」サービス提供開始記念キャンペーン実施中！</h4>
+                                </div>
+                                <span class="text-gray-400 text-sm font-bold group-hover:text-brand-orange transition-colors"><i class="fa-solid fa-chevron-right"></i></span>
+                            </a>
+                        </div>
+
+                        <!-- Right Store SVG Graphic -->
+                        <div class="lg:col-span-5 flex justify-center">
+                            <svg viewBox="0 0 500 400" class="w-full max-w-[360px] h-auto drop-shadow-md" xmlns="http://www.w3.org/2000/svg">
+                                <rect width="100%" height="100%" fill="none"/>
+                                <path d="M 50,340 L 450,340" stroke="#E5E7EB" stroke-width="4" stroke-linecap="round"/>
+                                <circle cx="80" cy="240" r="30" fill="#2EC4B6" opacity="0.15"/>
+                                <circle cx="95" cy="230" r="20" fill="#2EC4B6" opacity="0.2"/>
+                                <path d="M 80,240 L 80,340" stroke="#9CA3AF" stroke-width="3"/>
+                                <path d="M 95,230 L 95,340" stroke="#9CA3AF" stroke-width="2"/>
+                                <circle cx="410" cy="260" r="25" fill="#FF9F1C" opacity="0.2"/>
+                                <path d="M 410,260 L 410,340" stroke="#9CA3AF" stroke-width="3"/>
+                                <rect x="150" y="160" width="200" height="180" rx="16" fill="#FFFDF9" stroke="#E5E7EB" stroke-width="4"/>
+                                <path d="M 130,160 L 370,160 L 350,120 L 150,120 Z" fill="#FF9F1C" rx="4"/>
+                                <path d="M 165,160 L 195,160 L 185,120 L 155,120 Z" fill="#E58E12"/>
+                                <path d="M 235,160 L 265,160 L 255,120 L 225,120 Z" fill="#E58E12"/>
+                                <path d="M 305,160 L 335,160 L 325,120 L 295,120 Z" fill="#E58E12"/>
+                                <rect x="180" y="80" width="140" height="40" rx="8" fill="#FFF5E6" stroke="#FF9F1C" stroke-width="3"/>
+                                <text x="250" y="105" font-family="Noto Sans JP" font-weight="900" font-size="14" fill="#222222" text-anchor="middle">EPARK 集客でんき</text>
+                                <rect x="220" y="240" width="60" height="100" rx="6" fill="#F3F4F6" stroke="#9CA3AF" stroke-width="2"/>
+                                <rect x="230" y="250" width="40" height="40" rx="4" fill="#E8F9F8" stroke="#2EC4B6" stroke-width="2"/>
+                                <circle cx="235" cy="295" r="4" fill="#9CA3AF"/>
+                                <rect x="170" y="200" width="35" height="50" rx="6" fill="#E8F9F8" stroke="#2EC4B6" stroke-width="2"/>
+                                <rect x="295" y="200" width="35" height="50" rx="6" fill="#E8F9F8" stroke="#2EC4B6" stroke-width="2"/>
+                                <rect x="175" y="315" width="25" height="25" rx="4" fill="#E5E7EB"/>
+                                <circle cx="187" cy="308" r="10" fill="#2EC4B6"/>
+                                <rect x="300" y="315" width="25" height="25" rx="4" fill="#E5E7EB"/>
+                                <circle cx="312" cy="308" r="10" fill="#2EC4B6"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ================= PAGE 02: DELIVERY SERVICE PACK DETAIL (下層02) ================= -->
+        <div x-show="page === 2" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-12" x-transition:enter-end="opacity-100 translate-x-0" style="display: none;">
+            
+            <section class="py-12 bg-white">
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <!-- Heading -->
+                    <div class="border-l-4 border-brand-orange pl-4 mb-8">
+                        <span class="text-xs sm:text-sm font-bold text-brand-orange uppercase tracking-wider block mb-1">月額ワンコインで始める新集客スキーム</span>
+                        <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">デリバリー支援パック</h1>
+                    </div>
+
+                    <!-- HERO IMAGE -->
+                    <div class="w-full mb-12 shadow-md rounded-3xl overflow-hidden">
+                        <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/img/hero03.png?raw=true" alt="デリバリー支援パック詳細ヒーロー" class="w-full h-auto block" onerror="this.onerror=null; this.src='https://placehold.co/1200x500/FFFFFF/34BFA3?text=EPARK+Delivery+Support+Pack+Hero'">
+                    </div>
+
+                    <!-- THREE PILLARS -->
+                    <div class="py-4 text-center">
+                        <h3 class="text-xl sm:text-2xl font-black text-gray-900 mb-8 flex items-center justify-center gap-3">
+                            <span class="text-brand-green font-normal">\</span> デリバリー支援パック <span class="text-brand-green font-normal">/</span>
+                        </h3>
+
+                        <div class="w-full shadow-md rounded-3xl overflow-hidden">
+                            <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/img/part01.png?raw=true" alt="デリバリー支援パック詳細" class="w-full h-auto block" onerror="this.onerror=null; this.src='https://placehold.co/1200x500/FFFFFF/34BFA3?text=EPARK+Delivery+Support+Pack+Detail'">
+                        </div>
+                    </div>
+
+                    <!-- MECHANISM OF EPARK ATTRACTING CUSTOMERS -->
+                    <div class="py-12 border-t border-gray-100 text-center">
+                        <h3 class="text-xl sm:text-2xl font-black text-gray-900 mb-8">
+                            EPARKの集客支援の仕組み
+                        </h3>
+                        <!-- Step process map image (part02) -->
+                        <div class="w-full shadow-md rounded-3xl overflow-hidden mb-8">
+                            <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/img/part02.png?raw=true" alt="EPARKの集客支援の仕組み" class="w-full h-auto block" onerror="this.onerror=null; this.src='https://placehold.co/1200x500/FFFFFF/34BFA3?text=EPARK+Attracting+Customers+part02.png'">
+                        </div>
+                        <!-- Highlights & stats image (part03) -->
+                        <div class="w-full shadow-md rounded-3xl overflow-hidden">
+                            <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/img/part03.png?raw=true" alt="配信ターゲット・通数実績" class="w-full h-auto block" onerror="this.onerror=null; this.src='https://placehold.co/1200x500/FFFFFF/34BFA3?text=Attracting+Customers+Performance+part03.png'">
+                        </div>
+                    </div>
+
+                    <!-- OPTIONS QUICKLINK (Redirects to Option detail page) -->
+                    <div class="py-12 border-t border-gray-100 text-center">
+                        <span class="text-xs text-gray-400 font-bold block mb-2 uppercase tracking-wider">集客をさらに強化したい店舗様へ</span>
+                        <h4 class="font-extrabold text-lg text-gray-900 mb-6">オプションサービス一覧</h4>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl mx-auto">
+                            <!-- Option 1 Card Image -->
+                            <div class="transition-all duration-300 hover:scale-105 cursor-pointer" @click="changePage(3)">
+                                <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/img/homepage.png?raw=true" alt="ホームページ制作オプション" class="w-full h-auto block rounded-2xl shadow-sm hover:shadow-md" onerror="this.onerror=null; this.src='https://placehold.co/280x320/FFFFFF/34BFA3?text=Website+Production'">
+                            </div>
+
+                            <!-- Option 2 Card Image -->
+                            <div class="transition-all duration-300 hover:scale-105 cursor-pointer" @click="changePage(3)">
+                                <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/img/sns.png?raw=true" alt="SNS運用代行オプション" class="w-full h-auto block rounded-2xl shadow-sm hover:shadow-md" onerror="this.onerror=null; this.src='https://placehold.co/280x320/FFFFFF/34BFA3?text=SNS+Management'">
+                            </div>
+
+                            <!-- Option 3 Card Image -->
+                            <div class="transition-all duration-300 hover:scale-105 cursor-pointer" @click="changePage(3)">
+                                <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/img/meo.png?raw=true" alt="MEO対策オプション" class="w-full h-auto block rounded-2xl shadow-sm hover:shadow-md" onerror="this.onerror=null; this.src='https://placehold.co/280x320/FFFFFF/34BFA3?text=MEO+Optimization'">
+                            </div>
+
+                            <!-- Option 4 Card Image -->
+                            <div class="transition-all duration-300 hover:scale-105 cursor-pointer" @click="changePage(3)">
+                                <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/img/inful.png?raw=true" alt="インフルエンサー広告オプション" class="w-full h-auto block rounded-2xl shadow-sm hover:shadow-md" onerror="this.onerror=null; this.src='https://placehold.co/280x320/FFFFFF/34BFA3?text=Influencer+Ad'">
+                            </div>
+                        </div>
+                        <p class="text-[11px] text-gray-400 font-bold mt-6">※オプションサービスは別途料金となります。画像をクリックするとプラン料金詳細へ遷移します。</p>
+                    </div>
+
+                    <!-- TWO-COLUMN REINFORCED CTA AREA -->
+                    <div class="bg-brand-lightBg rounded-3xl p-8 sm:p-12 text-center border border-gray-100 shadow-sm mt-8">
+                        <h4 class="font-extrabold text-lg sm:text-xl text-gray-900 mb-6">まずはお気軽にご相談ください</h4>
+                        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                            <button @click="alert('無料資料ダウンロードを完了しました。ご登録メールへ送付致します。')" class="w-full sm:w-60 bg-[#FF7A00] hover:bg-brand-orange-hover text-white text-base font-bold py-3.5 rounded-full transition-colors flex items-center justify-center gap-2 shadow-md">
+                                <i class="fa-solid fa-cloud-arrow-down"></i>
+                                <span>資料ダウンロード (無料)</span>
+                            </button>
+                            <button @click="inquiryModalOpen = true" class="w-full sm:w-60 bg-white border border-brand-green hover:bg-brand-green/5 text-brand-green text-base font-bold py-3.5 rounded-full transition-colors flex items-center justify-center gap-2 shadow-md">
+                                <i class="fa-solid fa-envelope"></i>
+                                <span>お問い合わせ</span>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+        </div>
+
+        <!-- ================= PAGE 03: OPTION SERVICES DETAIL (下層03) ================= -->
+        <div x-show="page === 3" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-12" x-transition:enter-end="opacity-100 translate-x-0" style="display: none;">
+            <section class="py-12 bg-white">
+                <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <!-- Heading -->
+                    <div class="border-l-4 border-brand-orange pl-4 mb-8">
+                        <span class="text-xs sm:text-sm font-bold text-brand-orange uppercase tracking-wider block mb-1">デリバリー支援パックご加入店舗様限定の追加集客施策</span>
+                        <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">オプションサービス詳細・料金プラン</h1>
+                    </div>
+
+                    <!-- Intro explanation -->
+                    <p class="text-sm text-gray-600 font-bold leading-relaxed mb-12">
+                        お店の課題やターゲット層に合わせて選べる、効果的なWeb集客オプションをご用意しました。
+                        でんきの切り替えによるデリバリー支援パックと組み合わせることで、認知獲得から公式HP誘導、ファン化、再来店まで、死角のない強力な店舗集客の導線が完成します。
+                    </p>
+
+                    <!-- Option Cards Grid (1 Image 1 Box with price highlighted) -->
+                    <div class="space-y-12">
+                        <!-- Box 1: Homepage -->
+                        <div class="bg-brand-lightBg rounded-3xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col md:flex-row items-stretch">
+                            <!-- Image part (1/3 width) -->
+                            <div class="md:w-5/12 bg-white flex items-center justify-center p-6 md:p-8">
+                                <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/img/expressHP.png?raw=true" alt="ホームページ制作オプション" class="w-full h-auto object-contain rounded-2xl shadow-sm" onerror="this.onerror=null; this.src='https://placehold.co/400x450/FFFFFF/34BFA3?text=Homepage'">
+                            </div>
+                            <!-- Content part (2/3 width) -->
+                            <div class="md:w-7/12 p-8 sm:p-10 flex flex-col justify-between space-y-6">
+                                <div>
+                                    <span class="text-brand-orange text-[10px] font-black uppercase tracking-wider border border-brand-orange px-2 py-0.5 rounded">Option 01</span>
+                                    <h3 class="text-xl sm:text-2xl font-black text-gray-900 mt-2">ホームページ制作</h3>
+                                    
+                                    <!-- Price Tag -->
+                                    <div class="mt-4 flex items-baseline gap-2 text-brand-orange">
+                                        <span class="text-xs font-bold">料金：</span>
+                                        <span class="text-2xl sm:text-3xl font-black">月額 10,000円〜</span>
+                                        <span class="text-xs font-bold text-gray-500">（税込） / 初期費用 0円</span>
+                                    </div>
+
+                                    <!-- Description -->
+                                    <p class="text-xs text-gray-600 font-medium leading-relaxed mt-4">
+                                        スマートフォン表示に完全対応した、美しく高機能な店舗公式ホームページをプロが制作いたします。
+                                        お知らせやメニュー変更を管理画面からご自身で簡単に更新できるCMS機能を搭載。ドメイン取得・サーバー代金、毎月の軽微なテキスト・写真修正サポートもすべて込みの安心おまかせプランです。
+                                    </p>
+
+                                    <!-- Specifications Bullet List -->
+                                    <ul class="mt-4 space-y-1.5 text-xs font-bold text-gray-700">
+                                        <li><i class="fa-solid fa-circle-check text-brand-green mr-1.5"></i> スマホ完全最適化＆SEO内部対策済み</li>
+                                        <li><i class="fa-solid fa-circle-check text-brand-green mr-1.5"></i> 店舗で簡単編集・更新ができるブログお知らせ機能</li>
+                                        <li><i class="fa-solid fa-circle-check text-brand-green mr-1.5"></i> 常時SSL（セキュリティ対応）、サーバー・ドメイン完備</li>
+                                    </ul>
+                                </div>
+
+                                <button @click="inquiryModalOpen = true" class="w-full sm:w-56 bg-brand-green hover:bg-brand-green-hover text-white font-bold py-3 rounded-full text-xs shadow-sm transition-colors flex items-center justify-center gap-1.5">
+                                    <i class="fa-solid fa-envelope"></i> このオプションについて相談する
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Box 2: SNS Management -->
+                        <div class="bg-brand-lightBg rounded-3xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col md:flex-row items-stretch">
+                            <!-- Image part (1/3 width) -->
+                            <div class="md:w-5/12 bg-white flex items-center justify-center p-6 md:p-8">
+                                <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/img/expressSNS.png?raw=true" alt="SNS運用代行オプション" class="w-full h-auto object-contain rounded-2xl shadow-sm" onerror="this.onerror=null; this.src='https://placehold.co/400x450/FFFFFF/34BFA3?text=SNS'">
+                            </div>
+                            <!-- Content part (2/3 width) -->
+                            <div class="md:w-7/12 p-8 sm:p-10 flex flex-col justify-between space-y-6">
+                                <div>
+                                    <span class="text-brand-orange text-[10px] font-black uppercase tracking-wider border border-brand-orange px-2 py-0.5 rounded">Option 02</span>
+                                    <h3 class="text-xl sm:text-2xl font-black text-gray-900 mt-2">SNS運用代行</h3>
+                                    
+                                    <!-- Price Tag -->
+                                    <div class="mt-4 flex items-baseline gap-2 text-brand-orange">
+                                        <span class="text-xs font-bold">料金：</span>
+                                        <span class="text-2xl sm:text-3xl font-black">月額 15,000円〜</span>
+                                        <span class="text-xs font-bold text-gray-500">（税込）</span>
+                                    </div>
+
+                                    <!-- Description -->
+                                    <p class="text-xs text-gray-600 font-medium leading-relaxed mt-4">
+                                        InstagramやX（旧Twitter）など、現代の店舗集客に欠かせないSNS媒体の投稿作成・運用をまるごとサポート。
+                                        シズル感のある写真・デザイン加工、最適な投稿テキスト作成、ターゲットに届くオリジナルハッシュタグの選定、投稿スケジュール予約までを専任チームが代行し、お店のファンづくりを加速させます。
+                                    </p>
+
+                                    <!-- Specifications Bullet List -->
+                                    <ul class="mt-4 space-y-1.5 text-xs font-bold text-gray-700">
+                                        <li><i class="fa-solid fa-circle-check text-brand-green mr-1.5"></i> 月間4回以上の高品質な画像加工付き投稿クリエイティブ作成</li>
+                                        <li><i class="fa-solid fa-circle-check text-brand-green mr-1.5"></i> 地域キーワードを網羅した高エンゲージメントハッシュタグ設計</li>
+                                        <li><i class="fa-solid fa-circle-check text-brand-green mr-1.5"></i> ストーリーズの配信アイデアや、効果的なファン対応マニュアル共有</li>
+                                    </ul>
+                                </div>
+
+                                <button @click="inquiryModalOpen = true" class="w-full sm:w-56 bg-brand-green hover:bg-brand-green-hover text-white font-bold py-3 rounded-full text-xs shadow-sm transition-colors flex items-center justify-center gap-1.5">
+                                    <i class="fa-solid fa-envelope"></i> このオプションについて相談する
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Box 3: MEO対策 -->
+                        <div class="bg-brand-lightBg rounded-3xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col md:flex-row items-stretch">
+                            <!-- Image part (1/3 width) -->
+                            <div class="md:w-5/12 bg-white flex items-center justify-center p-6 md:p-8">
+                                <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/img/expressMEO.png?raw=true" alt="MEO対策オプション" class="w-full h-auto object-contain rounded-2xl shadow-sm" onerror="this.onerror=null; this.src='https://placehold.co/400x450/FFFFFF/34BFA3?text=MEO'">
+                            </div>
+                            <!-- Content part (2/3 width) -->
+                            <div class="md:w-7/12 p-8 sm:p-10 flex flex-col justify-between space-y-6">
+                                <div>
+                                    <span class="text-brand-orange text-[10px] font-black uppercase tracking-wider border border-brand-orange px-2 py-0.5 rounded">Option 03</span>
+                                    <h3 class="text-xl sm:text-2xl font-black text-gray-900 mt-2">MEO対策（Googleマップ上位表示）</h3>
+                                    
+                                    <!-- Price Tag -->
+                                    <div class="mt-4 flex items-baseline gap-2 text-brand-orange">
+                                        <span class="text-xs font-bold">料金：</span>
+                                        <span class="text-2xl sm:text-3xl font-black">月額 10,000円〜</span>
+                                        <span class="text-xs font-bold text-gray-500">（税込）</span>
+                                    </div>
+
+                                    <!-- Description -->
+                                    <p class="text-xs text-gray-600 font-medium leading-relaxed mt-4">
+                                        ユーザーがスマホのGoogleマップや検索画面で「（地域名） ＋ （料理ジャンル）」と検索した際、お店の情報がローカル検索結果のトップ3枠（最上部エリア）に表示されるように最適化するサービスです。
+                                        直接来店・テイクアウト注文に今最も繋がる集客施策であり、ビジネスプロフィールの初期設定、メニューや写真の最適化、効果的なクチコミ返信テンプレート提供などを実施いたします。
+                                    </p>
+
+                                    <!-- Specifications Bullet List -->
+                                    <ul class="mt-4 space-y-1.5 text-xs font-bold text-gray-700">
+                                        <li><i class="fa-solid fa-circle-check text-brand-green mr-1.5"></i> Googleマップにおける露出向上を狙うローカルキーワード選定・競合分析</li>
+                                        <li><i class="fa-solid fa-circle-check text-brand-green mr-1.5"></i> 魅力的なメニュー写真、外観内観画像、店舗情報の完全最適化</li>
+                                        <li><i class="fa-solid fa-circle-check text-brand-green mr-1.5"></i> 高評価なクチコミを集めるための施策シート、及び返信テンプレート配布</li>
+                                    </ul>
+                                </div>
+
+                                <button @click="inquiryModalOpen = true" class="w-full sm:w-56 bg-brand-green hover:bg-brand-green-hover text-white font-bold py-3 rounded-full text-xs shadow-sm transition-colors flex items-center justify-center gap-1.5">
+                                    <i class="fa-solid fa-envelope"></i> このオプションについて相談する
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Box 4: Influencer Ad -->
+                        <div class="bg-brand-lightBg rounded-3xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col md:flex-row items-stretch">
+                            <!-- Image part (1/3 width) -->
+                            <div class="md:w-5/12 bg-white flex items-center justify-center p-6 md:p-8">
+                                <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/img/influencer.png?raw=true" alt="インフルエンサー広告オプション" class="w-full h-auto object-contain rounded-2xl shadow-sm" onerror="this.onerror=null; this.src='https://placehold.co/400x450/FFFFFF/34BFA3?text=Influencer'">
+                            </div>
+                            <!-- Content part (2/3 width) -->
+                            <div class="md:w-7/12 p-8 sm:p-10 flex flex-col justify-between space-y-6">
+                                <div>
+                                    <span class="text-brand-orange text-[10px] font-black uppercase tracking-wider border border-brand-orange px-2 py-0.5 rounded">Option 04</span>
+                                    <h3 class="text-xl sm:text-2xl font-black text-gray-900 mt-2">インフルエンサー広告</h3>
+                                    
+                                    <!-- Price Tag -->
+                                    <div class="mt-4 flex items-baseline gap-2 text-brand-orange">
+                                        <span class="text-xs font-bold">料金：</span>
+                                        <span class="text-2xl sm:text-3xl font-black">スポット 30,000円〜</span>
+                                        <span class="text-xs font-bold text-gray-500">（税込） / ご招待人数など要相談</span>
+                                    </div>
+
+                                    <!-- Description -->
+                                    <p class="text-xs text-gray-600 font-medium leading-relaxed mt-4">
+                                        お住まいの地域密着型グルメ系インフルエンサーや、Instagramなどで多数のフォロワーを持つ影響力抜群の美食クリエーターを実際にお店にご招待。
+                                        看板メニューや新商品を実際に試食していただき、魅力的な動画（リール投稿など）や高精細写真を用いてリアルにSNS上にレポート発信していただくことで、爆発的な認知・話題性と圧倒的な新規来店を創出します。
+                                    </p>
+
+                                    <!-- Specifications Bullet List -->
+                                    <ul class="mt-4 space-y-1.5 text-xs font-bold text-gray-700">
+                                        <li><i class="fa-solid fa-circle-check text-brand-green mr-1.5"></i> 地域特化型、料理ジャンルに合わせた親和性の高いインフルエンサーをマッチング</li>
+                                        <li><i class="fa-solid fa-circle-check text-brand-green mr-1.5"></i> 投稿前のクリエイティブ監修、PRタグ等の法的コンプライアンス管理</li>
+                                        <li><i class="fa-solid fa-circle-check text-brand-green mr-1.5"></i> 反響・インプレッション数、エンゲージメント率のレポートフィードバック</li>
+                                    </ul>
+                                </div>
+
+                                <button @click="inquiryModalOpen = true" class="w-full sm:w-56 bg-brand-green hover:bg-brand-green-hover text-white font-bold py-3 rounded-full text-xs shadow-sm transition-colors flex items-center justify-center gap-1.5">
+                                    <i class="fa-solid fa-envelope"></i> このオプションについて相談する
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- REINFORCED CTA AREA -->
+                    <div class="bg-brand-lightBg rounded-3xl p-8 sm:p-12 text-center border border-gray-100 shadow-sm mt-16">
+                        <h4 class="font-extrabold text-lg sm:text-xl text-gray-900 mb-6">オプションプランのご相談、承ります</h4>
+                        <p class="text-xs text-gray-500 font-bold max-w-lg mx-auto leading-relaxed mb-8">
+                            どのオプションが自店に合うかわからない店舗様も、当社の専任カウンセラーが、お店のジャンル、客単価、目標とする来店数に合わせて最適なパック編成を無料でお見積りいたします。
+                        </p>
+                        <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                            <button @click="inquiryModalOpen = true" class="w-full sm:w-60 bg-brand-orange hover:bg-brand-orange-hover text-white text-base font-bold py-3.5 rounded-full transition-colors flex items-center justify-center gap-2 shadow-md">
+                                <i class="fa-solid fa-envelope"></i>
+                                <span>無料見積もり・相談窓口</span>
+                            </button>
+                            <button @click="changePage(2)" class="w-full sm:w-60 bg-white border border-brand-green hover:bg-brand-green/5 text-brand-green text-base font-bold py-3.5 rounded-full transition-colors flex items-center justify-center gap-2 shadow-md">
+                                <i class="fa-solid fa-chevron-left"></i>
+                                <span>デリバリー支援パック詳細へ</span>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+        </div>
+
+        <!-- ================= PAGE 04: NEWS LIST & DETAIL (下層04) ================= -->
+        <div x-show="page === 4" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-12" x-transition:enter-end="opacity-100 translate-x-0" style="display: none;">
+            <section class="py-12 bg-white">
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8" x-data="{
+                    articles: [
+                        { id: 1, date: '2026.06.01', category: 'important', title: '【重要】電気需給約款および各種重要説明書の改定について', summary: '小売電気事業における適正な取引管理の推進および関係省庁のガイドライン改定に伴い、電気需給約款、重要事項説明書、並びにオプションサービス契約規約の各最新版を公開および改定いたしました。', body: 'いつも「EPARK集客でんき」をご利用いただき、誠にありがとうございます。<br><br>この度、電気需給取引の健全な管理・向上、および関係ガイドラインの基準整合に伴い、<b>2026年6月1日付</b>をもちまして、本サービスの電気需給約款、重要事項説明書、ならびに各集客支援オプションプランの契約規約を改定いたしました。新料金システムやオプションの各種保証内容、または市場調整費に関する一部算定式などの見直しが行われております。<br><br>改定後の最新資料（PDF版）につきましては、当サイトの「約款・重要事項説明書」ダウンロードページにて全件公開しておりますので、ご契約中の店舗様、ならびに新規導入をご検討中の店舗様におかれましては、必ず内容をご確認いただけますようお願い申し上げます。<br><br>今後とも、お客様に安心かつ効果的な店舗運営支援を提供できるよう努めてまいります。引き続きご愛顧を賜りますようお願い申し上げます。' },
+                        { id: 2, date: '2026.05.20', category: 'info', title: '「SNS運用代行」と「MEO対策」のサービス紹介ビジュアルを刷新しました！', summary: 'オプションとして大変ご好評をいただいている「SNS運用代行」と「MEO対策（Googleマップ上位表示）」のイメージカットを、さらに分かりやすい最新の機能グラフィックへと一新いたしました。', body: 'いつも「EPARK集客でんき」をご利用いただき、誠にありがとうございます。<br><br>本サービスに連動してご利用いただける人気オプション<b>「SNS運用代行」</b>および<b>「MEO対策（Googleマップ上位表示）」</b>につきまして、提供価値をより直感的にお伝えできるよう、サービス紹介ビジュアルを最新のデザイン画像（expressSNS.png / expressMEO.png）へと刷新いたしました。<br><br>SNS運用代行では、投稿の設計図作成からハッシュタグ最適化、分析レポートまでのプロセスのビジュアル化。MEO対策では、ローカルエリア検索で3位枠に入り込んで認知・予約を飛躍的に高める実績をグラフで分かりやすく表現しております。<br><br>詳細は、オプションサービス一覧ページにて各バナーを掲載しておりますので、ぜひ一度ご覧ください。集客力の更なるステップアップについて、無料カウンセリングもいつでも受付中です。' },
+                        { id: 3, date: '2026.05.01', category: 'campaign', title: '「EPARK集客でんき」サービス提供開始記念キャンペーン実施中！', summary: '飲食店向けの新しい店舗支援型でんきサービス「EPARK集客でんき」の正式ローンチを記念し、初期費用をすべて免除する「特別スタートアップ支援キャンペーン」を開催いたします。', body: '飲食店・美容室等、すべての店舗様の経営と集客を同時に支える新型でんきサービス「EPARK集客でんき」の正式リリースを記念いたしまして、本日より<b>リリース記念特別新規参入キャンペーン</b>を実施いたします！<br><br>キャンペーン期間中に新規でお申し込みを完了し、電力切り替えを行っていただいた全ての店舗様を対象に、<b>「デリバリー支援パック」導入時の初期コンフィグ設定費用（通常10,000円）が100%無料</b>となります。<br><br>また、ご希望される店舗様には、弊社の専任コンサルタントによる「集客最大化のための、MEO・SNSアカウント無料診断」も個別で進呈。電気料金の無駄を削りながら、月額ワンコインで日本最大級の店舗予約プラットフォームEPARKの強力なアプローチ網を活用できる最大のチャンスです。この機会に、お気軽にお申し込み・資料請求ください！' },
+                        { id: 4, date: '2026.04.15', category: 'info', title: '【新制度】ご紹介パートナー（トスアップ紹介）の登録受付を開始しました', summary: 'お知り合い of 飲食店や美容室、既存のクライアント様を当社にご紹介いただくだけで、安定した紹介料（ストック）をお支払いする「紹介パートナー制度」を新しくスタートいたしました。', body: '飲食店様を支援する新たな試みとして、知人店舗やクライアント様をご紹介いただくだけでマージンが毎月積み上がる、<b>「紹介パートナー（取次登録）」制度</b>の本格的な受付を本日よりスタートいたしました。<br><br>「電気の切替を検討している」「月500円でEPARK掲載やメール配信ができる集客でんきに興味がある」という店舗様をトスアップしていただくだけで、その後の詳細説明、クロージング、手続き、アフターサポートはすべて当社の専任スタッフが責任を持って対応いたします。<br><br>ノルマや面倒な営業知識、資料作成の手間は一切不要です。既に複数の顧客基盤をお持ちの企業様、または個人営業代理店様は、新しい「ストックビジネス収益」としてぜひご活用ください。詳細条件は代理店募集ページにていつでも面談応募を承っております。' },
+                        { id: 5, date: '2026.03.10', category: 'important', title: '電気料金に適用される「電源調達調整費」の仕組み解説コーナーを開設しました', summary: '世界的な燃料価格・電力市場取引動向に伴い、電気料金内訳の公正な開示として「電源調達調整費」の詳しい役割や計算ロジック、および過去の実績調整単価の公開セクションを約款ページ内に開設しました。', body: '日頃より「EPARK集客でんき」をご利用いただき、厚くお礼申し上げます。<br><br>昨今の電力市場取引価格（JEPX）の変動に伴い、電気料金に含まれる<b>「電源調達調整費」</b>の仕組みをより公正かつ透明に、すべての店舗様に正しくご理解いただけるよう、約款・重要事項説明書ページ内に<b>「電源調達調整費の仕組み＆単価履歴推移」の解説テーブル</b>を本日新しく公開・開設いたしました。<br><br>電源調達調整費がなぜ発生するのか、その構成要因（燃料価格、電力卸売市場からの買電コストの適正な平均連動など）や、これまでの具体的な過去適用単価をグラフおよび表組み形式でクリアに表示しております。<br><br>当社は小売電気事業者様と強力に連携し、今後も適正な価格管理と安心の供給を両立させてまいります。ご不明な点がございましたら、サポートデスクまでお気軽にお問い合わせください。' },
+                        { id: 6, date: '2026.02.25', category: 'info', title: '災害時の電力供給や停電時の具体的な確認ステップについて', summary: '地震や台風などの災害発生に伴う不測の地域停電等に関して、電力の品質および送配電網の保守管理、万が一の際の各送配電事業者（東京電力等）へのスムーズな連絡ステップを解説する案内を開設。', body: '停電時の心配事や、災害などの非常時における電気の取扱いについてのご案内です。<br><br>EPARK集客でんきへお乗り換えいただいた後でも、送電される電気の品質や送配電の仕組み、安定性は一切変わりません。地域一帯での断線や事故による停電が発生した際も、地域の既存送配電網を保守する一般送配電事業者（東京電力等）が100%同等の最優先順位で最速の復旧作業を執り行います。<br><br>万が一、お店で電気が消えたなどのトラブルが発生した際に、それが店舗独自のブレーカートラブルなのか、地域的な広域停電なのかを迅速に自己診断するための<b>「停電時確認ステップフロー」</b>と、<b>「地元電力送配電会社のダイヤル一覧」</b>を約款ページ内へ緊急掲載いたしました。<br><br>事前にお近くの地域の緊急ダイヤルを確認・保存し、もしもの際の安全確認・店舗保護にお役立てください。' }
+                    ]
+                }">
+                    <!-- BACK TO LIST BUTTON -->
+                    <div x-show="activeNewsId !== null" class="mb-6">
+                        <button @click="activeNewsId = null" class="text-xs sm:text-sm font-bold text-gray-500 hover:text-brand-orange transition-colors flex items-center gap-1">
+                            <i class="fa-solid fa-arrow-left"></i> お知らせ一覧に戻る
+                        </button>
+                    </div>
+
+                    <!-- Heading -->
+                    <div class="border-l-4 border-brand-orange pl-4 mb-8">
+                        <span class="text-xs sm:text-sm font-bold text-brand-orange uppercase tracking-wider block mb-1">本サービスから店舗様へ最新の更新情報</span>
+                        <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight" x-text="activeNewsId === null ? '新着ニュース＆お知らせ' : 'お知らせ詳細'">新着ニュース＆お知らせ</h1>
+                    </div>
+
+                    <!-- VIEW 1: News List -->
+                    <div x-show="activeNewsId === null" class="space-y-6">
+                        <!-- Category Filters Tab -->
+                        <div class="flex flex-wrap border-b border-gray-100 gap-2 pb-1 text-xs sm:text-sm font-bold">
+                            <button @click="newsCategory = 'all'" class="px-4 py-2.5 rounded-t-lg transition-colors border-b-2" :class="newsCategory === 'all' ? 'border-brand-orange text-brand-orange bg-orange-50/50' : 'border-transparent text-gray-500 hover:text-gray-900'">すべて</button>
+                            <button @click="newsCategory = 'important'" class="px-4 py-2.5 rounded-t-lg transition-colors border-b-2" :class="newsCategory === 'important' ? 'border-brand-orange text-brand-orange bg-orange-50/50' : 'border-transparent text-gray-500 hover:text-gray-900'">重要</button>
+                            <button @click="newsCategory = 'info'" class="px-4 py-2.5 rounded-t-lg transition-colors border-b-2" :class="newsCategory === 'info' ? 'border-brand-orange text-brand-orange bg-orange-50/50' : 'border-transparent text-gray-500 hover:text-gray-900'">お知らせ</button>
+                            <button @click="newsCategory = 'campaign'" class="px-4 py-2.5 rounded-t-lg transition-colors border-b-2" :class="newsCategory === 'campaign' ? 'border-brand-orange text-brand-orange bg-orange-50/50' : 'border-transparent text-gray-500 hover:text-gray-900'">キャンペーン</button>
+                        </div>
+
+                        <!-- Filtered list -->
+                        <div class="divide-y divide-gray-100">
+                            <template x-for="item in articles" :key="item.id">
+                                <div x-show="newsCategory === 'all' || newsCategory === item.category" class="py-6 flex flex-col md:flex-row md:items-start justify-between gap-4 group">
+                                    <div class="space-y-2 max-w-3xl">
+                                        <div class="flex flex-wrap items-center gap-3">
+                                            <span class="text-xs text-gray-400 font-bold tracking-wider" x-text="item.date"></span>
+                                            <!-- Category Badges -->
+                                            <span class="text-[9px] font-black px-2 py-0.5 rounded border uppercase"
+                                                :class="{
+                                                    'border-red-500 text-red-500': item.category === 'important',
+                                                    'border-brand-orange text-brand-orange': item.category === 'info',
+                                                    'border-[#28A745] text-[#28A745]': item.category === 'campaign'
+                                                }"
+                                                x-text="item.category === 'important' ? '重要' : item.category === 'info' ? 'お知らせ' : 'キャンペーン'">
+                                            </span>
+                                        </div>
+                                        <h3 class="font-bold text-gray-900 text-base group-hover:text-brand-orange transition-colors cursor-pointer" @click="activeNewsId = item.id" x-text="item.title"></h3>
+                                        <p class="text-xs text-gray-500 font-medium leading-relaxed" x-text="item.summary"></p>
+                                    </div>
+                                    <button @click="activeNewsId = item.id" class="text-xs font-bold text-brand-orange hover:underline shrink-0 flex items-center gap-1 h-fit md:mt-2">
+                                        本文を読む <i class="fa-solid fa-chevron-right text-[9px]"></i>
+                                    </button>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+
+                    <!-- VIEW 2: News Detail -->
+                    <div x-show="activeNewsId !== null" class="bg-brand-lightBg rounded-3xl p-6 sm:p-10 border border-gray-100" style="display: none;">
+                        <template x-for="item in articles" :key="item.id">
+                            <div x-show="activeNewsId === item.id">
+                                <!-- Date & Badge -->
+                                <div class="flex items-center gap-3.5 mb-4">
+                                    <span class="text-xs text-gray-500 font-bold tracking-wider" x-text="item.date"></span>
+                                    <span class="text-[10px] font-black px-2.5 py-0.5 rounded border uppercase"
+                                        :class="{
+                                            'border-red-500 text-red-500': item.category === 'important',
+                                            'border-brand-orange text-brand-orange': item.category === 'info',
+                                            'border-[#28A745] text-[#28A745]': item.category === 'campaign'
+                                        }"
+                                        x-text="item.category === 'important' ? '重要' : item.category === 'info' ? 'お知らせ' : 'キャンペーン'">
+                                    </span>
+                                </div>
+                                <!-- Title -->
+                                <h2 class="text-xl sm:text-2xl font-black text-gray-900 leading-tight border-b border-gray-200 pb-5 mb-6" x-text="item.title"></h2>
+                                <!-- Rich HTML Body -->
+                                <div class="prose max-w-none text-xs sm:text-sm font-medium text-gray-700 leading-relaxed space-y-4" x-html="item.body"></div>
+                                
+                                <div class="border-t border-gray-200 mt-10 pt-6 text-center">
+                                    <button @click="activeNewsId = null" class="bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-bold px-8 py-2.5 rounded-full text-xs shadow-sm transition-colors">
+                                        お知らせ一覧へ戻る
+                                    </button>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+
+                </div>
+            </section>
+        </div>
+
+        <!-- ================= PAGE 05: FAQ (よくあるご質問 - 下層05) ================= -->
+        <div x-show="page === 5" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-12" x-transition:enter-end="opacity-100 translate-x-0" style="display: none;">
+            
+            <section class="py-12 bg-white">
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <!-- Heading -->
+                    <div class="border-l-4 border-brand-orange pl-4 mb-12">
+                        <span class="text-xs sm:text-sm font-bold text-brand-orange uppercase tracking-wider block mb-1">疑問の解決から、困ったときのサポートまで</span>
+                        <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">よくあるご質問</h1>
+                    </div>
+
+                    <!-- FAQ Accordions with Alpine.js faqActive -->
+                    <div class="space-y-4 mb-12">
+                        <!-- Q1 -->
+                        <div class="bg-brand-lightBg rounded-2xl border border-gray-100 overflow-hidden transition-all duration-300">
+                            <button @click="faqActive === 1 ? faqActive = null : faqActive = 1" class="w-full flex items-center justify-between p-6 text-left font-bold text-gray-900 hover:text-brand-orange transition-colors">
+                                <span class="flex items-center gap-3">
+                                    <span class="text-brand-orange text-lg">Q.</span>
+                                    電力を切り替えるだけで本当に集集客できるのですか？
+                                </span>
+                                <i class="fa-solid transition-transform duration-300" :class="faqActive === 1 ? 'fa-minus text-brand-orange rotate-180' : 'fa-plus text-gray-400'"></i>
+                            </button>
+                            <div x-show="faqActive === 1" class="border-t border-gray-100 bg-white p-6 text-gray-600 text-sm font-bold leading-relaxed">
+                                はい、可能です。小売電気事業者様と連携した電力契約への切り替えによって、月額500円相当の「デリバリー支援パック」が自動付帯されます。これにより日本最大級の店舗メディアEPARKへの掲載や周辺エリアへのターゲットアプローチ、自動メール配信といった集客支援サービスが開始されます。
+                            </div>
+                        </div>
+
+                        <!-- Q2 -->
+                        <div class="bg-brand-lightBg rounded-2xl border border-gray-100 overflow-hidden transition-all duration-300">
+                            <button @click="faqActive === 2 ? faqActive = null : faqActive = 2" class="w-full flex items-center justify-between p-6 text-left font-bold text-gray-900 hover:text-brand-orange transition-colors">
+                                <span class="flex items-center gap-3">
+                                    <span class="text-brand-orange text-lg">Q.</span>
+                                    「電源調達調整費」とは具体的にどのような料金項目なのですか？
+                                </span>
+                                <i class="fa-solid transition-transform duration-300" :class="faqActive === 2 ? 'fa-minus text-brand-orange rotate-180' : 'fa-plus text-gray-400'"></i>
+                            </button>
+                            <div x-show="faqActive === 2" class="border-t border-gray-100 bg-white p-6 text-gray-600 text-sm font-bold leading-relaxed">
+                                日本の電力取引市場（JEPX）における取引価格の変動を公平に電気料金へと反映するための調整項目です。<br>電力卸売市場の調達コストが下がれば電気料金も連動して安くなり、世界的な燃料や買電コストが上がれば調整費として算入される、公正かつ透明な実費連動制度となっております。解説および過去1年の単価履歴は、フッターの「約款・重要事項説明書」にて全て公開しております。
+                                <div class="mt-4">
+                                    <button @click="changePage(9)" class="bg-brand-orange text-white text-xs px-4 py-2 rounded-full font-bold">
+                                        電源調達調整費の詳しい仕組みを見る <i class="fa-solid fa-arrow-right text-[10px] ml-1"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Q3 -->
+                        <div class="bg-brand-lightBg rounded-2xl border border-gray-100 overflow-hidden transition-all duration-300">
+                            <button @click="faqActive === 3 ? faqActive = null : faqActive = 3" class="w-full flex items-center justify-between p-6 text-left font-bold text-gray-900 hover:text-brand-orange transition-colors">
+                                <span class="flex items-center gap-3">
+                                    <span class="text-brand-orange text-lg">Q.</span>
+                                    送電や停電について、これまでと変わることはありますか？
+                                </span>
+                                <i class="fa-solid transition-transform duration-300" :class="faqActive === 3 ? 'fa-minus text-brand-orange rotate-180' : 'fa-plus text-gray-400'"></i>
+                            </button>
+                            <div x-show="faqActive === 3" class="border-t border-gray-100 bg-white p-6 text-gray-600 text-sm font-bold leading-relaxed">
+                                いいえ、品質や安定性は一切変わりません。電気の送配電ルートは既存の一般送配電事業者（東京電力等）の既存インフラをそのまま利用します。もし地域的に停電が発生した場合でも、地元の送配電網を保守する会社がこれまでと全く同等に最優先で迅速に復旧作業を担当します。
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- REDIRECT BUTTON TO NEW COMPLIANCE DOCUMENT PAGE -->
+                    <div class="bg-brand-lightBg rounded-3xl p-8 border border-gray-100 shadow-sm text-center">
+                        <div class="w-12 h-12 bg-brand-orange-light rounded-full flex items-center justify-center text-brand-orange text-xl mx-auto mb-4">
+                            <i class="fa-solid fa-file-pdf"></i>
+                        </div>
+                        <h3 class="font-extrabold text-gray-900 text-lg mb-2">電気需給約款・重要事項説明書をお探しの方へ</h3>
+                        <p class="text-xs text-gray-500 font-bold max-w-lg mx-auto leading-relaxed mb-6">
+                            重要事項説明書、需給約款、燃料費調整単価履歴などの法的資料や、停電などの緊急連絡先マップは、専用開示ページにて一覧で提供しております。
+                        </p>
+                        <button @click="changePage(9)" class="inline-flex items-center gap-2 bg-brand-orange hover:bg-brand-orange-hover text-white font-bold px-6 py-3 rounded-full text-sm transition-colors shadow-sm">
+                            <span>約款・重要事項説明書 一覧ページはこちら</span>
+                            <i class="fa-solid fa-arrow-right text-xs"></i>
+                        </button>
+                    </div>
+
+                </div>
+            </section>
+        </div>
+
+        <!-- ================= PAGE 07: COMPANY INFO ＆ LEGAL COMPLIANCE (下層07) ================= -->
+        <div x-show="page === 7" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-12" x-transition:enter-end="opacity-100 translate-x-0" style="display: none;">
+            
+            <section class="py-12 bg-white">
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                    
+                    <!-- Heading -->
+                    <div class="border-l-4 border-brand-orange pl-4 mb-8">
+                        <span class="text-xs sm:text-sm font-bold text-brand-orange uppercase tracking-wider block mb-1">コーポレート情報と法的公開事項</span>
+                        <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight" x-text="
+                            companyTab === 'overview' ? '運営会社情報 (会社概要)' : 
+                            companyTab === 'specified' ? '特定商取引法に基づく表記' : 
+                            companyTab === 'harassment' ? 'カスタマーハラスメントに対する基本方針' : 
+                            '反社会的勢力排除宣言'
+                        ">運営会社情報・各種表明</h1>
+                    </div>
+
+                    <!-- Tabs Selector (4 Tabs Layout) -->
+                    <div class="flex flex-wrap border-b border-gray-200 mb-8 gap-y-1 text-xs sm:text-sm font-bold">
+                        <button @click="companyTab = 'overview'" class="flex-1 min-w-[150px] py-4 text-center border-b-2 transition-all" :class="companyTab === 'overview' ? 'border-brand-orange text-brand-orange bg-orange-50/20' : 'border-transparent text-gray-500 hover:text-gray-900'">
+                            <i class="fa-solid fa-building mr-2"></i>運営会社情報
+                        </button>
+                        <button @click="companyTab = 'specified'" class="flex-1 min-w-[150px] py-4 text-center border-b-2 transition-all" :class="companyTab === 'specified' ? 'border-brand-orange text-brand-orange bg-orange-50/20' : 'border-transparent text-gray-500 hover:text-gray-900'">
+                            <i class="fa-solid fa-balance-scale mr-2"></i>特定商取引法
+                        </button>
+                        <button @click="companyTab = 'harassment'" class="flex-1 min-w-[150px] py-4 text-center border-b-2 transition-all" :class="companyTab === 'harassment' ? 'border-brand-orange text-brand-orange bg-orange-50/20' : 'border-transparent text-gray-500 hover:text-gray-900'">
+                            <i class="fa-solid fa-user-shield mr-2"></i>ハラスメント方針
+                        </button>
+                        <button @click="companyTab = 'antisocial'" class="flex-1 min-w-[150px] py-4 text-center border-b-2 transition-all" :class="companyTab === 'antisocial' ? 'border-brand-orange text-brand-orange bg-orange-50/20' : 'border-transparent text-gray-500 hover:text-gray-900'">
+                            <i class="fa-solid fa-hand-fist mr-2"></i>反社排除宣言
+                        </button>
+                    </div>
+
+                    <!-- TAB 1: Company Profile (Overview) -->
+                    <div x-show="companyTab === 'overview'" class="space-y-6">
+                        <div class="bg-brand-lightBg rounded-3xl p-6 sm:p-8 border border-gray-100">
+                            <h3 class="font-extrabold text-gray-900 text-lg sm:text-xl mb-6 pb-2 border-b border-gray-200">株式会社EPARK 会社概要</h3>
+                            
+                            <!-- Table definition matching official EPARK format -->
+                            <dl class="divide-y divide-gray-200 text-xs sm:text-sm font-bold text-gray-700">
+                                <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                    <dt class="text-gray-500 font-extrabold">商号</dt>
+                                    <dd class="sm:col-span-2 text-gray-900">株式会社EPARK（EPARK, Inc.）</dd>
+                                </div>
+                                <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                    <dt class="text-gray-500 font-extrabold">設立</dt>
+                                    <dd class="sm:col-span-2 text-gray-900">2007年4月13日</dd>
+                                </div>
+                                <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                    <dt class="text-gray-500 font-extrabold">代表者</dt>
+                                    <dd class="sm:col-span-2 text-gray-900">代表取締役社長　名田 幸央</dd>
+                                </div>
+                                <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                    <dt class="text-gray-500 font-extrabold">資本金</dt>
+                                    <dd class="sm:col-span-2 text-gray-900">9,000万円</dd>
+                                </div>
+                                <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                    <dt class="text-gray-500 font-extrabold">従業員数</dt>
+                                    <dd class="sm:col-span-2 text-gray-900">618名（※2026年3月末時点、グループ会社含む）</dd>
+                                </div>
+                                <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                    <dt class="text-gray-500 font-extrabold">本社所在地</dt>
+                                    <dd class="sm:col-span-2 text-gray-900">
+                                        〒108-0023 東京都港区芝浦四丁目16-25 安全ビル
+                                    </dd>
+                                </div>
+                                <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                    <dt class="text-gray-500 font-extrabold">事業内容</dt>
+                                    <dd class="sm:col-span-2 text-gray-900 font-medium leading-relaxed">
+                                        飲食店・医療機関・美容サロン・リラクゼーション・ペットライフ等、あらゆる店舗領域における「順番待ち・予約・テイクアウトシステム」のオンライン運営、開発、店舗運営支援ツールおよび各種広告・PR支援サービス。
+                                    </dd>
+                                </div>
+                                <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                    <dt class="text-gray-500 font-extrabold">許認可・届出</dt>
+                                    <dd class="sm:col-span-2 text-gray-900">
+                                        ・届出電気通信事業者<br>
+                                        ・プライバシーマーク付与事業者
+                                    </dd>
+                                </div>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <!-- TAB 2: Act on Specified Commercial Transactions -->
+                    <div x-show="companyTab === 'specified'" style="display: none;" class="space-y-6">
+                        <div class="bg-brand-lightBg rounded-3xl p-6 sm:p-8 border border-gray-100">
+                            <h3 class="font-extrabold text-gray-900 text-lg sm:text-xl mb-6 pb-2 border-b border-gray-200">特定商取引法に基づく表示</h3>
+                            
+                            <dl class="divide-y divide-gray-200 text-xs sm:text-sm font-bold text-gray-700">
+                                <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                    <dt class="text-gray-500 font-extrabold">サービス提供事業者</dt>
+                                    <dd class="sm:col-span-2 text-gray-900">株式会社EPARK</dd>
+                                </div>
+                                <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                    <dt class="text-gray-500 font-extrabold">運営責任者</dt>
+                                    <dd class="sm:col-span-2 text-gray-900">代表取締役社長　名田 幸央</dd>
+                                </div>
+                                <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                    <dt class="text-gray-500 font-extrabold">所在地</dt>
+                                    <dd class="sm:col-span-2 text-gray-900">〒108-0023 東京都港区芝浦四丁目16-25 安全ビル</dd>
+                                </div>
+                                <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                    <dt class="text-gray-500 font-extrabold">お問い合わせ先</dt>
+                                    <dd class="sm:col-span-2 text-gray-900">
+                                        ・電話番号：03-1234-5678 (受付時間: 平日 10:00〜18:00)<br>
+                                        ・メールアドレス：denki-support@epark.co.jp<br>
+                                        ※お申し込みおよびプラン詳細については、お問い合わせ窓口・専用お申し込みフォームからも承っております。
+                                    </dd>
+                                </div>
+                                <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                    <dt class="text-gray-500 font-extrabold">サービス提供価格</dt>
+                                    <dd class="sm:col-span-2 text-gray-900 font-medium leading-relaxed">
+                                        各お申し込みプランに記載の月額費用（「デリバリー支援パック」月額500円（税込）等）および電力契約に基づく電気料金。
+                                    </dd>
+                                </div>
+                                <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                    <dt class="text-gray-500 font-extrabold">電気料金以外の必要料金</dt>
+                                    <dd class="sm:col-span-2 text-gray-900 font-medium leading-relaxed">
+                                        消費税、その他電気需給約款に基づく賦課される各地方自治体の再生可能エネルギー発電促進賦課金等。
+                                    </dd>
+                                </div>
+                                <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                    <dt class="text-gray-500 font-extrabold">お支払い方法</dt>
+                                    <dd class="sm:col-span-2 text-gray-900">口座振替 または クレジットカード決済</dd>
+                                </div>
+                                <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                    <dt class="text-gray-500 font-extrabold">役務の提供時期</dt>
+                                    <dd class="sm:col-span-2 text-gray-900 font-medium leading-relaxed">
+                                        電力契約の切り替え手続き完了後（スマートメーター等の手配を要する場合は完了後）、最初の検針日または送電開始日より、集客サービスと共に順次ご提供を開始いたします。
+                                    </dd>
+                                </div>
+                                <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                    <dt class="text-gray-500 font-extrabold">返品・解約・キャンセル</dt>
+                                    <dd class="sm:col-span-2 text-gray-900 font-medium leading-relaxed">
+                                        サービスの性質上、電力契約切り替え後の返品・返金等はいたしかねます。解約手続きおよび中途違約金の発生有無については、電気需給約款およびお申し込み時の個別契約内容に準拠します。
+                                    </dd>
+                                </div>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <!-- TAB 3: Customer Harassment Policy -->
+                    <div x-show="companyTab === 'harassment'" style="display: none;" class="space-y-6">
+                        <div class="bg-brand-lightBg rounded-3xl p-6 sm:p-8 border border-gray-100">
+                            <h3 class="font-extrabold text-gray-900 text-lg sm:text-xl mb-6 pb-2 border-b border-gray-200">カスタマーハラスメントに対する基本方針</h3>
+                            
+                            <div class="text-xs sm:text-sm text-gray-700 font-medium leading-relaxed space-y-4">
+                                <p>
+                                    株式会社EPARKおよびEPARK集客でんき運営チームは、ご契約店舗様、及びこれから本サービスを導入いただく事業者様に、安全で信頼性の高い営業活動・店舗経営支援のサービスを継続してご提供することを目標としております。
+                                </p>
+                                <p>
+                                    しかしながら、当社で就業する従業員（派遣社員や業務委託契約先スタッフを含む）に対し、常識的な限度を超えた不当な言動・暴力的な要求、精神的なハラスメント行為がなされた場合、健全な就労環境および公正な取引の妨げとなるだけでなく、他のお客様への良質なサービス提供を阻害する重大なリスクとなります。
+                                </p>
+                                <p>
+                                    これらに対処するため、厚生労働省のガイドラインに基づき、以下の「カスタマーハラスメントに対する基本方針」を定め、組織的に毅然とした態度で対応を徹底いたします。
+                                </p>
+
+                                <div class="bg-white rounded-xl p-4 sm:p-6 border border-gray-200 mt-4 space-y-3">
+                                    <h4 class="font-bold text-gray-900 text-sm sm:text-base border-l-2 border-brand-orange pl-2">当方針の対象となる主なハラスメント行為定義</h4>
+                                    <ul class="list-disc pl-5 text-xs text-gray-600 space-y-1">
+                                        <li>暴言、侮辱、差別的発言、大声での脅迫的・暴力的な発言、個人の尊厳を深く傷つける言動。</li>
+                                        <li>常識を超えた不当な要求（金銭補償、法的義務のない追加契約対応の強要、無断解約ペナルティの完全免除強要等）。</li>
+                                        <li>同一要望、または理不尽な不服申し立てについて、電話、メール、問い合わせフォーム等の過度な連続・長時間にわたる繰り返し行為。</li>
+                                        <li>就業スタッフに対するSNSやネット上での氏名やプライバシー情報の無断晒し行為、および事実に反する誹謗中傷・名誉毀損。</li>
+                                    </ul>
+                                </div>
+
+                                <div class="bg-white rounded-xl p-4 sm:p-6 border border-gray-200 mt-4 space-y-3">
+                                    <h4 class="font-bold text-gray-900 text-sm sm:text-base border-l-2 border-brand-orange pl-2">ハラスメント行為への対処方針</h4>
+                                    <ul class="list-disc pl-5 text-xs text-gray-600 space-y-1">
+                                        <li>カスタマーハラスメント行為が確認されたと判断した場合、それ以上の対応・通話・案内をお断りし、必要に応じて電力小売ご契約の継続解除等の手続きに移行いたします。</li>
+                                        <li>さらに悪質な行為、脅迫的威嚇、詐欺的交渉、名誉毀損などが認められた場合には、速やかに警察などの外部専門機関連携のもと、刑法規に基づき厳格な法的手段（損害賠償請求等）を講じます。</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TAB 4: Anti-Social Forces Exclusion Declaration -->
+                    <div x-show="companyTab === 'antisocial'" style="display: none;" class="space-y-6">
+                        <div class="bg-brand-lightBg rounded-3xl p-6 sm:p-8 border border-gray-100">
+                            <h3 class="font-extrabold text-gray-900 text-lg sm:text-xl mb-6 pb-2 border-b border-gray-200">反社会的勢力排除宣言</h3>
+                            
+                            <div class="text-xs sm:text-sm text-gray-700 font-medium leading-relaxed space-y-4">
+                                <p>
+                                    株式会社EPARKおよび小売電気提携事業者様は、市民社会の秩序、安全に脅威を与える暴力団、暴力団関係企業、総会屋、社会運動・政治活動標ぼうゴロ、特殊知能暴力集団その他の反社会的勢力（以下「反社会的勢力」といいます）に対して毅然として臨み、関係を完全に断絶することが企業の重要課題であると表明いたします。
+                                </p>
+                                <p>
+                                    ここに、すべての事業、電力小売需給契約、並びにお取り組みに関し、反社会的勢力に対する毅然とした遮断態度、関係不保持のために以下の通り宣言いたします。
+                                </p>
+
+                                <div class="bg-white rounded-xl p-4 sm:p-6 border border-gray-200 mt-4 space-y-3">
+                                    <h4 class="font-bold text-gray-900 text-sm sm:text-base border-l-2 border-brand-orange pl-2">反社会的勢力排除に関する行動倫理指針</h4>
+                                    <ol class="list-decimal pl-5 text-xs text-gray-600 space-y-1.5">
+                                        <li><b>組織的な体制での遮断:</b> 役員および就業員が一体となり、組織全体として反社会的勢力による不当要求に対応し、関係役員の個々の判断による私的な交渉や裏取引行為は絶対に排除します。</li>
+                                        <li><b>一切の取引関係の完全拒絶:</b> 新規の電力小売お申し込み、オプションプランお取り組み開始、代理店様としての登録契約等にあたり、反社会的勢力とは一切の取引関係（紹介等の派生を含む）を持ちません。</li>
+                                        <li><b>有事の徹底した外部連携:</b> 万が一、反社会的勢力からの不当な要求やコンタクトを受けた場合は、直ちに警察、東京都暴力追放運動推進センター、専任弁護士等の外部専門機関と緊密に連携を取り、厳正に対処します。</li>
+                                        <li><b>法的措置の積極的活用:</b> 不当要求に対しては、民事上および刑事上のあらゆる法的対抗手段を講じ、一切の妥協や金銭的な解決を拒否します。</li>
+                                    </ol>
+                                </div>
+                                <p class="text-xs text-gray-400 font-bold">
+                                    ※本サービスのご契約時、またはパートナー（一次・取次代理店）お申し込み手続きの完了にあたり、反社会的勢力に属さないことに関する事前同意の誓約確認を実施させていただいております。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+        </div>
+
+        <!-- ================= PAGE 08: PARTNER / AGENT RECRUITMENT (代理店募集ページ) ================= -->
+        <!-- Redesigned dynamically to perfectly reproduce "ChatGPT Image 2026年6月15日 13_47_00.png" -->
+        <div x-show="page === 8" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-12" x-transition:enter-end="opacity-100 translate-x-0" style="display: none;" class="bg-white">
+            
+            <!-- Uber Eats x EPARK Joint Header & Hero Section -->
+            <section class="relative bg-white pt-6 pb-12 overflow-hidden border-b border-gray-100">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <!-- Top joint logo band -->
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-8">
+                        <div class="flex items-center gap-2">
+                            <span class="font-black text-xl sm:text-2xl tracking-tight text-gray-900">
+                                <span class="text-[#06C167] font-black">Uber</span> <span class="text-[#06C167] font-bold">Eats</span> 
+                                <span class="text-gray-400 font-light mx-1">×</span> 
+                                <span class="text-brand-orange font-black">EPARK</span><span class="text-gray-900 font-bold">集客でんき</span>
+                            </span>
+                        </div>
+                        <button @click="document.getElementById('partner-form-section').scrollIntoView({behavior: 'smooth'})" class="bg-brand-forest hover:bg-[#074731] text-white text-xs font-bold py-2.5 px-5 rounded-full flex items-center gap-2 transition-colors shadow-sm">
+                            <i class="fa-regular fa-envelope"></i>
+                            <span>資料請求・お問い合わせ</span>
+                        </button>
+                    </div>
+
+                    <!-- Main Hero Grid -->
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center pt-4">
+                        <div class="lg:col-span-7 space-y-6 text-left">
+                            <span class="text-brand-forest text-sm sm:text-base font-black tracking-wide block">飲食店の集客支援を、あなたのビジネスに。</span>
+                            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black text-gray-900 leading-tight">
+                                EPARK集客でんきの<br>
+                                <span class="text-brand-forest">代理店募集！</span>
+                            </h1>
+                            <p class="text-sm sm:text-base font-bold text-gray-700 leading-relaxed max-w-xl">
+                                月額500円で利用できる集客支援サービスを、あなたのお客様へご提案いただけます。
+                            </p>
+                            <div class="pt-2">
+                                <button @click="document.getElementById('partner-form-section').scrollIntoView({behavior: 'smooth'})" class="bg-[#FF5A00] hover:bg-[#e04f00] text-white text-sm sm:text-base font-black py-4 px-8 rounded-full shadow-lg hover:scale-105 transition-all duration-300 flex items-center gap-2">
+                                    <i class="fa-regular fa-envelope text-lg"></i>
+                                    <span>資料請求・お問い合わせはこちら</span>
+                                    <i class="fa-solid fa-chevron-right text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Right Person visual matching portrait in Image -->
+                        <div class="lg:col-span-5 relative flex justify-center lg:justify-end">
+                            <div class="relative w-full max-w-[340px] aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-gray-50">
+                                <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=400&h=500" alt="EPARK代理店募集サポート窓口" class="w-full h-full object-cover">
+                                
+                                <!-- Floating Green Badge -->
+                                <div class="absolute bottom-6 -left-4 bg-[#0A4D35] text-white font-extrabold w-28 h-28 rounded-full border-4 border-white shadow-lg flex flex-col items-center justify-center text-center animate-bounce">
+                                    <span class="text-[10px] tracking-widest uppercase opacity-80">導入企業</span>
+                                    <span class="text-sm font-black tracking-tight mt-0.5">募集中！</span>
+                                    <div class="text-[8px] opacity-60"><i class="fa-solid fa-bolt-lightning"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 1: EPARK集客でんきとは？ -->
+            <section class="py-16 bg-[#FAF9F5] border-b border-gray-100">
+                <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-10">
+                        <h2 class="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">EPARK集客でんきとは？</h2>
+                        <div class="w-16 h-1 bg-brand-forest mx-auto mt-4 rounded-full"></div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+                        <div class="space-y-6 text-left">
+                            <p class="text-base font-bold text-gray-800 leading-relaxed">
+                                飲食店の集客・売上アップをサポートする<br>
+                                <span class="text-brand-orange font-black text-lg">月額500円</span>の集客支援サービスです。
+                            </p>
+                            <p class="text-sm font-medium text-gray-600 leading-relaxed">
+                                新規顧客の来店・注文につなげ、飲食店の事業成長を支援します。
+                            </p>
+                        </div>
+                        <!-- Mockup laptop and mobile image -->
+                        <div class="flex justify-center">
+                            <div class="relative w-full max-w-[360px] drop-shadow-lg">
+                                <svg viewBox="0 0 500 350" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto">
+                                    <!-- Laptop -->
+                                    <rect x="50" y="50" width="360" height="230" rx="12" fill="#2d3748" />
+                                    <rect x="65" y="62" width="330" height="190" rx="4" fill="#FFF" />
+                                    <!-- Laptop Screen Content -->
+                                    <rect x="75" y="72" width="310" height="25" rx="4" fill="#E8F9F5" />
+                                    <circle cx="90" cy="84" r="5" fill="#34BFA3" />
+                                    <rect x="110" y="80" width="100" height="8" rx="2" fill="#34BFA3" />
+                                    <rect x="75" y="105" width="145" height="135" rx="6" fill="#F8F9FA" />
+                                    <circle cx="147" cy="155" r="25" fill="#FFEFE5" />
+                                    <path d="M 137,155 L 144,162 L 159,145" stroke="#FF7A00" stroke-width="6" stroke-linecap="round" fill="none" />
+                                    <rect x="230" y="105" width="155" height="135" rx="6" fill="#F8F9FA" />
+                                    <rect x="242" y="120" width="130" height="10" rx="2" fill="#E2E8F0" />
+                                    <rect x="242" y="140" width="100" height="8" rx="2" fill="#E2E8F0" />
+                                    <rect x="242" y="160" width="115" height="8" rx="2" fill="#E2E8F0" />
+                                    <rect x="242" y="190" width="130" height="35" rx="6" fill="#FF7A00" />
+                                    <!-- Laptop Base -->
+                                    <path d="M 20,280 L 440,280 L 420,295 L 40,295 Z" fill="#718096" />
+                                    <rect x="210" y="280" width="40" height="6" rx="2" fill="#4a5568" />
+                                    <!-- Smartphone -->
+                                    <rect x="390" y="120" width="85" height="165" rx="14" fill="#1a202c" stroke="#4a5568" stroke-width="3" />
+                                    <rect x="395" y="132" width="75" height="140" rx="6" fill="#FFF" />
+                                    <!-- Phone screen Content -->
+                                    <rect x="402" y="142" width="61" height="20" rx="3" fill="#FFEFE5" />
+                                    <rect x="402" y="172" width="61" height="40" rx="3" fill="#EDF2F7" />
+                                    <circle cx="432" cy="192" r="10" fill="#34BFA3" opacity="0.6"/>
+                                    <rect x="402" y="222" width="61" height="40" rx="3" fill="#EDF2F7" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: 代理店としてのメリット -->
+            <section class="py-16 bg-white border-b border-gray-100">
+                <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-12">
+                        <h2 class="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">代理店としてのメリット</h2>
+                        <div class="w-16 h-1 bg-brand-forest mx-auto mt-4 rounded-full"></div>
+                    </div>
+
+                    <!-- 4 Columns Cards (Higher, simple, hand support, contribution) -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+                        <!-- Card 1 -->
+                        <div class="bg-white rounded-2xl p-6 border border-gray-150 flex flex-col items-center text-center hover:shadow-md transition-shadow">
+                            <div class="w-14 h-14 bg-[#EAF7F3] rounded-full flex items-center justify-center mb-4 text-[#0B5C40] text-2xl">
+                                <i class="fa-solid fa-chart-line"></i>
+                            </div>
+                            <h3 class="font-extrabold text-sm sm:text-base text-gray-900 mb-2">高い収益性</h3>
+                            <p class="text-xs text-gray-500 font-bold leading-relaxed">
+                                原則ショットのみの報酬モデルで、わかりやすく収益を得られます。
+                            </p>
+                        </div>
+
+                        <!-- Card 2 -->
+                        <div class="bg-white rounded-2xl p-6 border border-gray-150 flex flex-col items-center text-center hover:shadow-md transition-shadow">
+                            <div class="w-14 h-14 bg-[#EAF7F3] rounded-full flex items-center justify-center mb-4 text-[#0B5C40] text-2xl">
+                                <i class="fa-solid fa-handshake"></i>
+                            </div>
+                            <h3 class="font-extrabold text-sm sm:text-base text-gray-900 mb-2">提案しやすい<br>シンプルなサービス</h3>
+                            <p class="text-xs text-gray-500 font-bold leading-relaxed">
+                                月額500円の明確な価格設定で、導入提案がしやすいサービスです。
+                            </p>
+                        </div>
+
+                        <!-- Card 3 -->
+                        <div class="bg-white rounded-2xl p-6 border border-gray-150 flex flex-col items-center text-center hover:shadow-md transition-shadow">
+                            <div class="w-14 h-14 bg-[#EAF7F3] rounded-full flex items-center justify-center mb-4 text-[#0B5C40] text-2xl">
+                                <i class="fa-solid fa-headset"></i>
+                            </div>
+                            <h3 class="font-extrabold text-sm sm:text-base text-gray-900 mb-2">手厚いサポート体制</h3>
+                            <p class="text-xs text-gray-500 font-bold leading-relaxed">
+                                営業資料の提供や研修など、代理店様の活動をしっかりサポートします。
+                            </p>
+                        </div>
+
+                        <!-- Card 4 -->
+                        <div class="bg-white rounded-2xl p-6 border border-gray-150 flex flex-col items-center text-center hover:shadow-md transition-shadow">
+                            <div class="w-14 h-14 bg-[#EAF7F3] rounded-full flex items-center justify-center mb-4 text-[#0B5C40] text-2xl">
+                                <i class="fa-solid fa-hand-holding-heart"></i>
+                            </div>
+                            <h3 class="font-extrabold text-sm sm:text-base text-gray-900 mb-2">社会貢献性</h3>
+                            <p class="text-xs text-gray-500 font-bold leading-relaxed">
+                                飲食店の集客支援を通じて、地域の活性化に貢献できます。
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Lower Reward description bar -->
+                    <div class="bg-[#F3F9F6] border border-[#D1EBE1] rounded-2xl p-5 flex items-start gap-4 text-left max-w-4xl mx-auto shadow-sm">
+                        <div class="w-10 h-10 bg-[#D1EBE1] rounded-xl flex items-center justify-center text-brand-forest text-lg shrink-0">
+                            <i class="fa-solid fa-coins"></i>
+                        </div>
+                        <div class="text-xs font-bold text-gray-700 leading-relaxed">
+                            <span class="block text-brand-forest font-black mb-1">報酬について</span>
+                            <p>原則ショット（単発）の成果報酬となります。オプション販売などの場合は、別途ストック手数料が発生する場合があります。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 3: こんな方におすすめです (Dark Green block matching image) -->
+            <section class="py-16 bg-brand-forest text-white">
+                <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-12">
+                        <h2 class="text-2xl sm:text-3xl font-black text-white tracking-tight">こんな方におすすめです</h2>
+                        <div class="w-16 h-1 bg-white mx-auto mt-4 rounded-full"></div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Card 1 -->
+                        <div class="bg-white rounded-3xl p-6 sm:p-8 text-gray-800 text-center flex flex-col items-center shadow-lg">
+                            <div class="w-12 h-12 bg-[#EAF7F3] text-brand-forest rounded-full flex items-center justify-center text-lg mb-4">
+                                <i class="fa-solid fa-building-user"></i>
+                            </div>
+                            <h3 class="font-extrabold text-base text-gray-900 mb-3">既存顧客への<br>提案商材を探している方</h3>
+                            <p class="text-xs text-gray-500 font-bold leading-relaxed">
+                                飲食店向けに新たな価値を提供したい企業様に最適です。
+                            </p>
+                        </div>
+
+                        <!-- Card 2 -->
+                        <div class="bg-white rounded-3xl p-6 sm:p-8 text-gray-800 text-center flex flex-col items-center shadow-lg">
+                            <div class="w-12 h-12 bg-[#EAF7F3] text-brand-forest rounded-full flex items-center justify-center text-lg mb-4">
+                                <i class="fa-solid fa-user-gear"></i>
+                            </div>
+                            <h3 class="font-extrabold text-base text-gray-900 mb-3">安定したストック収益を<br>構築したい方</h3>
+                            <p class="text-xs text-gray-500 font-bold leading-relaxed">
+                                ショット中心のモデルや紹介モデルで、無理なく収益を積み上げられます。
+                            </p>
+                        </div>
+
+                        <!-- Card 3 -->
+                        <div class="bg-white rounded-3xl p-6 sm:p-8 text-gray-800 text-center flex flex-col items-center shadow-lg">
+                            <div class="w-12 h-12 bg-[#EAF7F3] text-brand-forest rounded-full flex items-center justify-center text-lg mb-4">
+                                <i class="fa-solid fa-flag"></i>
+                            </div>
+                            <h3 class="font-extrabold text-base text-gray-900 mb-3">飲食店の課題解決で<br>社会貢献したい方</h3>
+                            <p class="text-xs text-gray-500 font-bold leading-relaxed">
+                                飲食店の集客・売上アップに貢献し、地域活性化にもつながります。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 4: ご提案できるサービス内容 -->
+            <section class="py-16 bg-white border-b border-gray-100">
+                <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="text-center mb-12">
+                        <h2 class="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">ご提案できるサービス内容</h2>
+                        <div class="w-16 h-1 bg-brand-forest mx-auto mt-4 rounded-full"></div>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+                        <!-- Left service lines list with icons -->
+                        <div class="lg:col-span-6 space-y-6 text-left">
+                            
+                            <!-- Item 1 -->
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 bg-[#EAF7F3] text-brand-forest rounded-full flex items-center justify-center text-base shrink-0">
+                                    <i class="fa-regular fa-file-lines"></i>
+                                </div>
+                                <div class="text-xs font-bold text-gray-700">
+                                    <span class="block text-gray-900 font-black text-sm mb-0.5">EPARKに店舗情報を掲載</span>
+                                    <p class="text-gray-500">多くのユーザーにお店の情報をお届けします。</p>
+                                </div>
+                            </div>
+
+                            <!-- Item 2 -->
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 bg-[#EAF7F3] text-brand-forest rounded-full flex items-center justify-center text-base shrink-0">
+                                    <i class="fa-regular fa-envelope"></i>
+                                </div>
+                                <div class="text-xs font-bold text-gray-700">
+                                    <span class="block text-gray-900 font-black text-sm mb-0.5">会員向けメールで情報を配信</span>
+                                    <p class="text-gray-500">EPARK会員へお店の情報やお得な情報をお届けします。</p>
+                                </div>
+                            </div>
+
+                            <!-- Item 3 -->
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 bg-[#EAF7F3] text-brand-forest rounded-full flex items-center justify-center text-base shrink-0">
+                                    <i class="fa-solid fa-map-pin"></i>
+                                </div>
+                                <div class="text-xs font-bold text-gray-700">
+                                    <span class="block text-gray-900 font-black text-sm mb-0.5">5km圏内のお客様へアプローチ</span>
+                                    <p class="text-gray-500">お店の近くのお客様に効率的に情報をお届けします。</p>
+                                </div>
+                            </div>
+
+                            <!-- Item 4 -->
+                            <div class="flex items-start gap-4">
+                                <div class="w-10 h-10 bg-[#EAF7F3] text-brand-forest rounded-full flex items-center justify-center text-base shrink-0">
+                                    <i class="fa-solid fa-store"></i>
+                                </div>
+                                <div class="text-xs font-bold text-gray-700">
+                                    <span class="block text-gray-900 font-black text-sm mb-0.5">注文・来店のきっかけを創出</span>
+                                    <p class="text-gray-500">新規顧客の来店・注文につなげ、売上アップに貢献します。</p>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Right visual blurred restaurant backdrop matching image -->
+                        <div class="lg:col-span-6 relative flex justify-center">
+                            <div class="w-full max-w-[420px] h-64 rounded-3xl overflow-hidden shadow-md">
+                                <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&q=80&w=600&h=400" alt="飲食店店内" class="w-full h-full object-cover">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 5: まずはお気軽にご相談ください -->
+            <section class="py-16 bg-[#FAF9F5]">
+                <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+                        <div class="md:col-span-7 space-y-6 text-left">
+                            <h2 class="text-2xl sm:text-3xl font-black text-gray-900 leading-tight">まずはお気軽にご相談ください</h2>
+                            <p class="text-xs sm:text-sm font-bold text-gray-600 leading-relaxed">
+                                サービス資料のご請求や、代理店に関するご質問など、お気軽にお問い合わせください。
+                            </p>
+                            <div class="pt-2">
+                                <button @click="document.getElementById('partner-form-section').scrollIntoView({behavior: 'smooth'})" class="bg-[#FF5A00] hover:bg-[#e04f00] text-white text-xs sm:text-sm font-black py-4 px-6 rounded-full shadow-lg hover:scale-105 transition-all flex items-center gap-2">
+                                    <i class="fa-regular fa-envelope"></i>
+                                    <span>資料請求・お問い合わせはこちら</span>
+                                    <i class="fa-solid fa-chevron-right text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Right worker illustration with custom speech bubble -->
+                        <div class="md:col-span-5 flex flex-col items-center relative">
+                            <!-- Speech Bubble -->
+                            <div class="relative bg-white text-gray-800 text-xs font-bold py-3 px-5 rounded-2xl border border-gray-200 shadow-sm mb-4 max-w-[220px] text-center">
+                                <span>担当者が丁寧に<br>ご案内いたします！</span>
+                                <div class="absolute bottom-[-8px] left-1/2 -translate-x-1/2 w-4 h-4 bg-white border-r border-b border-gray-200 rotate-45"></div>
+                            </div>
+                            <!-- Styled SVG Desk worker with laptop -->
+                            <svg class="w-28 h-28" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="50" cy="40" r="18" fill="#FFF5E6" stroke="#9CA3AF" stroke-width="1.5" />
+                                <circle cx="45" cy="35" r="2" fill="#374151" />
+                                <circle cx="55" cy="35" r="2" fill="#374151" />
+                                <path d="M 43,45 Q 50,50 57,45" stroke="#374151" stroke-width="1.5" fill="none" />
+                                <path d="M 50,15 Q 55,10 65,15" stroke="#1F2937" stroke-width="3" fill="none" />
+                                <path d="M 25,75 Q 50,65 75,75 Z" fill="#1D4ED8" />
+                                <rect x="35" y="75" width="30" height="20" rx="3" fill="#E5E7EB" stroke="#4B5563" stroke-width="2" />
+                                <circle cx="50" cy="85" r="2" fill="#9CA3AF" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Direct dedicated Partner enquiry form section inside page 8 -->
+            <section id="partner-form-section" class="py-16 bg-white">
+                <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="bg-brand-lightBg rounded-3xl p-8 border border-gray-100 shadow-sm">
+                        <div class="text-center max-w-lg mx-auto mb-8">
+                            <h3 class="font-extrabold text-gray-900 text-xl">代理店・パートナーに関するお問い合わせフォーム</h3>
+                            <p class="text-xs text-gray-400 font-bold mt-2">資料請求・協業面談の希望もこちらから承ります。</p>
+                        </div>
+
+                        <form @submit.prevent="alert('お問い合わせを承りました。代理店開拓の専任窓口より、翌営業日までに折り返しご連絡を差し上げます。');" class="space-y-4">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">貴社名 / 個人屋号 <span class="text-red-500">*</span></label>
+                                    <input type="text" required placeholder="例：株式会社店舗サポート" class="w-full bg-white px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-orange focus:outline-none font-medium text-sm">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">ご担当者名 <span class="text-red-500">*</span></label>
+                                    <input type="text" required placeholder="例：山田 太郎" class="w-full bg-white px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-orange focus:outline-none font-medium text-sm">
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">メールアドレス <span class="text-red-500">*</span></label>
+                                    <input type="email" required placeholder="例：partner@example.com" class="w-full bg-white px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-orange focus:outline-none font-medium text-sm">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">お電話番号 <span class="text-red-500">*</span></label>
+                                    <input type="tel" required placeholder="例：03-1234-5678" class="w-full bg-white px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-orange focus:outline-none font-medium text-sm">
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">検討しているお取り組み形態 <span class="text-red-500">*</span></label>
+                                <select required class="w-full bg-white px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-orange focus:outline-none font-medium text-sm">
+                                    <option value="intro">紹介パートナー制度（トスアップのみ）</option>
+                                    <option value="full">代理店制度（提案・申込までフルコミッション）</option>
+                                    <option value="other">その他（自社アライアンス等のご提案）</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">メッセージ内容 <span class="text-red-500">*</span></label>
+                                <textarea required rows="4" placeholder="現在の事業内容や、アプローチ可能な店舗の数・属性などを差支えない範囲でご記載ください。" class="w-full bg-white px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-orange focus:outline-none font-medium text-sm"></textarea>
+                            </div>
+                            <div class="pt-2 text-center">
+                                <button type="submit" class="w-full sm:w-80 bg-brand-orange hover:bg-brand-orange-hover text-white py-3.5 rounded-full font-bold shadow-md transition-colors text-sm">
+                                    代理店・パートナーについて相談する
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- ================= PAGE 09: TERMS ＆ COMPLIANCE (約款・規約ダウンロード) ================= -->
+        <!-- Extensive Legal Compliance with dynamic sub-tabs (Terms, Procurement, Past Archives, Outage/Emergency Grid) -->
+        <div x-show="page === 9" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-12" x-transition:enter-end="opacity-100 translate-x-0" style="display: none;"
+             x-data="{ subTab: 'procurement' }">
+            
+            <section class="py-12 bg-white">
+                <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <!-- Heading -->
+                    <div class="border-l-4 border-brand-orange pl-4 mb-8">
+                        <span class="text-xs sm:text-sm font-bold text-brand-orange uppercase tracking-wider block mb-1">電気需給に関する重要説明・法的義務開示資料</span>
+                        <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">約款・重要事項説明書</h1>
+                    </div>
+
+                    <p class="text-sm text-gray-600 font-medium leading-relaxed mb-8">
+                        EPARK集客でんきは、小売電気事業者としての適正な取引・法的コンプライアンスの遵守に基づき、各種電気需給約款・重要事項説明書、並びに各種電源調整費用および過去データ等の開示資料を提供しております。
+                    </p>
+
+                    <!-- PDFs GRID -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-12">
+                        <!-- Doc 1 -->
+                        <a href="#" @click.prevent="alert('「電気需給約款（最新版PDF）」のダウンロードを開始します。')" class="flex items-center justify-between p-5 bg-brand-lightBg rounded-2xl hover:bg-brand-orange-light transition-all group border border-gray-100 shadow-sm hover:shadow-md">
+                            <div class="flex items-center gap-3.5">
+                                <div class="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center text-red-600 text-lg group-hover:scale-110 transition-transform">
+                                    <i class="fa-regular fa-file-pdf"></i>
+                                </div>
+                                <div>
+                                    <span class="block text-sm font-extrabold text-gray-800 group-hover:text-brand-orange transition-colors">電気需給約款</span>
+                                    <span class="block text-[10px] text-gray-400 font-bold mt-0.5">PDF（でんき契約条件総則）</span>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-circle-down text-gray-400 group-hover:text-brand-orange text-lg transition-colors"></i>
+                        </a>
+
+                        <!-- Doc 2 -->
+                        <a href="#" @click.prevent="alert('「重要事項説明書（最新版PDF）」のダウンロードを開始します。')" class="flex items-center justify-between p-5 bg-brand-lightBg rounded-2xl hover:bg-brand-orange-light transition-all group border border-gray-100 shadow-sm hover:shadow-md">
+                            <div class="flex items-center gap-3.5">
+                                <div class="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center text-red-600 text-lg group-hover:scale-110 transition-transform">
+                                    <i class="fa-regular fa-file-pdf"></i>
+                                </div>
+                                <div>
+                                    <span class="block text-sm font-extrabold text-gray-800 group-hover:text-brand-orange transition-colors">重要事項説明書</span>
+                                    <span class="block text-[10px] text-gray-400 font-bold mt-0.5">PDF（お申込前必読・契約要項）</span>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-circle-down text-gray-400 group-hover:text-brand-orange text-lg transition-colors"></i>
+                        </a>
+
+                        <!-- Doc 3 -->
+                        <a href="#" @click.prevent="alert('「オプションサービス利用規約（最新版PDF）」のダウンロードを開始します。')" class="flex items-center justify-between p-5 bg-brand-lightBg rounded-2xl hover:bg-brand-orange-light transition-all group border border-gray-100 shadow-sm hover:shadow-md">
+                            <div class="flex items-center gap-3.5">
+                                <div class="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center text-red-600 text-lg group-hover:scale-110 transition-transform">
+                                    <i class="fa-regular fa-file-pdf"></i>
+                                </div>
+                                <div>
+                                    <span class="block text-sm font-extrabold text-gray-800 group-hover:text-brand-orange transition-colors">オプションサービス利用規約</span>
+                                    <span class="block text-[10px] text-gray-400 font-bold mt-0.5">PDF（MEO・SNS・HP制作等規約）</span>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-circle-down text-gray-400 group-hover:text-brand-orange text-lg transition-colors"></i>
+                        </a>
+
+                        <!-- Doc 4 -->
+                        <a href="#" @click.prevent="alert('「電源調達調整費についての説明資料（PDF）」のダウンロードを開始します。')" class="flex items-center justify-between p-5 bg-brand-lightBg rounded-2xl hover:bg-brand-orange-light transition-all group border border-gray-100 shadow-sm hover:shadow-md">
+                            <div class="flex items-center gap-3.5">
+                                <div class="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center text-red-600 text-lg group-hover:scale-110 transition-transform">
+                                    <i class="fa-regular fa-file-pdf"></i>
+                                </div>
+                                <div>
+                                    <span class="block text-sm font-extrabold text-gray-800 group-hover:text-brand-orange transition-colors">電源調達調整費の算定解説</span>
+                                    <span class="block text-[10px] text-gray-400 font-bold mt-0.5">PDF（市場価格との調整ロジック説明）</span>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-circle-down text-gray-400 group-hover:text-brand-orange text-lg transition-colors"></i>
+                        </a>
+                    </div>
+
+                    <!-- Inner sub-tabs controller for high regulatory compliance -->
+                    <div class="flex flex-wrap border-b border-gray-200 mb-8 gap-y-1 text-xs sm:text-sm font-bold">
+                        <button @click="subTab = 'procurement'" class="flex-1 min-w-[120px] py-3.5 text-center border-b-2 transition-all" :class="subTab === 'procurement' ? 'border-brand-orange text-brand-orange' : 'border-transparent text-gray-400 hover:text-gray-900'">
+                            <i class="fa-solid fa-circle-info mr-2"></i>電源調達調整費とは？
+                        </button>
+                        <button @click="subTab = 'archives'" class="flex-1 min-w-[120px] py-3.5 text-center border-b-2 transition-all" :class="subTab === 'archives' ? 'border-brand-orange text-brand-orange' : 'border-transparent text-gray-400 hover:text-gray-900'">
+                            <i class="fa-solid fa-clock-rotate-left mr-2"></i>過去の調達単価
+                        </button>
+                        <button @click="subTab = 'outage'" class="flex-1 min-w-[120px] py-3.5 text-center border-b-2 transition-all" :class="subTab === 'outage' ? 'border-brand-orange text-brand-orange' : 'border-transparent text-gray-400 hover:text-gray-900'">
+                            <i class="fa-solid fa-bolt mr-2"></i>停電時の対応
+                        </button>
+                    </div>
+
+                    <!-- SUB-TAB 1: 電源調達調整費とは？ -->
+                    <div x-show="subTab === 'procurement'" class="space-y-6">
+                        <div class="bg-brand-lightBg rounded-3xl p-6 sm:p-8 border border-gray-100">
+                            <h3 class="font-extrabold text-gray-900 text-base sm:text-lg mb-4 flex items-center gap-2">
+                                <i class="fa-solid fa-scale-balanced text-brand-orange"></i>
+                                電源調達調整費の算定方法と連動ルール
+                            </h3>
+                            <div class="text-xs sm:text-sm text-gray-600 font-medium leading-relaxed space-y-4">
+                                <p>
+                                    <b>電源調達調整費</b>とは、一般社団法人日本卸電力取引所（JEPX）の市場価格の変動を、低圧および高圧の電気料金に反映させるための項目です。
+                                </p>
+                                <p>
+                                    電気を市場から安定調達するための平均コストが一定の「基準単価」を下回った月は、電気料金から<b>自動的にマイナス値引き（調達調整還元）</b>を行います。逆に、冷暖房需要期や世界的なエネルギー燃料高騰などにより、調達コストが基準値を超過した場合は、差額実費分を追加調整費として算定いたします。
+                                </p>
+                                
+                                <div class="bg-white p-4 rounded-xl border border-gray-200 mt-4 font-mono text-center text-xs sm:text-sm text-gray-900">
+                                    <span class="block font-sans font-bold text-gray-800 mb-1.5 text-left">【調達調整単価の算定数式】</span>
+                                    <div class="bg-gray-50 p-3 rounded-lg border border-gray-150 font-bold">
+                                        電源調達調整単価 ＝ (調達単価 － 基準単価) × (1 ＋ 消費税率)
+                                    </div>
+                                    <p class="font-sans text-[10px] text-gray-400 text-left mt-2 leading-relaxed">
+                                        ※調達単価は、前々月11日から前月10日までのJEPXスポット取引市場の各エリアプライス1ヵ月単純平均値に基づき決定されます。また、2026年4月以降に適用される国の環境基準に則った「カーボンフリー促進費（0.30円/kWhなど）」等、小売電気事業の最新要件に準じた変動係数も適正に加減算調整されます。
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUB-TAB 2: 過去の調達単価アーカイブ -->
+                    <div x-show="subTab === 'archives'" style="display: none;" class="space-y-6" x-data="{ selectedArea: 'tokyo' }">
+                        <div class="bg-brand-lightBg rounded-3xl p-6 sm:p-8 border border-gray-100">
+                            
+                            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+                                <div>
+                                    <h3 class="font-extrabold text-gray-900 text-base sm:text-lg flex items-center gap-2">
+                                        <i class="fa-solid fa-chart-line text-brand-orange"></i>
+                                        各地域エリア別 燃料費調整・電源調達調整単価履歴
+                                    </h3>
+                                    <p class="text-[11px] text-gray-500 font-bold mt-1">※JEPX市場実績値に基づく、1kWhあたりの適用単価（低圧従量電灯プラン）一覧です。</p>
+                                </div>
+                                
+                                <!-- Area Selector -->
+                                <div class="flex items-center gap-2 shrink-0">
+                                    <span class="text-xs font-bold text-gray-500">管轄エリア:</span>
+                                    <select x-model="selectedArea" class="bg-white border border-gray-200 px-3 py-1.5 rounded-lg text-xs font-bold text-gray-700 focus:outline-none focus:ring-1 focus:ring-brand-orange">
+                                        <option value="tokyo">東京電力管内</option>
+                                        <option value="kansai">関西電力管内</option>
+                                        <option value="chubu">中部電力管内</option>
+                                        <option value="tohoku">東北電力管内</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left text-xs border-collapse">
+                                    <thead>
+                                        <tr class="border-b border-gray-300 bg-gray-100 font-bold text-gray-700">
+                                            <th class="p-3">適用年月</th>
+                                            <th class="p-3">JEPX調達平均値</th>
+                                            <th class="p-3">燃料費調整単価 (A)</th>
+                                            <th class="p-3">電源調達調整単価 (B)</th>
+                                            <th class="p-3">実質合計調整単価 (A+B)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200 text-gray-600 font-medium">
+                                        <!-- Tokyo Area -->
+                                        <template x-if="selectedArea === 'tokyo'">
+                                            <tr class="hover:bg-gray-50/50">
+                                                <td class="p-3 font-bold text-gray-900">2026年 5月適用</td>
+                                                <td class="p-3">11.45 円/kWh</td>
+                                                <td class="p-3 text-red-500">+1.24 円/kWh</td>
+                                                <td class="p-3 text-green-600">-0.42 円/kWh</td>
+                                                <td class="p-3 font-bold text-gray-900">+0.82 円/kWh</td>
+                                            </tr>
+                                        </template>
+                                        <template x-if="selectedArea === 'tokyo'">
+                                            <tr class="bg-white hover:bg-gray-50/50">
+                                                <td class="p-3 font-bold text-gray-900">2026年 4月適用</td>
+                                                <td class="p-3">10.88 円/kWh</td>
+                                                <td class="p-3 text-red-500">+1.50 円/kWh</td>
+                                                <td class="p-3 text-green-600">-0.88 円/kWh</td>
+                                                <td class="p-3 font-bold text-gray-900">+0.62 円/kWh</td>
+                                            </tr>
+                                        </template>
+
+                                        <!-- Kansai Area -->
+                                        <template x-if="selectedArea === 'kansai'">
+                                            <tr class="hover:bg-gray-50/50">
+                                                <td class="p-3 font-bold text-gray-900">2026年 5月適用</td>
+                                                <td class="p-3">10.12 円/kWh</td>
+                                                <td class="p-3 text-red-500">+0.95 円/kWh</td>
+                                                <td class="p-3 text-green-600">-0.78 円/kWh</td>
+                                                <td class="p-3 font-bold text-gray-900">+0.17 円/kWh</td>
+                                            </tr>
+                                        </template>
+                                        <template x-if="selectedArea === 'kansai'">
+                                            <tr class="bg-white hover:bg-gray-50/50">
+                                                <td class="p-3 font-bold text-gray-900">2026年 4月適用</td>
+                                                <td class="p-3">9.45 円/kWh</td>
+                                                <td class="p-3 text-red-500">+1.10 円/kWh</td>
+                                                <td class="p-3 text-green-600">-1.24 円/kWh</td>
+                                                <td class="p-3 font-bold text-gray-900">-0.14 円/kWh</td>
+                                            </tr>
+                                        </template>
+
+                                        <!-- Chubu Area -->
+                                        <template x-if="selectedArea === 'chubu'">
+                                            <tr class="hover:bg-gray-50/50">
+                                                <td class="p-3 font-bold text-gray-900">2026年 5月適用</td>
+                                                <td class="p-3">11.10 円/kWh</td>
+                                                <td class="p-3 text-red-500">+1.18 円/kWh</td>
+                                                <td class="p-3 text-green-600">-0.50 円/kWh</td>
+                                                <td class="p-3 font-bold text-gray-900">+0.68 円/kWh</td>
+                                            </tr>
+                                        </template>
+                                        <template x-if="selectedArea === 'chubu'">
+                                            <tr class="bg-white hover:bg-gray-50/50">
+                                                <td class="p-3 font-bold text-gray-900">2026年 4月適用</td>
+                                                <td class="p-3">10.50 円/kWh</td>
+                                                <td class="p-3 text-red-500">+1.32 円/kWh</td>
+                                                <td class="p-3 text-green-600">-0.95 円/kWh</td>
+                                                <td class="p-3 font-bold text-gray-900">+0.37 円/kWh</td>
+                                            </tr>
+                                        </template>
+
+                                        <!-- Tohoku Area -->
+                                        <template x-if="selectedArea === 'tohoku'">
+                                            <tr class="hover:bg-gray-50/50">
+                                                <td class="p-3 font-bold text-gray-900">2026年 5月適用</td>
+                                                <td class="p-3">11.60 円/kWh</td>
+                                                <td class="p-3 text-red-500">+1.35 円/kWh</td>
+                                                <td class="p-3 text-green-600">-0.35 円/kWh</td>
+                                                <td class="p-3 font-bold text-gray-900">+1.00 円/kWh</td>
+                                            </tr>
+                                        </template>
+                                        <template x-if="selectedArea === 'tohoku'">
+                                            <tr class="bg-white hover:bg-gray-50/50">
+                                                <td class="p-3 font-bold text-gray-900">2026年 4月適用</td>
+                                                <td class="p-3">11.05 円/kWh</td>
+                                                <td class="p-3 text-red-500">+1.64 円/kWh</td>
+                                                <td class="p-3 text-green-600">-0.72 円/kWh</td>
+                                                <td class="p-3 font-bold text-gray-900">+0.92 円/kWh</td>
+                                            </tr>
+                                        </template>
+
+                                        <!-- Common Past parameters -->
+                                        <tr class="hover:bg-gray-50/50">
+                                            <td class="p-3 font-bold">2026年 3月適用</td>
+                                            <td class="p-3">12.20 円/kWh</td>
+                                            <td class="p-3 text-red-500">+1.85 円/kWh</td>
+                                            <td class="p-3 text-green-600">-1.20 円/kWh</td>
+                                            <td class="p-3 font-bold text-gray-900">+0.65 円/kWh</td>
+                                        </tr>
+                                        <tr class="bg-white hover:bg-gray-50/50">
+                                            <td class="p-3 font-bold">2026年 2月適用</td>
+                                            <td class="p-3">13.80 円/kWh</td>
+                                            <td class="p-3 text-red-500">+2.10 円/kWh</td>
+                                            <td class="p-3 text-red-500">+0.30 円/kWh</td>
+                                            <td class="p-3 font-bold text-gray-900">+2.40 円/kWh</td>
+                                        </tr>
+                                        <tr class="hover:bg-gray-50/50">
+                                            <td class="p-3 font-bold">2026年 1月適用</td>
+                                            <td class="p-3">14.90 円/kWh</td>
+                                            <td class="p-3 text-red-500">+2.40 円/kWh</td>
+                                            <td class="p-3 text-red-500">+0.85 円/kWh</td>
+                                            <td class="p-3 font-bold text-gray-900">+3.25 円/kWh</td>
+                                        </tr>
+                                        <tr class="bg-white hover:bg-gray-50/50">
+                                            <td class="p-3 font-bold">2025年 12月適用</td>
+                                            <td class="p-3">11.95 円/kWh</td>
+                                            <td class="p-3 text-red-500">+1.95 円/kWh</td>
+                                            <td class="p-3 text-green-600">-0.24 円/kWh</td>
+                                            <td class="p-3 font-bold text-gray-900">+1.71 円/kWh</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SUB-TAB 3: 停電時の対応方法 (teiden 準拠の 3種分電盤＋漏電見つけ方手順＋全国10送配電緊急ダイアログ) -->
+                    <div x-show="subTab === 'outage'" style="display: none;" class="space-y-6">
+                        <div class="bg-amber-50 rounded-3xl p-6 sm:p-8 border border-amber-200 text-amber-800 text-xs font-bold leading-relaxed">
+                            <div class="flex flex-col md:flex-row gap-5 mb-6">
+                                <div class="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center text-amber-700 text-xl shrink-0 animate-pulse">
+                                    <i class="fa-solid fa-bolt-lightning"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-extrabold text-sm sm:text-base mb-1 text-amber-900">停電が起きてしまったときの対応方法（確認手順フロー）</h4>
+                                    <p class="font-medium text-xs text-amber-700 leading-relaxed">
+                                        電力の切替後も、お近くの送配電線や電柱・メーター設備の保守は、これまでと全く変わらず東京電力等の既存送配電会社が担います。停電が起きた際は、以下のステップに沿って安全に状態を診断してください。
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- 3 Breaker definitions -->
+                            <div class="bg-white rounded-2xl p-5 border border-amber-200 text-gray-800 space-y-4 mb-6 font-medium">
+                                <h5 class="font-black text-gray-900 text-xs sm:text-sm border-l-2 border-brand-orange pl-2">【分電盤の3つのスイッチと確認手順】</h5>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+                                    <!-- Breaker 1 -->
+                                    <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                                        <span class="text-brand-orange font-black text-xs block mb-1">■ 1. アンペアブレーカー</span>
+                                        <p class="text-[11px] text-gray-600 leading-relaxed">
+                                            <b>【原因: 店舗全体での使いすぎ】</b><br>
+                                            分電盤の左端にある最も大きなスイッチが「切」になっている場合、契約電力を超える電気機器を一度に稼働させたことが原因です。一度使用機器の電源コンセントを抜いてから、つまみを「入」に戻してください。
+                                        </p>
+                                    </div>
+                                    <!-- Breaker 2 -->
+                                    <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                                        <span class="text-brand-orange font-black text-xs block mb-1">■ 2. 安全ブレーカー（回路）</span>
+                                        <p class="text-[11px] text-gray-600 leading-relaxed">
+                                            <b>【原因: 特定の回路での使いすぎ】</b><br>
+                                            分電盤の右側に並ぶ小さなスイッチのいずれか1個だけが「切」になっている場合、その該当回路（例: キッチン、看板等）での電気機器の使いすぎです。対象機器のプラグを外してつまみを「入」にします。
+                                        </p>
+                                    </div>
+                                    <!-- Breaker 3 -->
+                                    <div class="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                                        <span class="text-brand-orange font-black text-xs block mb-1">■ 3. 漏電遮断器（漏電ブレーカー）</span>
+                                        <p class="text-[11px] text-gray-600 leading-relaxed">
+                                            <b>【原因: 店舗回路のどこかで漏電が発生】</b><br>
+                                            中央の黄色いテストボタン付近のスイッチが「切」になっている場合、漏電の恐れがあります。以下の特定ステップに沿って安全に漏電個所を遮断してください。
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="bg-orange-50/50 p-4 rounded-xl border border-orange-100 font-medium">
+                                    <span class="block font-black text-orange-900 text-xs mb-1.5">【漏電遮断器が作動した際の見つけ方手順（STEP 1〜6）】</span>
+                                    <ol class="list-decimal pl-5 text-[11px] text-gray-600 space-y-1 font-bold">
+                                        <li>右側の「安全ブレーカー」のスイッチを**すべて「切」にします**。</li>
+                                        <li>中央の「漏電遮断器」のつまみを**「入」に上げます**。</li>
+                                        <li>「安全ブレーカー」を**左側から1個ずつ順番に「入」にしていきます**。</li>
+                                        <li>途中で、**「漏電遮断器」が再びバチンと落ちて「切」になったら**、その瞬間に上げた安全ブレーカーの回路で漏電が発生しています。</li>
+                                        <li>その漏電している回路の安全ブレーカーのみを**「切」のままにしておきます**。</li>
+                                        <li>残りの安全ブレーカーと漏電遮断器をすべて**「入」にすれば、漏電していない他のすべての場所の電気は安全に復旧します**。その後、電気工事店等に修理を依頼してください。</li>
+                                    </ol>
+                                </div>
+                            </div>
+                            
+                            <!-- National 10 utilities dial list map -->
+                            <div class="border-t border-amber-200 pt-5 text-gray-800 font-medium">
+                                <h5 class="font-extrabold text-amber-900 text-xs sm:text-sm mb-4">全国10電力エリア 一般送配電事業者のお問い合わせ窓口一覧</h5>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                    
+                                    <!-- Hokkaido -->
+                                    <div class="bg-white p-3.5 rounded-xl border border-amber-200 shadow-xs">
+                                        <span class="block font-black text-xs text-amber-900 mb-2">北海道エリア（北海道電力ネットワーク）</span>
+                                        <div class="grid grid-cols-2 gap-2 text-[10px]">
+                                            <a href="https://www.hepco.co.jp/network/corporate/company/branch/index.html" target="_blank" class="bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold py-1.5 px-2 rounded text-center block transition-colors"><i class="fa-solid fa-phone mr-1"></i> でんわ窓口</a>
+                                            <a href="https://teiden-info.hepco.co.jp/" target="_blank" class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-1.5 px-2 rounded text-center block transition-colors"><i class="fa-solid fa-desktop mr-1"></i> 停電情報WEB</a>
+                                        </div>
+                                    </div>
+
+                                    <!-- Tohoku -->
+                                    <div class="bg-white p-3.5 rounded-xl border border-amber-200 shadow-xs">
+                                        <span class="block font-black text-xs text-amber-900 mb-2">東北エリア（東北電力ネットワーク）</span>
+                                        <div class="grid grid-cols-2 gap-2 text-[10px]">
+                                            <a href="https://nw.tohoku-epco.co.jp/contact/tel/" target="_blank" class="bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold py-1.5 px-2 rounded text-center block transition-colors"><i class="fa-solid fa-phone mr-1"></i> でんわ窓口</a>
+                                            <a href="https://nw.tohoku-epco.co.jp/teideninfo/" target="_blank" class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-1.5 px-2 rounded text-center block transition-colors"><i class="fa-solid fa-desktop mr-1"></i> 停電情報WEB</a>
+                                        </div>
+                                    </div>
+
+                                    <!-- Tokyo -->
+                                    <div class="bg-white p-3.5 rounded-xl border border-amber-200 shadow-xs">
+                                        <span class="block font-black text-xs text-amber-900 mb-2">東京エリア（東京電力パワーグリッド）</span>
+                                        <div class="grid grid-cols-2 gap-2 text-[10px]">
+                                            <a href="https://www.tepco.co.jp/pg/user/contact.html" target="_blank" class="bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold py-1.5 px-2 rounded text-center block transition-colors"><i class="fa-solid fa-phone mr-1"></i> でんわ窓口</a>
+                                            <a href="https://teideninfo.tepco.co.jp/" target="_blank" class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-1.5 px-2 rounded text-center block transition-colors"><i class="fa-solid fa-desktop mr-1"></i> 停電情報WEB</a>
+                                        </div>
+                                    </div>
+
+                                    <!-- Chubu -->
+                                    <div class="bg-white p-3.5 rounded-xl border border-amber-200 shadow-xs">
+                                        <span class="block font-black text-xs text-amber-900 mb-2">中部エリア（中部電力パワーグリッド）</span>
+                                        <div class="grid grid-cols-2 gap-2 text-[10px]">
+                                            <a href="https://powergrid.chuden.co.jp/corporate/company/officelist/com_office/" target="_blank" class="bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold py-1.5 px-2 rounded text-center block transition-colors"><i class="fa-solid fa-phone mr-1"></i> でんわ窓口</a>
+                                            <a href="https://teiden.powergrid.chuden.co.jp/p/index.html" target="_blank" class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-1.5 px-2 rounded text-center block transition-colors"><i class="fa-solid fa-desktop mr-1"></i> 停電情報WEB</a>
+                                        </div>
+                                    </div>
+
+                                    <!-- Hokuriku -->
+                                    <div class="bg-white p-3.5 rounded-xl border border-amber-200 shadow-xs">
+                                        <span class="block font-black text-xs text-amber-900 mb-2">北陸エリア（北陸電力送配電）</span>
+                                        <div class="grid grid-cols-2 gap-2 text-[10px]">
+                                            <a href="https://www.rikuden.co.jp/nw_toiawase/index.html" target="_blank" class="bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold py-1.5 px-2 rounded text-center block transition-colors"><i class="fa-solid fa-phone mr-1"></i> でんわ窓口</a>
+                                            <a href="https://www.rikuden.co.jp/nw/teiden/otj010.html" target="_blank" class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-1.5 px-2 rounded text-center block transition-colors"><i class="fa-solid fa-desktop mr-1"></i> 停電情報WEB</a>
+                                        </div>
+                                    </div>
+
+                                    <!-- Kansai -->
+                                    <div class="bg-white p-3.5 rounded-xl border border-amber-200 shadow-xs">
+                                        <span class="block font-black text-xs text-amber-900 mb-2">関西エリア（関西電力送配電）</span>
+                                        <div class="grid grid-cols-2 gap-2 text-[10px]">
+                                            <a href="https://kansai-td.support-navi.jp/t01/" target="_blank" class="bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold py-1.5 px-2 rounded text-center block transition-colors"><i class="fa-solid fa-phone mr-1"></i> でんわ窓口</a>
+                                            <a href="https://www.kansai-td.co.jp/teiden-info/index.php" target="_blank" class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-1.5 px-2 rounded text-center block transition-colors"><i class="fa-solid fa-desktop mr-1"></i> 停電情報WEB</a>
+                                        </div>
+                                    </div>
+
+                                    <!-- Chugoku -->
+                                    <div class="bg-white p-3.5 rounded-xl border border-amber-200 shadow-xs">
+                                        <span class="block font-black text-xs text-amber-900 mb-2">中国エリア（中国電力ネットワーク）</span>
+                                        <div class="grid grid-cols-2 gap-2 text-[10px]">
+                                            <a href="https://www.energia.co.jp/nw/company/office/freedial/index.html" target="_blank" class="bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold py-1.5 px-2 rounded text-center block transition-colors"><i class="fa-solid fa-phone mr-1"></i> でんわ窓口</a>
+                                            <a href="https://www.teideninfo.energia.co.jp/" target="_blank" class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-1.5 px-2 rounded text-center block transition-colors"><i class="fa-solid fa-desktop mr-1"></i> 停電情報WEB</a>
+                                        </div>
+                                    </div>
+
+                                    <!-- Shikoku -->
+                                    <div class="bg-white p-3.5 rounded-xl border border-amber-200 shadow-xs">
+                                        <span class="block font-black text-xs text-amber-900 mb-2">四国エリア（四国電力送配電）</span>
+                                        <div class="grid grid-cols-2 gap-2 text-[10px]">
+                                            <a href="https://www.yonden.co.jp/nw/faq/tel.html" target="_blank" class="bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold py-1.5 px-2 rounded text-center block transition-colors"><i class="fa-solid fa-phone mr-1"></i> でんわ窓口</a>
+                                            <a href="https://www.yonden.co.jp/nw/teiden-info/" target="_blank" class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-1.5 px-2 rounded text-center block transition-colors"><i class="fa-solid fa-desktop mr-1"></i> 停電情報WEB</a>
+                                        </div>
+                                    </div>
+
+                                    <!-- Kyushu -->
+                                    <div class="bg-white p-3.5 rounded-xl border border-amber-200 shadow-xs">
+                                        <span class="block font-black text-xs text-amber-900 mb-2">九州エリア（九州電力送配電）</span>
+                                        <div class="grid grid-cols-2 gap-2 text-[10px]">
+                                            <a href="https://www.kyuden.co.jp/td/functions/office.html" target="_blank" class="bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold py-1.5 px-2 rounded text-center block transition-colors"><i class="fa-solid fa-phone mr-1"></i> でんわ窓口</a>
+                                            <a href="https://www.kyuden.co.jp/td_teiden/kyushu.html" target="_blank" class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-1.5 px-2 rounded text-center block transition-colors"><i class="fa-solid fa-desktop mr-1"></i> 停電情報WEB</a>
+                                        </div>
+                                    </div>
+
+                                    <!-- Okinawa -->
+                                    <div class="bg-white p-3.5 rounded-xl border border-amber-200 shadow-xs">
+                                        <span class="block font-black text-xs text-amber-900 mb-2">沖縄エリア（沖縄電力）</span>
+                                        <div class="grid grid-cols-2 gap-2 text-[10px]">
+                                            <a href="https://www.okiden.co.jp/common/contact/#teiden" target="_blank" class="bg-amber-100 hover:bg-amber-200 text-amber-900 font-bold py-1.5 px-2 rounded text-center block transition-colors"><i class="fa-solid fa-phone mr-1"></i> でんわ窓口</a>
+                                            <a href="https://www.okidenmail.jp/bosai/" target="_blank" class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-1.5 px-2 rounded text-center block transition-colors"><i class="fa-solid fa-desktop mr-1"></i> 停電情報WEB</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+        </div>
+
+        <!-- ================= PAGE 10: PRIVACY POLICY (プライバシーポリシー) ================= -->
+        <div x-show="page === 10" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-12" x-transition:enter-end="opacity-100 translate-x-0" style="display: none;">
+            
+            <section class="py-12 bg-white">
+                <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <!-- Heading -->
+                    <div class="border-l-4 border-brand-orange pl-4 mb-8">
+                        <span class="text-xs sm:text-sm font-bold text-brand-orange uppercase tracking-wider block mb-1">安心安全な店舗支援サービスであるために</span>
+                        <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">EPARK集客でんきにおける個人情報の取扱いについて</h1>
+                    </div>
+
+                    <!-- Official EPARK Privacy Policy document body text -->
+                    <div class="prose max-w-none text-xs sm:text-sm font-medium text-gray-700 leading-relaxed space-y-6">
+                        <p class="font-bold text-gray-800">
+                            株式会社EPARK（以下「当社」といいます。）は、「EPARK集客でんき」（以下「本サービス」といいます。）の提供にあたり、お客様の個人情報を適切に取り扱うため、本規程を定めます。<br>
+                            本サービスにおける個人情報の取扱いについては、当社の「プライバシーポリシー」に加え、本規程が適用されます。本規程と当社プライバシーポリシーの内容が異なる場合は、本サービスについては本規程が優先して適用されます。
+                        </p>
+
+                        <!-- Article 1 -->
+                        <div class="bg-brand-lightBg p-5 sm:p-6 rounded-2xl border border-gray-100 space-y-3">
+                            <h3 class="text-sm sm:text-base font-black text-gray-900 border-b border-gray-200 pb-1.5">第1条 取得する個人情報</h3>
+                            <p>当社は、本サービスの提供にあたり、以下の情報を取得することがあります。</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2">
+                                <div class="bg-white p-3 rounded-xl border border-gray-150">
+                                    <span class="block font-bold text-brand-orange text-xs mb-1">■ お客様から取得する情報</span>
+                                    <ul class="list-disc pl-5 text-xs text-gray-500 space-y-0.5">
+                                        <li>氏名</li>
+                                        <li>住所</li>
+                                        <li>電話番号</li>
+                                        <li>メールアドレス</li>
+                                        <li>生年月日</li>
+                                        <li>契約者情報</li>
+                                        <li>支払方法に関する情報</li>
+                                        <li>お問い合わせ内容</li>
+                                    </ul>
+                                </div>
+                                <div class="bg-white p-3 rounded-xl border border-gray-150">
+                                    <span class="block font-bold text-brand-green text-xs mb-1">■ 電力サービスに関する情報</span>
+                                    <ul class="list-disc pl-5 text-xs text-gray-500 space-y-0.5">
+                                        <li>供給地点特定番号</li>
+                                        <li>お客様番号</li>
+                                        <li>電力契約情報</li>
+                                        <li>契約容量・契約電流</li>
+                                        <li>電力使用量</li>
+                                        <li>検針情報</li>
+                                        <li>電力供給開始日および契約切替に関する情報</li>
+                                        <li>電力料金請求に関する情報</li>
+                                        <li>その他、本サービスの提供に必要な情報</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Article 2 -->
+                        <div class="bg-brand-lightBg p-5 sm:p-6 rounded-2xl border border-gray-100 space-y-2">
+                            <h3 class="text-sm sm:text-base font-black text-gray-900 border-b border-gray-200 pb-1.5">第2条 個人情報の利用目的</h3>
+                            <p>当社は、取得した個人情報を以下の目的で利用します。</p>
+                            <ul class="list-decimal pl-5 text-xs text-gray-600 space-y-1">
+                                <li>本サービスの申込み受付および本人確認のため</li>
+                                <li>電力供給契約の取次ぎ、申込手続きおよび契約管理のため</li>
+                                <li>電力供給開始、契約切替その他各種手続きを実施するため</li>
+                                <li>電気料金の請求、収納および債権管理のため</li>
+                                <li>お問い合わせ対応およびアフターサポートのため</li>
+                                <li>本サービスに関する重要なお知らせを通知するため</li>
+                                <li>サービス改善、新サービスの企画および開発のため</li>
+                                <li>キャンペーン、特典、各種サービスのご案内のため</li>
+                                <li>統計データの作成および分析のため</li>
+                                <li>法令に基づく対応のため</li>
+                                <li>その他、本サービスの提供に必要な業務を遂行するため</li>
+                            </ul>
+                        </div>
+
+                        <!-- Article 3 -->
+                        <div class="bg-brand-lightBg p-5 sm:p-6 rounded-2xl border border-gray-100 space-y-3">
+                            <h3 class="text-sm sm:text-base font-black text-gray-900 border-b border-gray-200 pb-1.5">第3条 個人情報の第三者提供</h3>
+                            <p>
+                                当社は、法令で認められる場合を除き、お客様の同意なく個人情報を第三者に提供しません。<br>
+                                ただし、本サービスの提供に必要な範囲で、以下の事業者等へ個人情報を提供する場合があります。
+                            </p>
+                            <div class="bg-white p-3 rounded-xl border border-gray-150 text-xs text-gray-500 space-y-1">
+                                <span class="block font-bold text-gray-800 mb-1">【提供先の事業者】</span>
+                                <li>HTBエナジー株式会社</li>
+                                <li>一般送配電事業者</li>
+                                <li>電力広域的運営推進機関（OCCTO）</li>
+                                <li>決済代行事業者</li>
+                                <li>収納代行事業者</li>
+                                <li>その他、本サービス運営に必要な提携事業者</li>
+                                <p class="text-[10px] text-gray-400 mt-2">※提供する情報には、氏名、住所、電話番号、供給地点特定番号、契約情報、使用量情報その他本サービスの提供に必要な情報が含まれます。</p>
+                            </div>
+                        </div>
+
+                        <!-- Article 4 -->
+                        <div class="bg-brand-lightBg p-5 sm:p-6 rounded-2xl border border-gray-100 space-y-3">
+                            <h3 class="text-sm sm:text-base font-black text-gray-900 border-b border-gray-200 pb-1.5">第4条 個人情報の共同利用</h3>
+                            <p>
+                                当社は、本サービスの円滑な提供およびお客様への適切なサポートのため、取得した個人情報を当社グループ会社およびHTBエナジー株式会社との間で共同利用する場合があります。
+                            </p>
+                            <div class="space-y-3 mt-2 text-xs">
+                                <div class="bg-white p-3 rounded-xl border border-gray-150">
+                                    <span class="block font-bold text-gray-800 mb-1">■ 共同利用する情報</span>
+                                    <p class="text-gray-500">氏名、住所、電話番号、メールアドレス、契約情報、供給地点特定番号、使用量情報、請求情報、お問い合わせ履歴、その他本サービスの提供に必要な情報</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-xl border border-gray-150">
+                                    <span class="block font-bold text-gray-800 mb-1">■ 共同利用者の範囲</span>
+                                    <p class="text-gray-500">株式会社EPARK、当社グループ会社、HTBエナジー株式会社</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-xl border border-gray-150">
+                                    <span class="block font-bold text-gray-800 mb-1">■ 共同利用の目的</span>
+                                    <p class="text-gray-500">本サービスの提供、契約管理、顧客サポート、サービス改善、新サービスの案内、グループ会社間での適切な顧客対応</p>
+                                </div>
+                                <div class="bg-white p-3 rounded-xl border border-gray-150">
+                                    <span class="block font-bold text-gray-800 mb-1">■ 管理責任者</span>
+                                    <p class="text-gray-950 font-extrabold">株式会社EPARK</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Article 5 to 7 -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="bg-brand-lightBg p-4 rounded-xl border border-gray-100 text-xs">
+                                <h4 class="font-bold text-gray-900 border-b border-gray-200 pb-1 mb-2">第5条 個人情報の委託</h4>
+                                <p class="text-gray-500">当社は、本サービスの運営に必要な範囲で、個人情報の取扱いを外部事業者へ委託する場合があります。この場合、当社は委託先に対し必要かつ適切な監督を行います。</p>
+                            </div>
+                            <div class="bg-brand-lightBg p-4 rounded-xl border border-gray-100 text-xs">
+                                <h4 class="font-bold text-gray-900 border-b border-gray-200 pb-1 mb-2">第6条 安全管理措置</h4>
+                                <p class="text-gray-500">当社は、個人情報の漏えい、滅失、毀損等を防止するため、組織的、人的、物理的および技術的な安全管理措置を講じます。</p>
+                            </div>
+                            <div class="bg-brand-lightBg p-4 rounded-xl border border-gray-100 text-xs">
+                                <h4 class="font-bold text-gray-900 border-b border-gray-200 pb-1 mb-2">第7条 開示等の請求</h4>
+                                <p class="text-gray-500">お客様は、法令の定めに従い、ご自身の個人情報について、利用目的の通知、開示、訂正、追加、削除、利用停止または第三者提供停止を請求することができます。</p>
+                            </div>
+                        </div>
+
+                        <!-- Article 8 -->
+                        <div class="bg-brand-lightBg p-5 sm:p-6 rounded-2xl border border-gray-100 space-y-2">
+                            <h3 class="text-sm sm:text-base font-black text-gray-900 border-b border-gray-200 pb-1.5">第8条 お問い合わせ窓口</h3>
+                            <p>本サービスにおける個人情報の取扱いに関するお問い合わせは、以下の窓口までご連絡ください。</p>
+                            <div class="bg-white p-4 rounded-xl border border-gray-150 text-xs space-y-1">
+                                <p class="font-bold text-gray-900">【運営事業者】</p>
+                                <p class="text-gray-500 pl-4 mb-2">株式会社EPARK</p>
+                                <p class="font-bold text-gray-900">【お問い合わせ窓口】</p>
+                                <div class="pl-4 text-gray-500 space-y-0.5">
+                                    <p><b>（住所）</b> 〒108-0023 東京都港区芝浦四丁目16-25 安全ビル</p>
+                                    <p><b>（電話番号）</b> 03-1234-5678 (受付時間: 平日 10:00〜18:00)</p>
+                                    <p><b>（メールアドレス）</b> <a href="mailto:denki-support@epark.co.jp" class="text-brand-orange hover:underline">denki-support@epark.co.jp</a></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Article 9 -->
+                        <div class="bg-brand-lightBg p-5 sm:p-6 rounded-2xl border border-gray-100 space-y-2">
+                            <h3 class="text-sm sm:text-base font-black text-gray-900 border-b border-gray-200 pb-1.5">第9条 改定</h3>
+                            <p class="text-xs text-gray-500">当社は、法令改正、サービス内容の変更その他必要に応じて、本規程を改定することがあります。改定後の内容は、本サービス上に掲載した時点から効力を生じるものとします。</p>
+                        </div>
+
+                        <p class="text-right text-xs font-bold text-gray-500">
+                            制定日：2026年6月1日
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+    </main>
+
+    <!-- FOOTER CONVERSION AREA -->
+    <section class="bg-brand-lightBg py-16 border-t border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h3 class="text-base sm:text-lg text-gray-700 font-extrabold mb-2">飲食店の集客・売上アップを、電力の力で。</h3>
+            <h2 class="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight mb-8">まずはお気軽にご相談ください。</h2>
+            
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <button @click="inquiryModalOpen = true" class="w-full sm:w-60 bg-[#2EC4B6] hover:bg-[#25a89c] text-white text-lg font-bold py-4 rounded-full transition-colors flex items-center justify-center gap-2 shadow-md">
+                    <i class="fa-solid fa-envelope"></i> お問い合わせ
+                </button>
+                <button @click="applyModalOpen = true" class="w-full sm:w-60 bg-[#FFA01C] hover:bg-[#e58e12] text-white text-lg font-bold py-4 rounded-full transition-colors flex items-center justify-center gap-2 shadow-md">
+                    <i class="fa-solid fa-file-signature"></i> お申し込み
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-gray-100 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6 border-b border-gray-100 pb-8">
+                <!-- EPARK Corporate Logo -->
+                <div class="flex flex-col items-center md:items-start">
+                    <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/img/rogo.png?raw=true" alt="EPARK集客でんき" class="h-10 w-auto object-contain" onerror="this.onerror=null; this.src='https://placehold.co/180x45/FFFFFF/FF7A00?text=EPARK集客でんき'">
+                </div>
+
+                <!-- Footer navigation tags -->
+                <nav class="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-xs font-bold text-gray-500">
+                    <a href="#" @click.prevent="changePage(7); companyTab = 'overview'" class="hover:text-brand-orange transition-colors">運営会社情報</a>
+                    <a href="#" @click.prevent="changePage(7); companyTab = 'specified'" class="hover:text-brand-orange transition-colors">特定商取引法に基づく表記</a>
+                    <a href="#" @click.prevent="changePage(7); companyTab = 'harassment'" class="hover:text-brand-orange transition-colors">カスタマーハラスメント基本方針</a>
+                    <a href="#" @click.prevent="changePage(7); companyTab = 'antisocial'" class="hover:text-brand-orange transition-colors">反社会的勢力排除宣言</a>
+                    <a href="#" @click.prevent="changePage(9)" class="hover:text-brand-orange transition-colors">約款・重要事項説明書</a>
+                    <a href="#" @click.prevent="changePage(8)" class="text-brand-orange hover:underline transition-colors"><i class="fa-solid fa-handshake-angle mr-1"></i>代理店募集 (パートナー)</a>
+                    <a href="#" @click.prevent="changePage(10)" class="hover:text-brand-orange transition-colors">プライバシーポリシー</a>
+                </nav>
+            </div>
+
+            <!-- Credits and statement -->
+            <div class="flex flex-col md:flex-row justify-between items-center gap-4 pt-8 text-xs text-gray-400 font-bold">
+                <p>※「EPARK集客でんき」は、EPARKグループが提供する店舗支援型電力サービスです。</p>
+                <p>&copy; EPARK, Inc.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- INQUIRY MODAL (お問い合わせ) -->
+    <div x-show="inquiryModalOpen" class="fixed inset-0 z-50 overflow-y-auto" style="display: none;" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div @click="inquiryModalOpen = false" x-show="inquiryModalOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+            <div x-show="inquiryModalOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" class="inline-block align-bottom bg-white rounded-3xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full border border-gray-100">
+                <div class="bg-brand-green px-6 py-4 flex items-center justify-between text-white">
+                    <h3 class="font-bold text-lg flex items-center gap-2"><i class="fa-solid fa-envelope"></i> お問い合わせ窓口</h3>
+                    <button @click="inquiryModalOpen = false" class="hover:bg-brand-green-hover rounded-full p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
+                </div>
+                
+                <form @submit.prevent="submitForm('inquiry', $event)" class="p-6 space-y-4">
+                    <input type="hidden" name="form_type" value="inquiry">
+                    
+                    <!-- Real-time dynamic success banner -->
+                    <div x-show="inquirySuccess" class="bg-green-50 border border-green-200 text-green-800 text-xs font-bold p-4 rounded-xl flex items-center gap-2" style="display: none;">
+                        <i class="fa-solid fa-circle-check text-green-600 text-base"></i>
+                        <span>お問い合わせを送信しました！自動返信メールをご確認ください。</span>
+                    </div>
+
+                    <!-- Real-time dynamic error banner -->
+                    <div x-show="inquiryError" class="bg-red-50 border border-red-200 text-red-800 text-xs font-bold p-4 rounded-xl flex items-center gap-2" style="display: none;">
+                        <i class="fa-solid fa-triangle-exclamation text-red-600 text-base"></i>
+                        <span>送信に失敗しました。必須項目を再度確認してください。</span>
+                    </div>
+
+                    <div x-show="!inquirySuccess">
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">店舗名 / 企業名 <span class="text-red-500">*</span></label>
+                        <input type="text" name="shop_name" required placeholder="例：カフェ・エパーク" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-green focus:outline-none font-medium">
+                    </div>
+                    <div x-show="!inquirySuccess">
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">お名前 <span class="text-red-500">*</span></label>
+                        <input type="text" name="user_name" required placeholder="例：山田 太郎" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-green focus:outline-none font-medium">
+                    </div>
+                    <div x-show="!inquirySuccess">
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">メールアドレス <span class="text-red-500">*</span></label>
+                        <input type="email" name="user_email" required placeholder="例：info@example.com" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-green focus:outline-none font-medium">
+                    </div>
+                    <div x-show="!inquirySuccess">
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">お問い合わせ内容 <span class="text-red-500">*</span></label>
+                        <textarea name="detail_msg" required rows="4" placeholder="ご質問や、具体的なご相談内容をご記入ください。" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-green focus:outline-none font-medium"></textarea>
+                    </div>
+                    
+                    <div class="pt-2" x-show="!inquirySuccess">
+                        <button type="submit" :disabled="inquirySending" class="w-full bg-brand-green hover:bg-brand-green-hover text-white py-3.5 rounded-full font-bold shadow-md transition-colors flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-spinner fa-spin" x-show="inquirySending" style="display: none;"></i>
+                            <span x-text="inquirySending ? '送信中...' : 'お問い合わせ内容を送信する'">お問い合わせ内容を送信する</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- APPLICATION MODAL (お申し込み) -->
+    <div x-show="applyModalOpen" class="fixed inset-0 z-50 overflow-y-auto" style="display: none;" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div @click="applyModalOpen = false" x-show="applyModalOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+
+            <div x-show="applyModalOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" x-transition:enter-end="opacity-100 translate-y-0 sm:scale-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100 translate-y-0 sm:scale-100" x-transition:leave-end="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95" class="inline-block align-bottom bg-white rounded-3xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full border border-gray-100">
+                <div class="bg-brand-orange px-6 py-4 flex items-center justify-between text-white">
+                    <h3 class="font-bold text-lg flex items-center gap-2"><i class="fa-solid fa-file-signature"></i> お申し込みフォーム</h3>
+                    <button @click="applyModalOpen = false" class="hover:bg-brand-orange-hover rounded-full p-1"><i class="fa-solid fa-xmark text-lg"></i></button>
+                </div>
+                
+                <form @submit.prevent="submitForm('apply', $event)" class="p-6 space-y-4">
+                    <input type="hidden" name="form_type" value="apply">
+
+                    <!-- Real-time dynamic success banner -->
+                    <div x-show="applySuccess" class="bg-orange-50 border border-orange-200 text-brand-orange text-xs font-bold p-4 rounded-xl flex items-center gap-2" style="display: none;">
+                        <i class="fa-solid fa-circle-check text-[#FF7A00] text-base"></i>
+                        <span>お申し込みを完了しました！自動配信メールをご確認ください。</span>
+                    </div>
+
+                    <!-- Real-time dynamic error banner -->
+                    <div x-show="applyError" class="bg-red-50 border border-red-200 text-red-800 text-xs font-bold p-4 rounded-xl flex items-center gap-2" style="display: none;">
+                        <i class="fa-solid fa-triangle-exclamation text-red-600 text-base"></i>
+                        <span>送信に失敗しました。必須項目を再度確認してください。</span>
+                    </div>
+
+                    <div x-show="!applySuccess">
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">店舗名 / 会社名 <span class="text-red-500">*</span></label>
+                        <input type="text" name="shop_name" required placeholder="例：洋食レストラン・エパーク" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-orange focus:outline-none font-medium">
+                    </div>
+                    <div x-show="!applySuccess">
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">ご担当者名 <span class="text-red-500">*</span></label>
+                        <input type="text" name="user_name" required placeholder="例：鈴木 次郎" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-orange focus:outline-none font-medium">
+                    </div>
+                    <div x-show="!applySuccess">
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">メールアドレス <span class="text-red-500">*</span></label>
+                        <input type="email" name="user_email" required placeholder="例：apply@example.com" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-orange focus:outline-none font-medium">
+                    </div>
+                    <div x-show="!applySuccess">
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">お電話番号 <span class="text-red-500">*</span></label>
+                        <input type="tel" name="user_phone" required placeholder="例：03-1234-5678" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-orange focus:outline-none font-medium">
+                    </div>
+                    <div x-show="!applySuccess">
+                        <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">ご希望のプラン <span class="text-red-500">*</span></label>
+                        <select name="plan_choice" required class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-orange focus:outline-none font-medium bg-white">
+                            <option value="delivery_pack">デリバリー支援パック（月額500円）</option>
+                            <option value="pack_with_option">パック ＋ 各種オプションセット</option>
+                        </select>
+                    </div>
+                    
+                    <div class="pt-2" x-show="!applySuccess">
+                        <button type="submit" :disabled="applySending" class="w-full bg-brand-orange hover:bg-brand-orange-hover text-white py-3.5 rounded-full font-bold shadow-md transition-colors flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-spinner fa-spin" x-show="applySending" style="display: none;"></i>
+                            <span x-text="applySending ? '送信中...' : 'お申し込みを送信'">お申し込みを送信</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
