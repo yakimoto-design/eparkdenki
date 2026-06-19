@@ -53,7 +53,6 @@
         }
     </style>
 </head>
-<!-- Alpine.js state holding 'page' (1=TOP, 2=Pack Detail, 3=Option Details, 4=News List/Detail, 5=FAQ/About, 7=Company/Legal, 8=Partner/Agent, 9=Terms/Docs, 10=Privacy) and navigation helper -->
 <body class="bg-white text-gray-800 antialiased" x-data="{ 
     page: 1, 
     mobileMenuOpen: false, 
@@ -64,7 +63,6 @@
     activeNewsId: null,
     faqActive: 1,
     
-    // Form sending states (Eliminated native popups/alerts)
     inquirySending: false,
     inquirySuccess: false,
     inquiryError: false,
@@ -83,7 +81,6 @@
         window.scrollTo({top: 0, behavior: 'smooth'});
     },
 
-    // Elegant AJAX form submit controller using fetch API
     submitForm(type, event) {
         const formData = new FormData(event.target);
         if (type === 'inquiry') {
@@ -155,7 +152,7 @@
                     </a>
                 </div>
 
-                <!-- Desktop Navigation with cut/shorter texts to prevent ugly wrap -->
+                <!-- Desktop Navigation -->
                 <nav class="hidden lg:flex space-x-1 xl:space-x-4 items-center">
                     <a href="#" @click.prevent="changePage(1)" class="px-3 py-2 text-sm font-bold transition-colors" :class="page === 1 ? 'text-brand-orange' : 'text-gray-700 hover:text-brand-orange'">TOP</a>
                     <a href="#" @click.prevent="changePage(2)" class="px-3 py-2 text-sm font-bold transition-colors" :class="page === 2 ? 'text-brand-orange' : 'text-gray-700 hover:text-brand-orange'">サービス</a>
@@ -461,7 +458,7 @@
             </section>
         </div>
 
-        <!-- ================= PAGE 02: DELIVERY SERVICE PACK DETAIL (下層02) ================= -->
+        <!-- ================= PAGE 02: SERVICE PACK DETAIL (下層02) ================= -->
         <div x-show="page === 2" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-12" x-transition:enter-end="opacity-100 translate-x-0" style="display: none;">
             
             <section class="py-12 bg-white">
@@ -493,17 +490,17 @@
                         <h3 class="text-xl sm:text-2xl font-black text-gray-900 mb-8">
                             EPARKの集客支援の仕組み
                         </h3>
-                        <!-- Step process map image (part02) -->
+                        <!-- Step process map image -->
                         <div class="w-full shadow-md rounded-3xl overflow-hidden mb-8">
                             <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/img/part02.png?raw=true" alt="EPARKの集客支援の仕組み" class="w-full h-auto block" onerror="this.onerror=null; this.src='https://placehold.co/1200x500/FFFFFF/34BFA3?text=EPARK+Attracting+Customers+part02.png'">
                         </div>
-                        <!-- Highlights & stats image (part03) -->
+                        <!-- Highlights & stats image -->
                         <div class="w-full shadow-md rounded-3xl overflow-hidden">
                             <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/img/part03.png?raw=true" alt="配信ターゲット・通数実績" class="w-full h-auto block" onerror="this.onerror=null; this.src='https://placehold.co/1200x500/FFFFFF/34BFA3?text=Attracting+Customers+Performance+part03.png'">
                         </div>
                     </div>
 
-                    <!-- OPTIONS QUICKLINK (Redirects to Option detail page) -->
+                    <!-- OPTIONS QUICKLINK -->
                     <div class="py-12 border-t border-gray-100 text-center">
                         <span class="text-xs text-gray-400 font-bold block mb-2 uppercase tracking-wider">集客をさらに強化したい店舗様へ</span>
                         <h4 class="font-extrabold text-lg text-gray-900 mb-6">オプションサービス一覧</h4>
@@ -566,7 +563,7 @@
                         でんきの切り替えによるデリバリー支援パックと組み合わせることで、認知獲得から公式HP誘導、ファン化、再来店まで、死角のない強力な店舗集客の導線が完成します。
                     </p>
 
-                    <!-- Option Cards Grid (1 Image 1 Box with price highlighted) -->
+                    <!-- Option Cards Grid -->
                     <div class="space-y-12">
                         <!-- Box 1: Homepage -->
                         <div class="bg-brand-lightBg rounded-3xl border border-gray-100 overflow-hidden shadow-sm hover:shadow-md transition-shadow flex flex-col md:flex-row items-stretch">
@@ -706,7 +703,7 @@
 
                                     <!-- Description -->
                                     <p class="text-xs text-gray-600 font-medium leading-relaxed mt-4">
-                                        お住まいの地域密着型グルメ系インフルエンサーや、Instagramなどで多数のフォロワーを持つ影響力抜群の美食クリエーターを実際にお店にご招待。
+                                        お住まいの地域密着型グルメ系インフルエンサーや、Instagramなどで多数 of ユーザーを持つ影響力抜群の美食クリエーターを実際にお店にご招待。
                                         看板メニューや新商品を実際に試食していただき、魅力的な動画（リール投稿など）や高精細写真を用いてリアルにSNS上にレポート発信していただくことで、爆発的な認知・話題性と圧倒的な新規来店を創出します。
                                     </p>
 
@@ -755,7 +752,7 @@
                         { id: 1, date: '2026.06.01', category: 'important', title: '【重要】電気需給約款および各種重要説明書の改定について', summary: '小売電気事業における適正な取引管理の推進および関係省庁のガイドライン改定に伴い、電気需給約款、重要事項説明書、並びにオプションサービス契約規約の各最新版を公開および改定いたしました。', body: 'いつも「EPARK集客でんき」をご利用いただき、誠にありがとうございます。<br><br>この度、電気需給取引の健全な管理・向上、および関係ガイドラインの基準整合に伴い、<b>2026年6月1日付</b>をもちまして、本サービスの電気需給約款、重要事項説明書、ならびに各集客支援オプションプランの契約規約を改定いたしました。新料金システムやオプションの各種保証内容、または市場調整費に関する一部算定式などの見直しが行われております。<br><br>改定後の最新資料（PDF版）につきましては、当サイトの「約款・重要事項説明書」ダウンロードページにて全件公開しておりますので、ご契約中の店舗様、ならびに新規導入をご検討中の店舗様におかれましては、必ず内容をご確認いただけますようお願い申し上げます。<br><br>今後とも、お客様に安心かつ効果的な店舗運営支援を提供できるよう努めてまいります。引き続きご愛顧を賜りますようお願い申し上げます。' },
                         { id: 2, date: '2026.05.20', category: 'info', title: '「SNS運用代行」と「MEO対策」のサービス紹介ビジュアルを刷新しました！', summary: 'オプションとして大変ご好評をいただいている「SNS運用代行」と「MEO対策（Googleマップ上位表示）」のイメージカットを、さらに分かりやすい最新の機能グラフィックへと一新いたしました。', body: 'いつも「EPARK集客でんき」をご利用いただき、誠にありがとうございます。<br><br>本サービスに連動してご利用いただける人気オプション<b>「SNS運用代行」</b>および<b>「MEO対策（Googleマップ上位表示）」</b>につきまして、提供価値をより直感的にお伝えできるよう、サービス紹介ビジュアルを最新のデザイン画像（expressSNS.png / expressMEO.png）へと刷新いたしました。<br><br>SNS運用代行では、投稿の設計図作成からハッシュタグ最適化、分析レポートまでのプロセスのビジュアル化。MEO対策では、ローカルエリア検索で3位枠に入り込んで認知・予約を飛躍的に高める実績をグラフで分かりやすく表現しております。<br><br>詳細は、オプションサービス一覧ページにて各バナーを掲載しておりますので、ぜひ一度ご覧ください。集客力の更なるステップアップについて、無料カウンセリングもいつでも受付中です。' },
                         { id: 3, date: '2026.05.01', category: 'campaign', title: '「EPARK集客でんき」サービス提供開始記念キャンペーン実施中！', summary: '飲食店向けの新しい店舗支援型でんきサービス「EPARK集客でんき」の正式ローンチを記念し、初期費用をすべて免除する「特別スタートアップ支援キャンペーン」を開催いたします。', body: '飲食店・美容室等、すべての店舗様の経営と集客を同時に支える新型でんきサービス「EPARK集客でんき」の正式リリースを記念いたしまして、本日より<b>リリース記念特別新規参入キャンペーン</b>を実施いたします！<br><br>キャンペーン期間中に新規でお申し込みを完了し、電力切り替えを行っていただいた全ての店舗様を対象に、<b>「デリバリー支援パック」導入時の初期コンフィグ設定費用（通常10,000円）が100%無料</b>となります。<br><br>また、ご希望される店舗様には、弊社の専任コンサルタントによる「集客最大化のための、MEO・SNSアカウント無料診断」も個別で進呈。電気料金の無駄を削りながら、月額ワンコインで日本最大級の店舗予約プラットフォームEPARKの強力なアプローチ網を活用できる最大のチャンスです。この機会に、お気軽にお申し込み・資料請求ください！' },
-                        { id: 4, date: '2026.04.15', category: 'info', title: '【新制度】ご紹介パートナー（トスアップ紹介）の登録受付を開始しました', summary: 'お知り合い of 飲食店や美容室、既存のクライアント様を当社にご紹介いただくだけで、安定した紹介料（ストック）をお支払いする「紹介パートナー制度」を新しくスタートいたしました。', body: '飲食店様を支援する新たな試みとして、知人店舗やクライアント様をご紹介いただくだけでマージンが毎月積み上がる、<b>「紹介パートナー（取次登録）」制度</b>の本格的な受付を本日よりスタートいたしました。<br><br>「電気の切替を検討している」「月500円でEPARK掲載やメール配信ができる集客でんきに興味がある」という店舗様をトスアップしていただくだけで、その後の詳細説明、クロージング、手続き、アフターサポートはすべて当社の専任スタッフが責任を持って対応いたします。<br><br>ノルマや面倒な営業知識、資料作成の手間は一切不要です。既に複数の顧客基盤をお持ちの企業様、または個人営業代理店様は、新しい「ストックビジネス収益」としてぜひご活用ください。詳細条件は代理店募集ページにていつでも面談応募を承っております。' },
+                        { id: 4, date: '2026.04.15', category: 'info', title: '【新制度】ご紹介パートナー（トスアップ紹介）の登録受付を開始しました', summary: 'お知り合いの飲食店や美容室、既存のクライアント様を当社にご紹介いただくだけで、安定した紹介料（ストック）をお支払いする「紹介パートナー制度」を新しくスタートいたしました。', body: '飲食店様を支援する新たな試みとして、知人店舗やクライアント様をご紹介いただくだけでマージンが毎月積み上がる、<b>「紹介パートナー（取次登録）」制度</b>の本格的な受付を本日よりスタートいたしました。<br><br>「電気の切替を検討している」「月500円でEPARK掲載やメール配信ができる集客でんきに興味がある」という店舗様をトスアップしていただくだけで、その後の詳細説明、クロージング、手続き、アフターサポートはすべて当社の専任スタッフが責任を持って対応いたします。<br><br>ノルマや面倒な営業知識、資料作成の手間は一切不要です。既に複数の顧客基盤をお持ちの企業様、または個人営業代理店様は、新しい「ストックビジネス収益」としてぜひご活用ください。詳細条件は代理店募集ページにていつでも面談応募を承っております。' },
                         { id: 5, date: '2026.03.10', category: 'important', title: '電気料金に適用される「電源調達調整費」の仕組み解説コーナーを開設しました', summary: '世界的な燃料価格・電力市場取引動向に伴い、電気料金内訳の公正な開示として「電源調達調整費」の詳しい役割や計算ロジック、および過去の実績調整単価の公開セクションを約款ページ内に開設しました。', body: '日頃より「EPARK集客でんき」をご利用いただき、厚くお礼申し上げます。<br><br>昨今の電力市場取引価格（JEPX）の変動に伴い、電気料金に含まれる<b>「電源調達調整費」</b>の仕組みをより公正かつ透明に、すべての店舗様に正しくご理解いただけるよう、約款・重要事項説明書ページ内に<b>「電源調達調整費の仕組み＆単価履歴推移」の解説テーブル</b>を本日新しく公開・開設いたしました。<br><br>電源調達調整費がなぜ発生するのか、その構成要因（燃料価格、電力卸売市場からの買電コストの適正な平均連動など）や、これまでの具体的な過去適用単価をグラフおよび表組み形式でクリアに表示しております。<br><br>当社は小売電気事業者様と強力に連携し、今後も適正な価格管理と安心の供給を両立させてまいります。ご不明な点がございましたら、サポートデスクまでお気軽にお問い合わせください。' },
                         { id: 6, date: '2026.02.25', category: 'info', title: '災害時の電力供給や停電時の具体的な確認ステップについて', summary: '地震や台風などの災害発生に伴う不測の地域停電等に関して、電力の品質および送配電網の保守管理、万が一の際の各送配電事業者（東京電力等）へのスムーズな連絡ステップを解説する案内を開設。', body: '停電時の心配事や、災害などの非常時における電気の取扱いについてのご案内です。<br><br>EPARK集客でんきへお乗り換えいただいた後でも、送電される電気の品質や送配電の仕組み、安定性は一切変わりません。地域一帯での断線や事故による停電が発生した際も、地域の既存送配電網を保守する一般送配電事業者（東京電力等）が100%同等の最優先順位で最速の復旧作業を執り行います。<br><br>万が一、お店で電気が消えたなどのトラブルが発生した際に、それが店舗独自のブレーカートラブルなのか、地域的な広域停電なのかを迅速に自己診断するための<b>「停電時確認ステップフロー」</b>と、<b>「地元電力送配電会社のダイヤル一覧」</b>を約款ページ内へ緊急掲載いたしました。<br><br>事前にお近くの地域の緊急ダイヤルを確認・保存し、もしもの際の安全確認・店舗保護にお役立てください。' }
                     ]
@@ -845,7 +842,7 @@
             </section>
         </div>
 
-        <!-- ================= PAGE 05: FAQ (よくあるご質問 - 下層05) ================= -->
+        <!-- ================= PAGE 05: FAQ (よくあるご質問) ================= -->
         <div x-show="page === 5" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-12" x-transition:enter-end="opacity-100 translate-x-0" style="display: none;">
             
             <section class="py-12 bg-white">
@@ -856,14 +853,14 @@
                         <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">よくあるご質問</h1>
                     </div>
 
-                    <!-- FAQ Accordions with Alpine.js faqActive -->
+                    <!-- FAQ Accordions -->
                     <div class="space-y-4 mb-12">
                         <!-- Q1 -->
                         <div class="bg-brand-lightBg rounded-2xl border border-gray-100 overflow-hidden transition-all duration-300">
                             <button @click="faqActive === 1 ? faqActive = null : faqActive = 1" class="w-full flex items-center justify-between p-6 text-left font-bold text-gray-900 hover:text-brand-orange transition-colors">
                                 <span class="flex items-center gap-3">
                                     <span class="text-brand-orange text-lg">Q.</span>
-                                    電力を切り替えるだけで本当に集集客できるのですか？
+                                    電力を切り替えるだけで本当に集客できるのですか？
                                 </span>
                                 <i class="fa-solid transition-transform duration-300" :class="faqActive === 1 ? 'fa-minus text-brand-orange rotate-180' : 'fa-plus text-gray-400'"></i>
                             </button>
@@ -963,7 +960,7 @@
                         <div class="bg-brand-lightBg rounded-3xl p-6 sm:p-8 border border-gray-100">
                             <h3 class="font-extrabold text-gray-900 text-lg sm:text-xl mb-6 pb-2 border-b border-gray-200">株式会社EPARK 会社概要</h3>
                             
-                            <!-- Table definition matching official EPARK format -->
+                            <!-- Table definition -->
                             <dl class="divide-y divide-gray-200 text-xs sm:text-sm font-bold text-gray-700">
                                 <div class="py-4 grid grid-cols-1 sm:grid-cols-3 gap-4">
                                     <dt class="text-gray-500 font-extrabold">商号</dt>
@@ -1137,7 +1134,6 @@
         </div>
 
         <!-- ================= PAGE 08: PARTNER / AGENT RECRUITMENT (代理店募集ページ) ================= -->
-        <!-- Redesigned dynamically to perfectly reproduce "ChatGPT Image 2026年6月15日 13_47_00.png" -->
         <div x-show="page === 8" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-12" x-transition:enter-end="opacity-100 translate-x-0" style="display: none;" class="bg-white">
             
             <!-- Uber Eats x EPARK Joint Header & Hero Section -->
@@ -1178,7 +1174,7 @@
                             </div>
                         </div>
 
-                        <!-- Right Person visual matching portrait in Image -->
+                        <!-- Right Person visual -->
                         <div class="lg:col-span-5 relative flex justify-center lg:justify-end">
                             <div class="relative w-full max-w-[340px] aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl border-4 border-white bg-gray-50">
                                 <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=400&h=500" alt="EPARK代理店募集サポート窓口" class="w-full h-full object-cover">
@@ -1258,7 +1254,7 @@
                         <div class="w-16 h-1 bg-brand-forest mx-auto mt-4 rounded-full"></div>
                     </div>
 
-                    <!-- 4 Columns Cards (Higher, simple, hand support, contribution) -->
+                    <!-- 4 Columns Cards -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
                         <!-- Card 1 -->
                         <div class="bg-white rounded-2xl p-6 border border-gray-150 flex flex-col items-center text-center hover:shadow-md transition-shadow">
@@ -1318,7 +1314,7 @@
                 </div>
             </section>
 
-            <!-- Section 3: こんな方におすすめです (Dark Green block matching image) -->
+            <!-- Section 3: こんな方におすすめです -->
             <section class="py-16 bg-brand-forest text-white">
                 <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="text-center mb-12">
@@ -1421,7 +1417,7 @@
 
                         </div>
 
-                        <!-- Right visual blurred restaurant backdrop matching image -->
+                        <!-- Right visual -->
                         <div class="lg:col-span-6 relative flex justify-center">
                             <div class="w-full max-w-[420px] h-64 rounded-3xl overflow-hidden shadow-md">
                                 <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&q=80&w=600&h=400" alt="飲食店店内" class="w-full h-full object-cover">
@@ -1449,7 +1445,7 @@
                             </div>
                         </div>
 
-                        <!-- Right worker illustration with custom speech bubble -->
+                        <!-- Right worker illustration -->
                         <div class="md:col-span-5 flex flex-col items-center relative">
                             <!-- Speech Bubble -->
                             <div class="relative bg-white text-gray-800 text-xs font-bold py-3 px-5 rounded-2xl border border-gray-200 shadow-sm mb-4 max-w-[220px] text-center">
@@ -1472,7 +1468,7 @@
                 </div>
             </section>
 
-            <!-- Direct dedicated Partner enquiry form section inside page 8 -->
+            <!-- Partner enquiry form section inside page 8 -->
             <section id="partner-form-section" class="py-16 bg-white">
                 <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="bg-brand-lightBg rounded-3xl p-8 border border-gray-100 shadow-sm">
@@ -1626,7 +1622,7 @@
                                     <b>電源調達調整費</b>とは、一般社団法人日本卸電力取引所（JEPX）の市場価格の変動を、低圧および高圧の電気料金に反映させるための項目です。
                                 </p>
                                 <p>
-                                    電気を市場から安定調達するための平均コストが一定の「基準単価」を下回った月は、電気料金から<b>自動的にマイナス値引き（調達調整還元）</b>を行います。逆に、冷暖房需要期や世界的なエネルギー燃料高騰などにより、調達コストが基準値を超過した場合は、差額実費分を追加調整費として算定いたします。
+                                    電気を市場から安定調達するための平均コストが一定の「基準単価」を下回った月は、電気料金から<b>自動的にマイナス値引き（調達調整還元）</b>を行います。逆に、冷暖房期や世界的なエネルギー燃料高騰などにより、調達コストが基準値を超過した場合は、差額実費分を追加調整費として算定いたします。
                                 </p>
                                 
                                 <div class="bg-white p-4 rounded-xl border border-gray-200 mt-4 font-mono text-center text-xs sm:text-sm text-gray-900">
@@ -1794,7 +1790,7 @@
                         </div>
                     </div>
 
-                    <!-- SUB-TAB 3: 停電時の対応方法 (teiden 準拠の 3種分電盤＋漏電見つけ方手順＋全国10送配電緊急ダイアログ) -->
+                    <!-- SUB-TAB 3: 停電時の対応方法 -->
                     <div x-show="subTab === 'outage'" style="display: none;" class="space-y-6">
                         <div class="bg-amber-50 rounded-3xl p-6 sm:p-8 border border-amber-200 text-amber-800 text-xs font-bold leading-relaxed">
                             <div class="flex flex-col md:flex-row gap-5 mb-6">
@@ -1958,7 +1954,7 @@
             </section>
         </div>
 
-        <!-- ================= PAGE 10: PRIVACY POLICY (プライバシーポリシー) ================= -->
+        <!-- ================= PAGE 10: PRIVACY POLICY ================= -->
         <div x-show="page === 10" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-12" x-transition:enter-end="opacity-100 translate-x-0" style="display: none;">
             
             <section class="py-12 bg-white">
@@ -1969,7 +1965,7 @@
                         <h1 class="text-2xl sm:text-3xl font-extrabold text-gray-900 tracking-tight">EPARK集客でんきにおける個人情報の取扱いについて</h1>
                     </div>
 
-                    <!-- Official EPARK Privacy Policy document body text -->
+                    <!-- Privacy Policy Body -->
                     <div class="prose max-w-none text-xs sm:text-sm font-medium text-gray-700 leading-relaxed space-y-6">
                         <p class="font-bold text-gray-800">
                             株式会社EPARK（以下「当社」といいます。）は、「EPARK集客でんき」（以下「本サービス」といいます。）の提供にあたり、お客様の個人情報を適切に取り扱うため、本規程を定めます。<br>
@@ -2075,7 +2071,7 @@
                             </div>
                         </div>
 
-                        <!-- Article 5 to 7 -->
+                        <!-- Articles 5-7 -->
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div class="bg-brand-lightBg p-4 rounded-xl border border-gray-100 text-xs">
                                 <h4 class="font-bold text-gray-900 border-b border-gray-200 pb-1 mb-2">第5条 個人情報の委託</h4>
@@ -2169,7 +2165,7 @@
         </div>
     </footer>
 
-    <!-- INQUIRY MODAL (お問い合わせ) -->
+    <!-- INQUIRY MODAL -->
     <div x-show="inquiryModalOpen" class="fixed inset-0 z-50 overflow-y-auto" style="display: none;" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div @click="inquiryModalOpen = false" x-show="inquiryModalOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
@@ -2184,13 +2180,11 @@
                 <form @submit.prevent="submitForm('inquiry', $event)" class="p-6 space-y-4">
                     <input type="hidden" name="form_type" value="inquiry">
                     
-                    <!-- Real-time dynamic success banner -->
                     <div x-show="inquirySuccess" class="bg-green-50 border border-green-200 text-green-800 text-xs font-bold p-4 rounded-xl flex items-center gap-2" style="display: none;">
                         <i class="fa-solid fa-circle-check text-green-600 text-base"></i>
                         <span>お問い合わせを送信しました！自動返信メールをご確認ください。</span>
                     </div>
 
-                    <!-- Real-time dynamic error banner -->
                     <div x-show="inquiryError" class="bg-red-50 border border-red-200 text-red-800 text-xs font-bold p-4 rounded-xl flex items-center gap-2" style="display: none;">
                         <i class="fa-solid fa-triangle-exclamation text-red-600 text-base"></i>
                         <span>送信に失敗しました。必須項目を再度確認してください。</span>
@@ -2224,7 +2218,7 @@
         </div>
     </div>
 
-    <!-- APPLICATION MODAL (お申し込み) -->
+    <!-- APPLICATION MODAL -->
     <div x-show="applyModalOpen" class="fixed inset-0 z-50 overflow-y-auto" style="display: none;" aria-labelledby="modal-title" role="dialog" aria-modal="true">
         <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div @click="applyModalOpen = false" x-show="applyModalOpen" x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
@@ -2239,13 +2233,11 @@
                 <form @submit.prevent="submitForm('apply', $event)" class="p-6 space-y-4">
                     <input type="hidden" name="form_type" value="apply">
 
-                    <!-- Real-time dynamic success banner -->
                     <div x-show="applySuccess" class="bg-orange-50 border border-orange-200 text-brand-orange text-xs font-bold p-4 rounded-xl flex items-center gap-2" style="display: none;">
                         <i class="fa-solid fa-circle-check text-[#FF7A00] text-base"></i>
                         <span>お申し込みを完了しました！自動配信メールをご確認ください。</span>
                     </div>
 
-                    <!-- Real-time dynamic error banner -->
                     <div x-show="applyError" class="bg-red-50 border border-red-200 text-red-800 text-xs font-bold p-4 rounded-xl flex items-center gap-2" style="display: none;">
                         <i class="fa-solid fa-triangle-exclamation text-red-600 text-base"></i>
                         <span>送信に失敗しました。必須項目を再度確認してください。</span>
