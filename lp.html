@@ -27,33 +27,9 @@
         body {
             font-family: 'Noto Sans JP', sans-serif;
         }
-        /* Custom animation for badges */
-        @keyframes pulse-slow {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.03); }
-        }
-        .pulse-badge {
-            animation: pulse-slow 3s infinite ease-in-out;
-        }
     </style>
 </head>
 <body class="bg-gray-50 text-brandDark antialiased overflow-x-hidden">
-
-    <!-- Header Navigation Bar (Sticky & Clean) -->
-    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            <div class="flex items-center space-x-2">
-                <span class="bg-brandOrange text-white text-xs font-black px-2.5 py-1 rounded">EPARK</span>
-                <span class="text-lg font-black tracking-wider text-gray-800">デリバリー支援パック</span>
-            </div>
-            <div class="flex items-center space-x-4">
-                <a href="#how-it-works" class="hidden md:inline-flex text-sm font-bold text-gray-600 hover:text-brandOrange transition">集客の仕組み</a>
-                <a href="#contact" class="bg-brandOrange text-white text-xs sm:text-sm font-bold px-4 py-2 sm:px-5 sm:py-2.5 rounded-full hover:bg-brandOrangeHover transition shadow-md shadow-brandOrange/20">
-                    無料相談はこちら
-                </a>
-            </div>
-        </div>
-    </header>
 
     <!-- Hero / Top Section (Responsive Picture) -->
     <section class="relative bg-white overflow-hidden">
@@ -153,22 +129,32 @@
                 </h2>
             </div>
 
-            <!-- Two detailed support cards (Media & Mail) stacked vertically with beautiful spacing and shadow -->
+            <!-- Two detailed support cards (Media & Mail) stacked vertically with beautiful spacing -->
             <div class="space-y-8 max-w-4xl mx-auto">
                 <!-- 01 Media Support Image -->
                 <div class="w-full">
-                    <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/lp/image/media.png?raw=true" 
-                         onerror="this.onerror=null; this.src='media.png';" 
-                         alt="01 メディア掲載" 
-                         class="w-full h-auto block mx-auto">
+                    <picture>
+                        <!-- Mobile Media Image -->
+                        <source media="(max-width: 768px)" srcset="https://github.com/yakimoto-design/eparkdenki/blob/main/lp/image/media(SP).png?raw=true">
+                        <!-- PC Media Image -->
+                        <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/lp/image/media.png?raw=true" 
+                             onerror="this.onerror=null; this.src='media.png';" 
+                             alt="01 メディア掲載" 
+                             class="w-full h-auto block mx-auto">
+                    </picture>
                 </div>
                 
                 <!-- 02 Mail Support Image -->
                 <div class="w-full">
-                    <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/lp/image/mail.png?raw=true" 
-                         onerror="this.onerror=null; this.src='mail.png';" 
-                         alt="02 メール配信サービス" 
-                         class="w-full h-auto block mx-auto">
+                    <picture>
+                        <!-- Mobile Mail Image -->
+                        <source media="(max-width: 768px)" srcset="https://github.com/yakimoto-design/eparkdenki/blob/main/lp/image/mail(SP).png?raw=true">
+                        <!-- PC Mail Image -->
+                        <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/lp/image/mail.png?raw=true" 
+                             onerror="this.onerror=null; this.src='mail.png';" 
+                             alt="02 メール配信サービス" 
+                             class="w-full h-auto block mx-auto">
+                    </picture>
                 </div>
             </div>
         </div>
@@ -300,7 +286,7 @@
     <footer class="bg-brandDark py-8 text-center text-gray-500 text-xs border-t border-gray-800">
         <div class="max-w-7xl mx-auto px-4">
             <p class="mb-2">&copy; 2026 EPARK デリバリー支援パック LP. All Rights Reserved.</p>
-            <p class="text-gray-600">※掲載内容、会員数などのデータ is 2026年時点のものであり、配信パフォーマンスは利用条件等によって前後する場合がございます。</p>
+            <p class="text-gray-600">※掲載内容、会員数などのデータは2026年時点のものであり、配信パフォーマンスは利用条件等によって前後する場合がございます。</p>
         </div>
     </footer>
 
