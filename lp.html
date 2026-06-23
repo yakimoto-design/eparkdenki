@@ -32,7 +32,7 @@
 <body class="bg-gray-50 text-brandDark antialiased overflow-x-hidden">
 
     <!-- Hero / Top Section (Responsive Picture) -->
-    <section class="relative bg-white overflow-hidden">
+    <section class="relative bg-white overflow-hidden border-b border-gray-100">
         <div class="w-full">
             <picture>
                 <!-- Mobile Hero Image -->
@@ -40,20 +40,6 @@
                 <!-- PC Hero Image -->
                 <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/lp/image/hero(PC).png?raw=true" alt="デリバリー支援パック" class="w-full h-auto block mx-auto">
             </picture>
-        </div>
-
-        <!-- CTA Buttons -->
-        <div class="bg-gradient-to-b from-white to-gray-50 py-8 px-4 border-b border-gray-100">
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-xl mx-auto">
-                <a href="#contact" class="w-full sm:w-1/2 bg-brandOrange text-white font-bold text-base sm:text-lg py-4 px-6 rounded-full hover:bg-brandOrangeHover transition shadow-lg shadow-brandOrange/30 text-center flex items-center justify-center space-x-2 group whitespace-nowrap">
-                    <span>💬 無料で相談する</span>
-                    <span class="transform group-hover:translate-x-1 transition-transform">❯</span>
-                </a>
-                <a href="#contact" class="w-full sm:w-1/2 bg-white text-brandOrange border-2 border-brandOrange font-bold text-base sm:text-lg py-4 px-6 rounded-full hover:bg-brandOrange/5 transition shadow-md text-center flex items-center justify-center space-x-2 group whitespace-nowrap">
-                    <span>📄 資料をダウンロード</span>
-                    <span class="transform group-hover:translate-x-1 transition-transform">❯</span>
-                </a>
-            </div>
         </div>
     </section>
 
@@ -122,58 +108,65 @@
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
                 <span class="text-brandOrange font-bold tracking-widest text-xs uppercase block mb-2">POWERFUL SUPPORT</span>
-                <h2 class="text-3xl font-black text-gray-900 flex items-center justify-center space-x-2">
-                    <span class="text-brandOrange/50 text-2xl font-light">\</span>
-                    <span>EPARKの集客力を支える2つの強力サポート</span>
-                    <span class="text-brandOrange/50 text-2xl font-light">/</span>
+                <h2 class="text-xl sm:text-3xl font-black text-gray-900 flex items-center justify-center space-x-1.5">
+                    <span class="inline-block">EPARKが誇る2つの強力サポート</span>
                 </h2>
             </div>
 
             <!-- Two detailed support cards (Media & Mail) stacked vertically with beautiful spacing -->
-            <div class="space-y-8 max-w-4xl mx-auto">
+            <div class="space-y-12 max-w-4xl mx-auto">
                 <!-- 01 Media Support Image -->
                 <div class="w-full">
-                    <picture>
-                        <!-- Mobile Media Image -->
-                        <source media="(max-width: 768px)" srcset="https://github.com/yakimoto-design/eparkdenki/blob/main/lp/image/media(SP).png?raw=true">
-                        <!-- PC Media Image -->
-                        <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/lp/image/media.png?raw=true" 
-                             onerror="this.onerror=null; this.src='media.png';" 
-                             alt="01 メディア掲載" 
-                             class="w-full h-auto block mx-auto">
-                    </picture>
+                    <div class="overflow-hidden">
+                        <picture>
+                            <!-- Mobile Media Image -->
+                            <source media="(max-width: 768px)" srcset="https://github.com/yakimoto-design/eparkdenki/blob/main/lp/image/media(SP).png?raw=true">
+                            <!-- PC Media Image -->
+                            <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/lp/image/media.png?raw=true" 
+                                 onerror="this.onerror=null; this.src='media.png';" 
+                                 alt="01 メディア掲載" 
+                                 class="w-full h-auto block mx-auto"
+                                 style="clip-path: inset(4px); transform: scale(1.01);">
+                        </picture>
+                    </div>
+                    <p class="text-right text-[10px] sm:text-xs text-gray-400 mt-2 pr-1 select-none">※デザインは一例です。</p>
                 </div>
                 
                 <!-- 02 Mail Support Image -->
                 <div class="w-full">
-                    <picture>
-                        <!-- Mobile Mail Image -->
-                        <source media="(max-width: 768px)" srcset="https://github.com/yakimoto-design/eparkdenki/blob/main/lp/image/mail(SP).png?raw=true">
-                        <!-- PC Mail Image -->
-                        <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/lp/image/mail.png?raw=true" 
-                             onerror="this.onerror=null; this.src='mail.png';" 
-                             alt="02 メール配信サービス" 
-                             class="w-full h-auto block mx-auto">
-                    </picture>
+                    <div class="overflow-hidden">
+                        <picture>
+                            <!-- Mobile Mail Image -->
+                            <source media="(max-width: 768px)" srcset="https://github.com/yakimoto-design/eparkdenki/blob/main/lp/image/mail(SP).png?raw=true">
+                            <!-- PC Mail Image -->
+                            <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/lp/image/mail.png?raw=true" 
+                                 onerror="this.onerror=null; this.src='mail.png';" 
+                                 alt="02 メール配信サービス" 
+                                 class="w-full h-auto block mx-auto"
+                                 style="clip-path: inset(4px); transform: scale(1.01);">
+                        </picture>
+                    </div>
+                    <p class="text-right text-[10px] sm:text-xs text-gray-400 mt-2 pr-1 select-none">※デザインは一例です。</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Premium Options Section -->
+    <!-- Premium Options Section (Updated Heading Style) -->
     <section class="py-20 bg-gray-50 border-t border-gray-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
                 <span class="text-brandOrange font-bold tracking-widest text-xs uppercase block mb-2">PREMIUM SERVICES</span>
-                <h2 class="text-3xl font-black text-gray-900 flex items-center justify-center space-x-2">
-                    <span class="text-brandOrange/50 text-2xl font-light">\</span>
-                    <span>集客をさらに強化するオプションサービス</span>
-                    <span class="text-brandOrange/50 text-2xl font-light">/</span>
+                <h2 class="text-3xl sm:text-4xl font-black text-gray-900 mb-4 tracking-tight">
+                    オプション
                 </h2>
+                <p class="text-sm sm:text-base text-gray-600 font-medium max-w-2xl mx-auto leading-relaxed">
+                    EPARK集客でんき加盟店限定で、特別価格の集客オプションをご提供しています。
+                </p>
             </div>
 
-            <!-- Option Grid Cards - Replaced text blocks with pure images -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            <!-- Option Grid Cards - Consolidated to 3 columns for perfect balance -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto items-start">
                 <!-- Card 01: MEO -->
                 <div class="w-full">
                     <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/lp/image/meo.png?raw=true" alt="MEO対策" class="w-full h-auto block mx-auto">
@@ -188,47 +181,113 @@
                 <div class="w-full">
                     <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/lp/image/hp.png?raw=true" alt="ホームページ制作" class="w-full h-auto block mx-auto">
                 </div>
+            </div>
 
-                <!-- Card 04: Influencer -->
-                <div class="w-full">
-                    <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/lp/image/inful.png?raw=true" alt="インフルエンサー広告" class="w-full h-auto block mx-auto">
+            <!-- "Coming Soon" notification under options -->
+            <div class="text-center mt-12 max-w-xl mx-auto px-4">
+                <div class="inline-flex items-center space-x-2.5 bg-white/80 border border-brandOrange/20 shadow-sm py-2.5 px-6 rounded-full">
+                    <span class="flex h-2.5 w-2.5 relative">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brandOrange opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-brandOrange"></span>
+                    </span>
+                    <p class="text-xs sm:text-sm font-bold text-gray-600 leading-none">
+                        便利な集客支援オプションは今後も続々と追加予定です！
+                    </p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Bottom Contact & Lead Form Section -->
-    <section class="py-20 bg-gradient-to-t from-[#FFF4EE] to-white" id="contact">
-        <div class="max-w-4xl mx-auto px-4">
+    <!-- Partner Section -->
+    <section class="py-20 bg-white border-t border-gray-100">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
-                <span class="text-brandOrange font-bold tracking-widest text-sm block mb-2">ご相談・お見積もりは無料です。</span>
-                <h2 class="text-3xl sm:text-4xl font-black text-gray-900 leading-tight">
-                    まずはお気軽にご相談ください。
+                <span class="text-brandOrange font-bold tracking-widest text-xs uppercase block mb-2">PARTNERSHIP</span>
+                <h2 class="text-xl sm:text-3xl font-black text-gray-900 leading-tight text-center">
+                    <span class="text-brandOrange/50 text-lg sm:text-2xl font-light mr-1.5">\</span>
+                    <span class="inline-block">販売パートナー募集</span>
+                    <span class="text-brandOrange/50 text-lg sm:text-2xl font-light ml-1.5">/</span>
                 </h2>
             </div>
 
-            <!-- Form Card -->
-            <div class="bg-white rounded-3xl p-6 sm:p-10 shadow-2xl border border-orange-100 max-w-2xl mx-auto relative">
+            <!-- Standardized clean image display with responsive picture support for mobile -->
+            <div class="max-w-4xl mx-auto overflow-hidden">
+                <picture>
+                    <!-- Mobile View (SP) -->
+                    <source media="(max-width: 768px)" srcset="https://github.com/yakimoto-design/eparkdenki/blob/main/lp/image/partner(SP).png?raw=true">
+                    <!-- PC View -->
+                    <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/lp/image/partner.png?raw=true" 
+                         onerror="this.onerror=null; this.src='partner.png';" 
+                         alt="販売パートナー募集" 
+                         class="w-full h-auto block mx-auto"
+                         style="clip-path: inset(4px); transform: scale(1.01);">
+                </picture>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bottom Contact & Dual Route Selection Section -->
+    <section class="py-20 bg-gradient-to-t from-[#FFF4EE] to-white scroll-mt-6" id="contact">
+        <div class="max-w-4xl mx-auto px-4">
+            <div class="text-center mb-10">
+                <span class="text-brandOrange font-bold tracking-widest text-xs uppercase block mb-2">CONTACT US</span>
+                <h2 class="text-3xl sm:text-4xl font-black text-gray-900 leading-tight mb-4">
+                    お問い合わせ
+                </h2>
+                <p class="text-sm text-gray-500 max-w-md mx-auto leading-relaxed">
+                    ご希望のお問い合わせ窓口をお選びください。<br>それぞれ専用のフォームが表示されます。
+                </p>
+            </div>
+
+            <!-- Dual Route Selection - Premium Segmented Control Tab (Fixed image_d39ea9.png layout issue) -->
+            <div class="max-w-xl mx-auto mb-10 bg-gray-100/90 p-1.5 rounded-2xl flex items-center border border-gray-200/50 shadow-inner">
+                <!-- Tab 01: Customer (Active by Default) -->
+                <button type="button" onclick="switchForm('customer')" id="btn-route-customer" class="flex-1 py-4 px-3 sm:px-5 rounded-xl font-bold text-sm sm:text-base transition-all duration-300 flex items-center justify-center space-x-2 select-none bg-brandOrange text-white shadow-md">
+                    <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                    <span>お客様用お問い合わせ</span>
+                </button>
+
+                <!-- Tab 02: Partner / Agent -->
+                <button type="button" onclick="switchForm('partner')" id="btn-route-partner" class="flex-1 py-4 px-3 sm:px-5 rounded-xl font-bold text-sm sm:text-base transition-all duration-300 flex items-center justify-center space-x-2 select-none text-gray-500 hover:text-gray-800">
+                    <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 005.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                    <span>代理店用お問い合わせ</span>
+                </button>
+            </div>
+
+            <!-- Form Display Container -->
+            <div class="bg-white rounded-3xl p-6 sm:p-10 shadow-2xl border border-orange-100 max-w-2xl mx-auto relative min-h-[150px] transition-all duration-300">
+                
                 <!-- Custom Success Toast (Non-alert) -->
                 <div id="success-toast" class="hidden absolute inset-0 bg-white/95 z-50 rounded-3xl flex flex-col items-center justify-center p-6 text-center">
                     <div class="w-16 h-16 bg-brandGreen/10 text-brandGreen rounded-full flex items-center justify-center text-3xl mb-4">
                         ✔
                     </div>
                     <h3 class="text-2xl font-bold text-gray-900 mb-2">送信が完了しました！</h3>
-                    <p class="text-sm text-gray-600 max-w-md">
-                        お問い合わせありがとうございます。資料ダウンロード用URLをメールでお送りしました。また、担当コンサルタントより折り返しご連絡いたします。
+                    <p id="success-toast-message" class="text-sm text-gray-600 max-w-md">
+                        お問い合わせありがとうございます。
                     </p>
                     <button class="mt-6 bg-brandOrange text-white text-sm font-bold px-6 py-2.5 rounded-full hover:bg-brandOrangeHover transition" onclick="resetForm()">
                         閉じる
                     </button>
                 </div>
 
-                <form onsubmit="handleFormSubmission(event)" class="space-y-5">
+                <!-- 01: Customer Form (Displayed by Default) -->
+                <form id="form-customer" onsubmit="handleFormSubmission(event, 'customer')" class="space-y-5">
+                    <div class="border-b border-gray-100 pb-3 mb-2">
+                        <span class="inline-flex items-center space-x-1.5 bg-orange-50 text-brandOrange font-bold text-xs px-3 py-1 rounded-full">
+                            <span>🏬</span> <span>お客様（店舗・会社様）専用窓口</span>
+                        </span>
+                    </div>
+
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-1">
                             店舗名・会社名 <span class="text-red-500">*</span>
                         </label>
-                        <input type="text" id="shop-name" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brandOrange/50 focus:border-brandOrange text-sm sm:text-base" placeholder="例：EPARKレストラン 渋谷店">
+                        <input type="text" id="cust-shop-name" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brandOrange/50 focus:border-brandOrange text-sm sm:text-base" placeholder="例：EPARKレストラン 渋谷店">
                     </div>
 
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -236,13 +295,13 @@
                             <label class="block text-sm font-bold text-gray-700 mb-1">
                                 ご担当者名 <span class="text-red-500">*</span>
                             </label>
-                            <input type="text" id="contact-name" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brandOrange/50 focus:border-brandOrange text-sm sm:text-base" placeholder="例：山田 太郎">
+                            <input type="text" id="cust-contact-name" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brandOrange/50 focus:border-brandOrange text-sm sm:text-base" placeholder="例：山田 太郎">
                         </div>
                         <div>
                             <label class="block text-sm font-bold text-gray-700 mb-1">
                                 お電話番号 <span class="text-red-500">*</span>
                             </label>
-                            <input type="tel" id="contact-phone" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brandOrange/50 focus:border-brandOrange text-sm sm:text-base" placeholder="例：03-1234-5678">
+                            <input type="tel" id="cust-contact-phone" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brandOrange/50 focus:border-brandOrange text-sm sm:text-base" placeholder="例：03-1234-5678">
                         </div>
                     </div>
 
@@ -250,54 +309,284 @@
                         <label class="block text-sm font-bold text-gray-700 mb-1">
                             メールアドレス <span class="text-red-500">*</span>
                         </label>
-                        <input type="email" id="contact-email" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brandOrange/50 focus:border-brandOrange text-sm sm:text-base" placeholder="例：info@example.com">
+                        <input type="email" id="cust-contact-email" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brandOrange/50 focus:border-brandOrange text-sm sm:text-base" placeholder="例：info@example.com">
                     </div>
 
                     <div>
                         <label class="block text-sm font-bold text-gray-700 mb-1">
                             ご希望のお問い合わせ内容 <span class="text-red-500">*</span>
                         </label>
-                        <select id="contact-type" required class="w-full px-4 py-3 border border-gray-200 bg-white rounded-xl focus:outline-none focus:ring-2 focus:ring-brandOrange/50 focus:border-brandOrange text-sm sm:text-base">
-                            <option value="both">資料のダウンロード＋無料お見積もり・相談</option>
-                            <option value="doc-only">まずはパンフレット・資料ダウンロード</option>
-                            <option value="consult-only">一度詳しいお見積もりや相談をしたい</option>
+                        <select id="cust-contact-type" required class="w-full px-4 py-3 border border-gray-200 bg-white rounded-xl focus:outline-none focus:ring-2 focus:ring-brandOrange/50 focus:border-brandOrange text-sm sm:text-base">
+                            <option value="consult">お見積もり・導入プラン の 相談を希望する</option>
+                            <option value="other">その他のお問い合わせ</option>
                         </select>
                     </div>
 
-                    <button type="submit" class="w-full bg-brandOrange text-white font-bold text-base py-4 rounded-full hover:bg-brandOrangeHover transition-all shadow-lg shadow-brandOrange/25 mt-4">
-                        この内容で送信して資料を受け取る ❯
+                    <!-- Customer Textarea: Content Field -->
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">
+                            お問い合わせ内容（ご質問・ご要望など）
+                        </label>
+                        <textarea id="cust-message" rows="4" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brandOrange/50 focus:border-brandOrange text-sm sm:text-base resize-none" placeholder="例：デリバリー支援パックの詳しい料金や、導入からメール配信を開始するまでの最短スケジュールについて詳しく聞きたいです。"></textarea>
+                    </div>
+
+                    <!-- Consent Checkbox -->
+                    <div class="pt-2">
+                        <div class="flex items-start">
+                            <div class="flex items-center h-5">
+                                <input id="cust-privacy-agreement" type="checkbox" required class="focus:ring-brandOrange h-4 w-4 text-brandOrange border-gray-300 rounded cursor-pointer">
+                            </div>
+                            <div class="ml-3 text-sm">
+                                <label for="cust-privacy-agreement" class="font-medium text-gray-600 cursor-pointer select-none">
+                                    当社の <button type="button" onclick="openModal()" class="text-brandOrange underline hover:text-brandOrangeHover font-bold focus:outline-none">個人情報の取り扱い（プライバシーポリシー）</button> に同意する <span class="text-red-500">*</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-gradient-to-r from-orange-500 via-brandOrange to-red-600 hover:from-orange-600 hover:to-red-700 text-white font-black text-base sm:text-lg py-4.5 rounded-full transition-all duration-300 shadow-xl shadow-brandOrange/20 mt-4 transform hover:scale-[1.01]">
+                        お客様用 お問い合わせを送信する ❯
                     </button>
                 </form>
-            </div>
 
-            <!-- Bottom Static CTA Buttons (Replicating exact graphic) -->
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-xl mx-auto mt-16">
-                <a href="#contact" class="w-full sm:w-1/2 bg-brandOrange text-white font-bold text-sm py-3.5 px-6 rounded-full hover:bg-brandOrangeHover transition shadow-md text-center whitespace-nowrap">
-                    💬 無料で相談する ❯
-                </a>
-                <a href="#contact" class="w-full sm:w-1/2 bg-white text-brandOrange border-2 border-brandOrange font-bold text-sm py-3.5 px-6 rounded-full hover:bg-brandOrange/5 transition shadow-sm text-center whitespace-nowrap">
-                    📄 資料をダウンロード ❯
-                </a>
+                <!-- 02: Partner Form (Initially Hidden) -->
+                <form id="form-partner" onsubmit="handleFormSubmission(event, 'partner')" class="hidden space-y-5">
+                    <div class="border-b border-gray-100 pb-3 mb-2">
+                        <span class="inline-flex items-center space-x-1.5 bg-slate-100 text-slate-800 font-bold text-xs px-3 py-1 rounded-full">
+                            <span>🤝</span> <span>代理店様（販売パートナー様）専用窓口</span>
+                        </span>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">
+                            貴社名（または店舗名） <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" id="part-company-name" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-slate-800 text-sm sm:text-base" placeholder="例：株式会社〇〇パートナーズ">
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-1">
+                                ご担当者名 <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" id="part-contact-name" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-slate-800 text-sm sm:text-base" placeholder="例：鈴木 健二">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-bold text-gray-700 mb-1">
+                                お電話番号 <span class="text-red-500">*</span>
+                            </label>
+                            <input type="tel" id="part-contact-phone" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-slate-800 text-sm sm:text-base" placeholder="例：03-9876-5432">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">
+                            メールアドレス <span class="text-red-500">*</span>
+                        </label>
+                        <input type="email" id="part-contact-email" required class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-slate-800 text-sm sm:text-base" placeholder="例：partner@example.com">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">
+                            ご希望のお問い合わせ内容 <span class="text-red-500">*</span>
+                        </label>
+                        <select id="part-contact-type" required class="w-full px-4 py-3 border border-gray-200 bg-white rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-slate-800 text-sm sm:text-base">
+                            <option value="alliance">販売パートナー（代理店契約）に関する相談・資料希望</option>
+                            <option value="other">協業・その他のアライアンス相談</option>
+                        </select>
+                    </div>
+
+                    <!-- Partner Textarea: Content Field -->
+                    <div>
+                        <label class="block text-sm font-bold text-gray-700 mb-1">
+                            お問い合わせ内容（ご質問・ご要望など）
+                        </label>
+                        <textarea id="part-message" rows="4" class="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-slate-800 text-sm sm:text-base resize-none" placeholder="例：自社クライアント（飲食店様）に向けて本パッケージの提案を検討しています。取次手数料（マージンバック）や協業アライアンスの条件について詳しく教えてください。"></textarea>
+                    </div>
+
+                    <!-- Consent Checkbox -->
+                    <div class="pt-2">
+                        <div class="flex items-start">
+                            <div class="flex items-center h-5">
+                                <input id="part-privacy-agreement" type="checkbox" required class="focus:ring-slate-500 h-4 w-4 text-slate-700 border-gray-300 rounded cursor-pointer">
+                            </div>
+                            <div class="ml-3 text-sm">
+                                <label for="part-privacy-agreement" class="font-medium text-gray-600 cursor-pointer select-none">
+                                    当社の <button type="button" onclick="openModal()" class="text-brandOrange underline hover:text-brandOrangeHover font-bold focus:outline-none">個人情報の取り扱い（プライバシーポリシー）</button> に同意する <span class="text-red-500">*</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-gradient-to-r from-slate-700 via-slate-800 to-slate-900 hover:from-slate-800 hover:to-slate-950 text-white font-black text-base sm:text-lg py-4.5 rounded-full transition-all duration-300 shadow-xl shadow-slate-950/20 mt-4 transform hover:scale-[1.01]">
+                        代理店用 お問い合わせを送信する ❯
+                    </button>
+                </form>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-brandDark py-8 text-center text-gray-500 text-xs border-t border-gray-800">
+    <!-- Company Profile Section (Essential for public release trust) -->
+    <section class="py-16 bg-white border-t border-gray-100">
+        <div class="max-w-3xl mx-auto px-4">
+            <div class="text-center mb-10">
+                <h3 class="text-xl font-bold text-gray-900">運営会社概要</h3>
+                <div class="h-1 w-12 bg-brandOrange mx-auto mt-3 rounded-full"></div>
+            </div>
+            
+            <div class="bg-gray-50 rounded-2xl border border-gray-100 overflow-hidden shadow-sm">
+                <dl class="divide-y divide-gray-200">
+                    <div class="grid grid-cols-3 py-4 px-6 sm:grid-cols-4">
+                        <dt class="text-sm font-bold text-gray-500">商号</dt>
+                        <dd class="text-sm text-gray-900 col-span-2 sm:col-span-3 font-bold">株式会社EPARK</dd>
+                    </div>
+                    <div class="grid grid-cols-3 py-4 px-6 sm:grid-cols-4">
+                        <dt class="text-sm font-bold text-gray-500">所在地</dt>
+                        <dd class="text-sm text-gray-900 col-span-2 sm:col-span-3 leading-relaxed">
+                            〒108-0023<br>
+                            東京都港区芝浦四丁目16－25 安全ビル
+                        </dd>
+                    </div>
+                </dl>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer with legal requirements -->
+    <footer class="bg-brandDark py-12 text-center text-gray-500 text-xs border-t border-gray-800">
         <div class="max-w-7xl mx-auto px-4">
+            <!-- Legal Terms Links (Consolidated to Privacy only since BtoB does not require Tokusho) -->
+            <div class="flex flex-wrap justify-center gap-6 mb-6 text-sm font-medium">
+                <button onclick="openModal()" class="text-gray-400 hover:text-white transition focus:outline-none">個人情報保護方針</button>
+            </div>
+
             <p class="mb-2">&copy; 2026 EPARK デリバリー支援パック LP. All Rights Reserved.</p>
-            <p class="text-gray-600">※掲載内容、会員数などのデータは2026年時点のものであり、配信パフォーマンスは利用条件等によって前後する場合がございます。</p>
+            <p class="text-gray-600 max-w-4xl mx-auto leading-relaxed">
+                ※掲載内容、会員数などのデータは2026年時点のものであり、配信パフォーマンスは利用条件等によって前後する場合がございます。<br>
+                ※「EPARK」は、株式会社EPARKの登録商標または商標です。
+            </p>
         </div>
     </footer>
 
+    <!-- Interactive Legal Modal Container -->
+    <div id="legal-modal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[80vh] overflow-hidden shadow-2xl border border-gray-100 flex flex-col transform scale-95 transition-all duration-300">
+            <!-- Modal Header -->
+            <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+                <h3 id="modal-title" class="text-lg font-bold text-gray-900">個人情報保護方針</h3>
+                <button onclick="closeModal()" class="text-gray-400 hover:text-gray-600 text-2xl font-semibold leading-none p-1 focus:outline-none">&times;</button>
+            </div>
+            <!-- Modal Content (Scrollable) -->
+            <div id="modal-body" class="p-6 overflow-y-auto text-sm text-gray-600 leading-relaxed space-y-4">
+                <p class="font-bold text-gray-900 text-lg mb-4">EPARKプライバシーポリシー</p>
+                <p class="mb-4 text-xs sm:text-sm">
+                    株式会社EPARK（以下「当社」という）では、インターネットを利用したサービス提供を中心にさまざまな事業活動を行っています。当社では、お客様および当社の事業活動に関わるすべての方々（株主様、従業者などを含み、以下総称して「ご本人様」といいます）の個人情報が、個人情報保護法並びに個人の人格尊重（プライバシー保護）の理念の下に適正かつ慎重に取扱われるべきものであり、法令遵守のみならず、個人の権利利益と密接に関わるものであるという認識に基づき、個人情報の取扱いに際して以下の事項を誓約させていただきます。
+                </p>
+                
+                <div class="space-y-4 text-xs sm:text-sm">
+                    <p><span class="font-bold">1.</span> 個人情報の保護に関する法律、同法についての個人情報保護委員会ガイドラインその他の関係法令などを遵守するとともに、一般に公正妥当と認められる個人情報の取扱いに関する慣行に準拠し、適切に取扱います。また、適宜、取扱いの改善に努めます。</p>
+                    <p><span class="font-bold">2.</span> 個人情報の取扱いに関する規定を明確にし、従業員などに周知徹底します。また、取引先などに対しても適切に個人情報を取扱うように要請します。</p>
+                    <p><span class="font-bold">3.</span> 個人情報の取得に際しては、利用目的を特定して通知または公表し、必要な場合は利用 of 同意を得た上で、その利用目的に従って個人情報を取扱います。</p>
+                    <p><span class="font-bold">4.</span> 個人情報を取扱うに当たっては、原則として利用目的（お問い合わせへの返答、サービスのご提案等）に必要な範囲内で保存期間を定めるものとし、法令により例外として扱うことが認められている場合を除き、保存期間経過または利用目的を達成した後は、個人情報を遅滞なく消去します。</p>
+                    <p><span class="font-bold">5.</span> 個人情報の漏えい、滅失、またはき損の防止を図るため、組織的、人的、物理的および技術的な安全管理措置を行います。並びに不適合が発生した場合、その原因を除去し再発しないようにし、是正処置を行います。</p>
+                    <p><span class="font-bold">6.</span> 保有する個人情報について、お客様ご本人からの開示、訂正、削除、利用停止の依頼を所定の窓口でお受けして、誠意をもって対応します。</p>
+                    <p><span class="font-bold">7.</span> 事業の内容および規模を考慮し、適切な個人情報の取得、利用および提供を行います。特定された利用目的の達成に必要な範囲を超えて個人情報を取扱う場合の承認の手続きを定め、目的外利用がされていないことを監視するなど、目的外利用が行われないようにします。</p>
+                    <p><span class="font-bold">8.</span> 苦情および相談に対して適切かつ迅速に対応するため、苦情および相談対応 of 責任者や手順などを定めて対応します。また、問題の及ぶ範囲を最小限にするように適切に処置をします。</p>
+                    <p><span class="font-bold">9.</span> 定期的な内部監査、社会情勢の変化や技術の進歩などを通して、個人情報保護マネジメントシステムの継続的改善を行います。</p>
+                </div>
+
+                <div class="bg-gray-50 p-4 rounded-xl space-y-1 text-xs mt-6 border border-gray-100">
+                    <p>制定日：2007年8月28日</p>
+                    <p>最終改訂日：2024年2月8日</p>
+                    <p class="font-bold text-gray-900 mt-2">株式会社EPARK</p>
+                    <p class="text-gray-700 font-semibold">代表取締役社長 押切 孝平</p>
+                </div>
+
+                <div class="bg-orange-50/50 p-4 rounded-xl text-xs mt-4 border border-orange-100/50 space-y-2">
+                    <p class="font-bold text-brandOrange">≪個人情報保護方針に関するお問い合わせ先≫</p>
+                    <p class="font-semibold text-gray-900">株式会社EPARK 個人情報取扱い窓口</p>
+                    <p class="text-gray-600">個人情報保護管理者：内部統制部 マネージャー</p>
+                    <p class="text-gray-600">問い合わせ方法：<a href="https://epark.co.jp/contact" target="_blank" rel="noopener noreferrer" class="text-brandOrange underline hover:text-brandOrangeHover">https://epark.co.jp/contact</a></p>
+                    <p class="text-gray-600">受付時間：10:00～12:00 / 13:00～17:30 (※平日のみ。土日祝祭日・会社指定休日を除く)</p>
+                </div>
+            </div>
+            <!-- Modal Footer -->
+            <div class="px-6 py-4 border-t border-gray-100 bg-gray-50 text-right">
+                <button onclick="closeModal()" class="bg-gray-900 text-white font-bold px-6 py-2 rounded-full hover:bg-gray-800 transition text-sm">
+                    閉じる
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Interactive JS Logic -->
     <script>
+        // Custom interactive state management for routing switcher
+        // Initializing with 'customer' so the page has an active route by default
+        let currentRoute = 'customer';
+
+        function switchForm(route) {
+            // Set internal state
+            currentRoute = route;
+
+            // Define Elements
+            const btnCustomer = document.getElementById('btn-route-customer');
+            const btnPartner = document.getElementById('btn-route-partner');
+            const formCustomer = document.getElementById('form-customer');
+            const formPartner = document.getElementById('form-partner');
+
+            // Define modern Segmented Control Active / Inactive states classes
+            const activeClasses = ['bg-brandOrange', 'text-white', 'shadow-md'];
+            const inactiveClasses = ['text-gray-500', 'hover:text-gray-800'];
+
+            if (route === 'customer') {
+                // Apply Customer Active layout
+                activeClasses.forEach(cls => {
+                    btnCustomer.classList.add(cls);
+                    btnPartner.classList.remove(cls);
+                });
+                inactiveClasses.forEach(cls => {
+                    btnCustomer.classList.remove(cls);
+                    btnPartner.classList.add(cls);
+                });
+
+                // Display Correct Form
+                formCustomer.classList.remove('hidden');
+                formPartner.classList.add('hidden');
+            } else if (route === 'partner') {
+                // Apply Partner Active layout
+                activeClasses.forEach(cls => {
+                    btnPartner.classList.add(cls);
+                    btnCustomer.classList.remove(cls);
+                });
+                inactiveClasses.forEach(cls => {
+                    btnPartner.classList.remove(cls);
+                    btnCustomer.classList.add(cls);
+                });
+
+                // Display Correct Form
+                formPartner.classList.remove('hidden');
+                formCustomer.classList.add('hidden');
+            }
+
+            // Smooth Scroll to form top with minor offset
+            document.getElementById('contact').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
         // Custom Modal Form Submission Handler
-        function handleFormSubmission(event) {
+        function handleFormSubmission(event, type) {
             event.preventDefault();
             
-            // Show toast/success modal without breaking the frame
+            // Show toast/success modal
             const toast = document.getElementById('success-toast');
+            const toastMessage = document.getElementById('success-toast-message');
+
+            if (type === 'customer') {
+                toastMessage.innerText = 'お申し込み・お見積もりのご相談ありがとうございます。内容を確認の上、担当コンサルタントより折り返しご連絡いたします。';
+            } else {
+                toastMessage.innerText = 'アライアンス（代理店制度）のご検討ありがとうございます。提携制度やマージン設計の資料について、アライアンス担当者より折り返しメール、またはお電話にてご連絡させていただきます。';
+            }
+
             toast.classList.remove('hidden');
         }
 
@@ -305,11 +594,52 @@
             const toast = document.getElementById('success-toast');
             toast.classList.add('hidden');
             
-            // Clear inputs
-            document.getElementById('shop-name').value = '';
-            document.getElementById('contact-name').value = '';
-            document.getElementById('contact-phone').value = '';
-            document.getElementById('contact-email').value = '';
+            // Clear inputs based on which one was open
+            if (currentRoute === 'customer') {
+                document.getElementById('cust-shop-name').value = '';
+                document.getElementById('cust-contact-name').value = '';
+                document.getElementById('cust-contact-phone').value = '';
+                document.getElementById('cust-contact-email').value = '';
+                document.getElementById('cust-message').value = '';
+                document.getElementById('cust-privacy-agreement').checked = false;
+            } else {
+                document.getElementById('part-company-name').value = '';
+                document.getElementById('part-contact-name').value = '';
+                document.getElementById('part-contact-phone').value = '';
+                document.getElementById('part-contact-email').value = '';
+                document.getElementById('part-message').value = '';
+                document.getElementById('part-privacy-agreement').checked = false;
+            }
+        }
+
+        // Open Modal Script
+        function openModal() {
+            const modal = document.getElementById('legal-modal');
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Stop body scroll
+            
+            // Pop animation style
+            setTimeout(() => {
+                modal.firstElementChild.classList.remove('scale-95');
+            }, 10);
+        }
+
+        // Close Modal Script
+        function closeModal() {
+            const modal = document.getElementById('legal-modal');
+            modal.firstElementChild.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.body.style.overflow = ''; // Restore body scroll
+            }, 150);
+        }
+
+        // Close on background click
+        window.onclick = function(event) {
+            const modal = document.getElementById('legal-modal');
+            if (event.target == modal) {
+                closeModal();
+            }
         }
     </script>
 </body>
