@@ -64,7 +64,7 @@
         <!-- Logo -->
         <a href="javascript:void(0)" onclick="navigateTo('lp')" class="flex items-center shrink-0">
             <!-- ロゴ画像をユーザーから提供されたものに変更 -->
-            <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/img/rogo.png?raw=true" alt="EPARK集客でんき" class="h-9 w-auto object-contain" onerror="this.onerror=null; this.parentNode.innerHTML='<span class=\'text-xl font-black tracking-wider flex items-center\'><span class=\'text-eparkGreen\'>EPARK</span><span class=\'text-eparkOrange ml-1\'>集客でんき</span></span>'">
+            <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/img/rogo.png?raw=true" alt="EPARK集客でんき" class="h-9 w-auto object-contain" onerror="this.onerror=null; this.parentNode.innerHTML='<span class=\'text-xl font-black tracking-wider flex items-center\'><span class=\'text-eparkGreen\'>EPARK</span><span class=\'text-eparkOrange ml-1\'>集客でんき</span></span>_'">
         </a>
 
         <!-- Desktop Navigation Links (md+) -->
@@ -123,7 +123,7 @@
 
     <!-- Drawer Header -->
     <div class="flex items-center justify-between px-5 py-4 border-b border-eparkGray-border bg-eparkGreen-dark">
-        <span class="text-white font-black text-base tracking-wide">
+        <span class="text-white font-black text-base tracking-wide whitespace-nowrap">
             <span class="text-eparkGreen" style="color:#4ade80">EPARK</span>
             <span class="text-eparkOrange" style="color:#fb923c"> 集客でんき</span>
         </span>
@@ -671,7 +671,7 @@
                                     <li>安全ブレーカー（右側に並む小さなスイッチ）を<strong>すべて「切」</strong>にします。</li>
                                     <li>アンペアブレーカーと、この<strong>「漏電ブレーカー」を「入」</strong>にします。</li>
                                     <li>安全ブレーカーを、<strong>左から右へ一つずつ「入」</strong>にしていきます。</li>
-                                    <li>特定の安全ブレーカーを入れた瞬間に、<strong>再び漏電ブレーカーが落ちた場合</strong>、そのスイッチの電気系統（その部屋・エリア、または接続製品）に漏電原因があります。</li>
+                                    <li>特定の安全ブレーカーを入れた瞬間に、<strong>再び漏電ブレーカーが落ちた場合</strong>, そのスイッチの電気系統（その部屋・エリア、または接続製品）に漏電原因があります。</li>
                                     <li><strong>漏電原因の安全ブレーカーのみを「切」</strong>のまま残し、漏電ブレーカーと他のすべてのスイッチを再度「入」に戻せば、その他の安全なエリアは電気が復旧します。</li>
                                 </ol>
                                 <p class="text-[10px] text-red-700 mt-2">
@@ -1647,7 +1647,7 @@
                 <ul class="space-y-2">
                     <li><a href="javascript:void(0)" onclick="navigateTo('rule-list')" class="hover:text-eparkGreen transition">約款・規約一覧</a></li>
                     <li><a href="javascript:void(0)" onclick="navigateTo('important-matters')" class="hover:text-eparkGreen transition">重要事項説明書</a></li>
-                    <li><a href="https://epark.co.jp/privacy" target="_blank" class="hover:text-eparkGreen transition">プライバシーポリシー</a></li>
+                    <li><a href="https://epark.co.jp/privacy" target="_blank" class="hover:text-eparkGreen transition">情報セキュリティポリシー</a></li>
                 </ul>
             </div>
 
@@ -1673,15 +1673,18 @@
 
     <!-- Bottom Deep Green Bar -->
     <div class="bg-eparkGreen-dark text-white/90 py-5">
+        <!-- flex-col 時のセンタリング配置を維持しつつ、幅の狭い画面での各要素の余裕を持たせるレイアウトに変更 -->
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-medium">
-            <div class="flex items-center gap-3">
-                <span onclick="navigateTo('lp')" class="text-base font-black tracking-wider flex items-center cursor-pointer">
+            <!-- flex-wrap や flex-col を駆使し、スマートフォンでも絶対にテキスト同士が重なって崩れないコンテナに変更 -->
+            <div class="flex flex-col md:flex-row items-center gap-2 md:gap-3 text-center md:text-left">
+                <!-- whitespace-nowrap を追加して、ロゴテキストが絶対に画面端で不自然に改行されないように修正 -->
+                <span onclick="navigateTo('lp')" class="text-base font-black tracking-wider flex items-center justify-center md:justify-start cursor-pointer shrink-0 whitespace-nowrap">
                     <span class="text-eparkGreen">EPARK</span>
                     <span class="text-eparkOrange ml-1">集客でんき</span>
                 </span>
-                <span class="text-[10px] text-white/70">集客も、売上も、電気代もまるごとサポート。</span>
+                <span class="text-[10px] text-white/70 block md:inline">集客も、売上も、電気代もまるごとサポート。</span>
             </div>
-            <div class="text-[10px] text-white/50">
+            <div class="text-[10px] text-white/50 whitespace-nowrap">
                 &copy; EPARK, Inc. All Rights Reserved.
             </div>
         </div>
@@ -1991,7 +1994,7 @@
                     <p>・新規お申込み受付・Webでのお問い合わせ窓口</p>
                 </div>
                 <p>※実際の送電や電気のご使用には一切影響ございませんのでご安心ください。</p>
-                <p>ご不便をおかけいたしますが、システムの安定稼働のため、ご理解とご協力のほどよろしくお願い申し上げます。</p>
+                <p>ご不便をおかけいたしますが、システムの安定稼働のため、ご理解とご協力 of ほどよろしくお願い申し上げます。</p>
             `
         },
         {
