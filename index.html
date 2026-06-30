@@ -1,0 +1,2657 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EPARK集客でんき | 予約メディアのEPARKがお店の未来を支えるでんきをお届け</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts Noto Sans JP -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Lucide Icons for vector icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        eparkGreen: {
+                            DEFAULT: '#008d51',
+                            dark: '#006341',
+                            light: '#e6f4f0',
+                        },
+                        eparkOrange: {
+                            DEFAULT: '#ff7c00',
+                            light: '#fff5eb',
+                        },
+                        eparkDark: '#333333',
+                        eparkGray: {
+                            light: '#f8faf9',
+                            border: '#e4ebe7'
+                        },
+                        // service1.html の固有ブランドカラーを移植・拡張
+                        brandOrange: '#FF5A00',
+                        brandOrangeHover: '#E04F00',
+                        brandGreen: '#00A859',
+                        brandBlue: '#007AFF',
+                        brandAmber: '#FFF0E5',
+                        brandDark: '#222222'
+                    },
+                    fontFamily: {
+                        sans: ['Noto Sans JP', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            color: #333333;
+        }
+        .view-transition {
+            transition: opacity 0.2s ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-white overflow-x-hidden flex flex-col min-h-screen">
+
+<!-- HEADER SECTION -->
+<header class="sticky top-0 z-40 bg-white border-b border-eparkGray-border">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+
+        <!-- Logo -->
+        <a href="javascript:void(0)" onclick="navigateTo('lp')" class="flex items-center shrink-0">
+            <img src="https://www.genspark.ai/api/files/s/BAxgI0v8" alt="EPARK集客でんき" class="h-9 w-auto object-contain" onerror="this.onerror=null; this.parentNode.innerHTML='<span class=\'text-xl font-black tracking-wider flex items-center\'><span class=\'text-eparkGreen\'>EPARK</span><span class=\'text-eparkOrange ml-1\'>集客でんき</span></span>_'">
+        </a>
+
+        <!-- Desktop Navigation Links (md+) -->
+        <nav class="hidden md:flex items-center space-x-6 lg:space-x-8">
+            <a href="javascript:void(0)" onclick="navigateTo('lp', 'about')" class="text-eparkDark font-bold hover:text-eparkGreen transition duration-200 text-[13px]">サービス</a>
+            <a href="javascript:void(0)" onclick="navigateTo('news-list')" class="text-eparkDark font-bold hover:text-eparkGreen transition duration-200 text-[13px]">お知らせ</a>
+            <a href="javascript:void(0)" onclick="navigateTo('partner')" class="text-eparkDark font-bold hover:text-eparkGreen transition duration-200 text-[13px]">パートナー募集</a>
+            <!-- 企業情報を外部企業サイト（epark.co.jp）へダイレクトにリンク -->
+            <a href="https://epark.co.jp" target="_blank" rel="noopener noreferrer" class="text-eparkDark font-bold hover:text-eparkGreen transition duration-200 text-[13px]">企業情報</a>
+        </nav>
+
+        <!-- Desktop Action Buttons (md+) -->
+        <div class="hidden md:flex items-center space-x-2">
+            <button onclick="openModal('mypageModal')" class="flex items-center gap-1.5 border border-eparkGreen text-eparkGreen hover:bg-eparkGreen hover:text-white transition-all duration-300 font-bold px-3 py-2 rounded text-[12px]">
+                <i data-lucide="user" class="w-3.5 h-3.5"></i>
+                マイページ
+            </button>
+            <button onclick="openModal('contactModal')" class="flex items-center gap-1.5 bg-eparkGreen-dark text-white hover:bg-eparkGreen transition-all duration-300 font-bold px-3 py-2 rounded text-[12px]">
+                <i data-lucide="mail" class="w-3.5 h-3.5"></i>
+                お問い合わせ
+            </button>
+        </div>
+
+        <!-- SP: Right side buttons + Hamburger -->
+        <div class="flex md:hidden items-center gap-2">
+            <!-- SP マイページ（アイコンのみ） -->
+            <button onclick="openModal('mypageModal')"
+                class="flex items-center justify-center w-9 h-9 border border-eparkGreen text-eparkGreen hover:bg-eparkGreen hover:text-white rounded transition-all duration-300"
+                aria-label="マイページ">
+                <i data-lucide="user" class="w-4 h-4"></i>
+            </button>
+            <!-- SP お問い合わせ（アイコンのみ） -->
+            <button onclick="openModal('contactModal')"
+                class="flex items-center justify-center w-9 h-9 bg-eparkGreen-dark text-white hover:bg-eparkGreen rounded transition-all duration-300"
+                aria-label="お問い合わせ">
+                <i data-lucide="mail" class="w-4 h-4"></i>
+            </button>
+            <!-- ハンバーガーボタン -->
+            <button id="hamburgerBtn" onclick="toggleDrawer()"
+                class="flex items-center justify-center w-9 h-9 rounded border border-eparkGray-border text-eparkDark hover:bg-eparkGray-light transition duration-200"
+                aria-label="メニュー">
+                <i data-lucide="menu" id="hamburgerIcon" class="w-5 h-5"></i>
+            </button>
+        </div>
+
+    </div>
+</header>
+
+<!-- SP DRAWER OVERLAY -->
+<div id="drawerOverlay" onclick="closeDrawer()"
+    class="fixed inset-0 z-30 bg-black/40 opacity-0 pointer-events-none transition-opacity duration-300 md:hidden"></div>
+
+<!-- SP DRAWER MENU -->
+<div id="drawerMenu"
+    class="fixed top-0 right-0 z-40 h-full w-72 max-w-[85vw] bg-white shadow-2xl transform translate-x-full transition-transform duration-300 ease-in-out md:hidden flex flex-col">
+
+    <!-- Drawer Header -->
+    <div class="flex items-center justify-between px-5 py-4 border-b border-eparkGray-border bg-eparkGreen-dark">
+        <span class="text-white font-black text-base tracking-wide">
+            <span class="text-eparkGreen" style="color:#4ade80">EPARK</span>
+            <span class="text-eparkOrange" style="color:#fb923c"> 集客でんき</span>
+        </span>
+        <button onclick="closeDrawer()" class="text-white/80 hover:text-white" aria-label="閉じる">
+            <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+    </div>
+
+    <!-- Drawer Nav Links -->
+    <nav class="flex-1 overflow-y-auto py-4 px-2">
+        <ul class="space-y-1">
+            <li>
+                <a href="javascript:void(0)" onclick="closeDrawer(); navigateTo('lp')"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-bold text-eparkDark hover:bg-eparkGreen/5 hover:text-eparkGreen transition duration-200">
+                    <i data-lucide="home" class="w-4 h-4 text-eparkGreen"></i>
+                    トップページ
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0)" onclick="closeDrawer(); navigateTo('lp', 'about')"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-bold text-eparkDark hover:bg-eparkGreen/5 hover:text-eparkGreen transition duration-200">
+                    <i data-lucide="info" class="w-4 h-4 text-eparkGreen"></i>
+                    サービスについて
+                </a>
+            </li>
+            <li>
+                <!-- 詳細ページ廃止に伴い、LP内のデリバリー支援パックセクションへスクロールするように修正 -->
+                <a href="javascript:void(0)" onclick="closeDrawer(); navigateTo('lp', 'delivery-pack')"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-bold text-eparkDark hover:bg-eparkGreen/5 hover:text-eparkGreen transition duration-200">
+                    <i data-lucide="package" class="w-4 h-4 text-eparkGreen"></i>
+                    デリバリー支援パック
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0)" onclick="closeDrawer(); navigateTo('news-list')"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-bold text-eparkDark hover:bg-eparkGreen/5 hover:text-eparkGreen transition duration-200">
+                    <i data-lucide="bell" class="w-4 h-4 text-eparkGreen"></i>
+                    お知らせ
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0)" onclick="closeDrawer(); navigateTo('news-list')"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-bold text-eparkDark hover:bg-eparkGreen/5 hover:text-eparkGreen transition duration-200">
+                    <i data-lucide="handshake" class="w-4 h-4 text-eparkGreen"></i>
+                    パートナー募集
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0)" onclick="closeDrawer(); navigateTo('faq')"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-bold text-eparkDark hover:bg-eparkGreen/5 hover:text-eparkGreen transition duration-200">
+                    <i data-lucide="help-circle" class="w-4 h-4 text-eparkGreen"></i>
+                    よくあるご質問
+                </a>
+            </li>
+            <li class="border-t border-eparkGray-border mt-2 pt-2">
+                <a href="javascript:void(0)" onclick="closeDrawer(); navigateTo('denki-charge')"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg text-xs font-bold text-gray-500 hover:bg-eparkGreen/5 hover:text-eparkGreen transition duration-200">
+                    <i data-lucide="zap" class="w-4 h-4 text-gray-400"></i>
+                    電源調達調整費とは
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0)" onclick="closeDrawer(); navigateTo('teiden')"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg text-xs font-bold text-gray-500 hover:bg-eparkGreen/5 hover:text-eparkGreen transition duration-200">
+                    <i data-lucide="alert-triangle" class="w-4 h-4 text-gray-400"></i>
+                    停電時の対応方法
+                </a>
+            </li>
+            <li>
+                <a href="javascript:void(0)" onclick="closeDrawer(); navigateTo('rule-list')"
+                    class="flex items-center gap-3 px-4 py-3 rounded-lg text-xs font-bold text-gray-500 hover:bg-eparkGreen/5 hover:text-eparkGreen transition duration-200">
+                    <i data-lucide="file-text" class="w-4 h-4 text-gray-400"></i>
+                    約款・規約一覧
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Drawer Footer Buttons -->
+    <div class="px-4 py-5 border-t border-eparkGray-border space-y-3">
+        <button onclick="closeDrawer(); openModal('mypageModal')"
+            class="w-full flex items-center justify-center gap-2 border border-eparkGreen text-eparkGreen hover:bg-eparkGreen hover:text-white transition duration-300 font-bold py-3 rounded text-sm">
+            <i data-lucide="user" class="w-4 h-4"></i>
+            マイページにログイン
+        </button>
+        <button onclick="closeDrawer(); openModal('contactModal')"
+            class="w-full flex items-center justify-center gap-2 bg-eparkGreen-dark hover:bg-eparkGreen text-white transition duration-300 font-bold py-3 rounded text-sm">
+            <i data-lucide="mail" class="w-4 h-4"></i>
+            お問い合わせ
+        </button>
+    </div>
+
+</div>
+
+<main class="flex-grow">
+    <!-- ==========================================
+         VIEW 1: LANDING PAGE (LP)
+         ========================================== -->
+    <div id="lpView" class="view-transition">
+        
+        <!-- HERO SECTION -->
+        <section class="relative bg-white overflow-hidden border-b border-eparkGray-border">
+            <div class="max-w-7xl mx-auto px-0 md:px-6 lg:px-8 py-0 md:py-10">
+
+                <!-- Hero Image (Responsive: PC & SP switcher) -->
+                <!-- PC version -->
+                <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/img/hero.png?raw=true" alt="EPARK集客でんき ヒーロービジュアル (PC)" class="hidden md:block w-full h-auto rounded-2xl shadow-sm object-cover">
+                <!-- SP version -->
+                <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/img/hero(SP).png?raw=true" alt="EPARK集客でんき ヒーロービジュアル (SP)" class="block md:hidden w-full h-auto object-cover">
+
+                <!-- Action Buttons below hero image -->
+                <div class="flex flex-col sm:flex-row gap-3 justify-center mt-6 md:mt-8 mb-8 md:mb-0 px-4 md:px-0">
+                    <button onclick="openModal('mypageModal')" class="flex items-center justify-center gap-2 bg-eparkGreen-dark hover:bg-eparkGreen text-white transition duration-300 font-bold px-8 py-3.5 rounded text-[13px] shadow-sm">
+                        <i data-lucide="log-in" class="w-4 h-4"></i>
+                        マイページにログイン
+                    </button>
+                    <button onclick="openModal('contactModal')" class="flex items-center justify-center gap-2 border border-eparkGreen text-eparkGreen hover:bg-eparkGreen hover:text-white bg-white transition duration-300 font-bold px-8 py-3.5 rounded text-[13px] shadow-sm">
+                        お問い合わせ
+                        <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    </button>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ABOUT US SECTION -->
+        <section id="about" class="py-16 bg-eparkGray-light">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                    
+                    <!-- Left Side: Section Intro -->
+                    <div class="lg:col-span-4 space-y-4">
+                        <span class="text-[12px] font-bold tracking-widest text-eparkGreen block">ABOUT US</span>
+                        <h2 class="text-2xl font-black text-eparkDark leading-tight">
+                            EPARK集客でんきとは
+                        </h2>
+                        <p class="text-xs text-gray-600 leading-relaxed font-medium">
+                            EPARK集客でんきとは、EPARKが提供する「電気」と<br>
+                            「集客支援」を組み合わせた新しい電力サービスです。
+                        </p>
+                    </div>
+
+                    <!-- Right Side: 3 Styled Column Cards -->
+                    <div class="lg:col-span-8 grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <!-- Card 1 -->
+                        <div class="bg-white rounded p-6 border border-eparkGray-border flex flex-col items-center text-center">
+                            <div class="text-eparkGreen mb-4">
+                                <i data-lucide="users" class="w-10 h-10 stroke-[1.2]"></i>
+                            </div>
+                            <span class="text-[11px] font-bold text-eparkGreen mb-1">EPARK会員基盤</span>
+                            <h4 class="text-base font-black text-eparkDark mb-2">約6,000万人</h4>
+                            <p class="text-[11px] text-gray-500 leading-relaxed">
+                                日本最大級の会員基盤で<br>幅広くアプローチ
+                            </p>
+                        </div>
+
+                        <!-- Card 2 -->
+                        <div class="bg-white rounded p-6 border border-eparkGray-border flex flex-col items-center text-center">
+                            <div class="text-eparkGreen mb-4">
+                                <i data-lucide="megaphone" class="w-10 h-10 stroke-[1.2]"></i>
+                            </div>
+                            <span class="text-[11px] font-bold text-eparkGreen mb-1">予約メディア運営</span>
+                            <h4 class="text-base font-black text-eparkDark mb-2">多様なメディア</h4>
+                            <p class="text-[11px] text-gray-500 leading-relaxed">
+                                多様なジャンルのメディアで<br>お店の魅力を発信
+                            </p>
+                        </div>
+
+                        <!-- Card 3 -->
+                        <div class="bg-white rounded p-6 border border-eparkGray-border flex flex-col items-center text-center">
+                            <div class="text-eparkGreen mb-4">
+                                <i data-lucide="trending-up" class="w-10 h-10 stroke-[1.2]"></i>
+                            </div>
+                            <span class="text-[11px] font-bold text-eparkGreen mb-1">集客・売上の向上</span>
+                            <h4 class="text-base font-black text-eparkDark mb-2">新規＆リピート</h4>
+                            <p class="text-[11px] text-gray-500 leading-relaxed">
+                                メディア掲載とメール配信で<br>新規顧客の獲得・リピートを支援
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- MAIN SERVICE SECTION -->
+        <section id="delivery-pack" class="py-16 bg-white overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-16 items-center">
+                    
+                    <!-- Left Side: Content Box -->
+                    <div class="lg:col-span-5 space-y-5">
+                        <span class="text-[12px] font-bold tracking-widest text-eparkGreen block mb-1">MAIN SERVICE</span>
+                        <h2 class="text-3xl font-black text-eparkDark tracking-tight leading-tight">
+                            デリバリー支援パック
+                        </h2>
+                        
+                        <!-- SP-Only Image: スマホ表示時のみ「デリバリー支援パックとは？」の直上へ表示 -->
+                        <div class="block lg:hidden my-4 w-full">
+                            <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/img/derivery.png?raw=true" alt="デリバリー支援パックイメージ" class="rounded-2xl w-full h-auto shadow-md border border-eparkGray-border/30">
+                        </div>
+
+                        <div class="space-y-3">
+                            <h3 class="text-base font-bold text-eparkGreen">デリバリー支援パックとは？</h3>
+                            <p class="text-[13px] text-gray-600 leading-relaxed font-medium">
+                                フードデリバリーを導入している飲食店様向けに、電気の切り替えとあわせて、デリバリーの集客・売上アップを強力に支援する限定サービスです。
+                            </p>
+                            <p class="text-xs text-gray-500 leading-relaxed">
+                                EPARKの約6,000万人会員にアプローチできるプロモーション特典などが、でんきのご契約にまるごとセットになっています。
+                            </p>
+                        </div>
+                        
+                        <!-- 最終的に任意の詳細URL（例: "/delivery-detail" などの別ディレクトリや外部LPパス）に誘導できるよう、href属性付きのリンク構造へ最適化。 -->
+                        <div class="pt-2">
+                            <a href="javascript:void(0)" onclick="handleDetailedPackRedirect()" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-eparkGreen-dark hover:bg-eparkGreen text-white transition-all duration-200 font-bold px-8 py-3.5 rounded-[10px] text-[14px] shadow-md hover:shadow-lg hover:-translate-y-0.5">
+                                デリバリー支援パックの詳細を見る
+                                <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Right Side: Graphic Image (PCのみ右側に並べて表示) -->
+                    <div class="hidden lg:flex lg:col-span-7 justify-center lg:justify-end w-full">
+                        <div class="w-full max-w-[620px]">
+                            <img src="https://github.com/yakimoto-design/eparkdenki/blob/main/img/derivery.png?raw=true" alt="デリバリー支援パックイメージ" class="rounded-2xl w-full h-auto shadow-md border border-eparkGray-border/30">
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+        <!-- NEWS SECTION -->
+        <section id="news" class="py-16 bg-white border-t border-eparkGray-border">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                
+                <!-- News Header -->
+                <div class="flex items-end justify-between pb-6 mb-8">
+                    <h2 class="text-xl font-black text-eparkDark">
+                        お知らせ
+                    </h2>
+                    <a href="javascript:void(0)" onclick="navigateTo('news-list')" class="inline-flex items-center gap-1 text-xs font-bold text-eparkGreen hover:text-eparkGreen-dark transition duration-200">
+                        一覧を見る
+                        <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+
+                <!-- News Horizontal Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <!-- News Article 1 -->
+                    <article onclick="openNewsDetail(0)" class="space-y-3 pr-4 md:border-r border-eparkGray-border/70 last:border-0 cursor-pointer group">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs text-gray-400 font-medium">2025.05.01</span>
+                            <span class="bg-eparkGreen text-white text-[9px] font-bold px-1.5 py-0.5 rounded">お知らせ</span>
+                        </div>
+                        <h3 class="text-xs font-bold text-eparkDark leading-relaxed group-hover:text-eparkGreen transition">
+                            電源調達調整費単価（2025年6月分）のお知らせ
+                        </h3>
+                    </article>
+
+                    <!-- News Article 2 -->
+                    <article onclick="openNewsDetail(1)" class="space-y-3 pr-4 md:border-r border-eparkGray-border/70 last:border-0 cursor-pointer group">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs text-gray-400 font-medium">2025.04.15</span>
+                            <span class="bg-eparkOrange text-white text-[9px] font-bold px-1.5 py-0.5 rounded">メンテナンス</span>
+                        </div>
+                        <h3 class="text-xs font-bold text-eparkDark leading-relaxed group-hover:text-eparkGreen transition">
+                            システムメンテナンスのお知らせ (5/20)
+                        </h3>
+                    </article>
+
+                    <!-- News Article 3 -->
+                    <article onclick="openNewsDetail(2)" class="space-y-3 pr-4 md:border-r border-eparkGray-border/70 last:border-0 cursor-pointer group">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs text-gray-400 font-medium">2025.04.01</span>
+                            <span class="bg-eparkGreen text-white text-[9px] font-bold px-1.5 py-0.5 rounded">お知らせ</span>
+                        </div>
+                        <h3 class="text-xs font-bold text-eparkDark leading-relaxed group-hover:text-eparkGreen transition">
+                            電源調達調整費単価（2025年5月分）のお知らせ
+                        </h3>
+                    </article>
+
+                    <!-- News Article 4 -->
+                    <article onclick="openNewsDetail(3)" class="space-y-3 pr-4 last:border-0 cursor-pointer group">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs text-gray-400 font-medium">2025.03.15</span>
+                            <span class="bg-eparkGreen text-white text-[9px] font-bold px-1.5 py-0.5 rounded">お知らせ</span>
+                        </div>
+                        <h3 class="text-xs font-bold text-eparkDark leading-relaxed group-hover:text-eparkGreen transition">
+                            約款改定のお知らせ
+                        </h3>
+                    </article>
+                </div>
+
+            </div>
+        </section>
+    </div>
+
+    <!-- ==========================================
+         VIEW 2: NEWS LIST PAGE
+         ========================================== -->
+    <div id="newsListView" class="view-transition hidden bg-eparkGray-light py-12">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Breadcrumbs -->
+            <div class="flex items-center gap-2 text-xs text-gray-500 mb-6">
+                <a href="javascript:void(0)" onclick="navigateTo('lp')" class="hover:text-eparkGreen transition font-bold">ホーム</a>
+                <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+                <span class="text-gray-700 font-bold">お知らせ一覧</span>
+            </div>
+
+            <!-- Page Header -->
+            <div class="mb-10 text-center lg:text-left">
+                <h1 class="text-3xl font-black text-eparkDark mb-2">お知らせ・ご案内</h1>
+                <p class="text-xs text-gray-500">EPARK集客でんきに関する最新の重要なお知らせやメンテナンス情報をお届けします。</p>
+            </div>
+
+            <!-- News List Controls -->
+            <div class="bg-white rounded-xl shadow-sm border border-eparkGray-border p-4 mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <!-- Filter Tabs -->
+                <div class="flex border-b border-gray-100 md:border-b-0">
+                    <button onclick="filterNews('all')" id="tab-all" class="px-4 py-2 text-xs font-bold text-eparkGreen border-b-2 border-eparkGreen transition-all duration-200">
+                        すべて
+                    </button>
+                    <button onclick="filterNews('info')" id="tab-info" class="px-4 py-2 text-xs font-bold text-gray-500 hover:text-eparkGreen transition-all duration-200">
+                        お知らせ
+                    </button>
+                    <button onclick="filterNews('maintenance')" id="tab-maintenance" class="px-4 py-2 text-xs font-bold text-gray-500 hover:text-eparkGreen transition-all duration-200">
+                        メンテナンス
+                    </button>
+                </div>
+
+                <!-- Search Input Box -->
+                <div class="relative w-full md:w-72">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                        <i data-lucide="search" class="w-4 h-4"></i>
+                    </span>
+                    <input type="text" id="newsSearchInput" oninput="searchNews()" placeholder="お知らせを検索..." class="w-full pl-9 pr-3 py-2 border border-eparkGray-border rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-eparkGreen bg-eparkGray-light">
+                </div>
+            </div>
+
+            <!-- Main Interactive News List Container -->
+            <div id="interactiveNewsContainer" class="space-y-4">
+                <!-- Javascriptによって動的生成 -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="newsEmptyState" class="hidden bg-white rounded-xl border border-eparkGray-border p-12 text-center">
+                <i data-lucide="info" class="w-12 h-12 text-gray-300 mx-auto mb-3"></i>
+                <p class="text-xs font-bold text-gray-500">条件に一致するお知らせが見つかりませんでした。</p>
+            </div>
+
+            <!-- Back to Home Action Button -->
+            <div class="mt-12 text-center">
+                <button onclick="navigateTo('lp')" class="inline-flex items-center gap-2 border border-eparkGreen text-eparkGreen hover:bg-eparkGreen hover:text-white transition duration-300 font-bold px-6 py-3 rounded text-xs shadow-sm">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    トップページへ戻る
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ==========================================
+         VIEW 3: FUEL ADJUSTMENT LIST PAGE
+         ========================================== -->
+    <div id="fuelAdjustmentListView" class="view-transition hidden bg-eparkGray-light py-12">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Breadcrumbs -->
+            <div class="flex items-center gap-2 text-xs text-gray-500 mb-6">
+                <a href="javascript:void(0)" onclick="navigateTo('lp')" class="hover:text-eparkGreen transition font-bold">ホーム</a>
+                <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+                <span class="text-gray-700 font-bold">過去の電源調達調整費単価一覧</span>
+            </div>
+
+            <!-- Page Header -->
+            <div class="mb-10 text-center lg:text-left">
+                <h1 class="text-3xl font-black text-eparkDark mb-2">過去の電源調達調整費単価</h1>
+                <p class="text-xs text-gray-500 leading-relaxed">
+                    過去の各月に適用された電源調達調整費単価の確認用ページです。各月のリンクをクリックすると、格納されている調整費PDFの一覧を別タブで開くことができます。
+                </p>
+            </div>
+
+            <!-- Month list cards -->
+            <div class="bg-white rounded-xl shadow-sm border border-eparkGray-border p-6 space-y-3">
+                <h2 class="text-sm font-black text-eparkGreen-dark border-b border-eparkGray-border pb-3 mb-4">月別PDFリンク先一覧</h2>
+
+                <!-- 2026年7月分 -->
+                <div class="flex items-center justify-between p-4 rounded-xl border border-eparkGray-border bg-eparkGray-light hover:bg-eparkGreen/5 hover:border-eparkGreen/30 transition duration-200 group">
+                    <div class="flex items-center gap-3">
+                        <div class="bg-red-100 text-red-600 p-2 rounded-lg">
+                            <i data-lucide="file-text" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <span class="text-xs sm:text-sm font-bold text-eparkDark block">2026年7月分 電源調達調整費単価</span>
+                            <span class="text-[10px] text-gray-400">PDF格納用リンクターゲット</span>
+                        </div>
+                    </div>
+                    <a href="javascript:void(0)" onclick="handlePdfLinkRedirect('2026年7月分')" class="flex items-center gap-1.5 text-xs font-bold text-eparkGreen group-hover:text-eparkGreen-dark transition">
+                        <span>リンクを開く</span>
+                        <i data-lucide="external-link" class="w-4 h-4"></i>
+                    </a>
+                </div>
+
+            </div>
+
+            <!-- Back to Home Action Button -->
+            <div class="mt-12 text-center">
+                <button onclick="navigateTo('lp')" class="inline-flex items-center gap-2 border border-eparkGreen text-eparkGreen hover:bg-eparkGreen hover:text-white transition duration-300 font-bold px-6 py-3 rounded text-xs shadow-sm">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    トップページへ戻る
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ==========================================
+         VIEW 4: BLACKOUT GUIDE PAGE
+         ========================================== -->
+    <div id="teidenView" class="view-transition hidden bg-eparkGray-light py-12">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <!-- Breadcrumbs -->
+            <div class="flex items-center gap-2 text-xs text-gray-500 mb-6">
+                <a href="javascript:void(0)" onclick="navigateTo('lp')" class="hover:text-eparkGreen transition font-bold">ホーム</a>
+                <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+                <span class="text-gray-700 font-bold">停電時の対応方法</span>
+            </div>
+
+            <!-- Header -->
+            <div class="mb-10 text-center lg:text-left space-y-2">
+                <h1 class="text-3xl font-black text-eparkDark">停電時の対応方法</h1>
+                <p class="text-xs text-gray-500 leading-relaxed">
+                    電気のご利用中に不具合や突然の停電が発生した際は、慌てずに以下の確認・操作手順を行ってください。
+                </p>
+            </div>
+
+            <!-- Alert Box -->
+            <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-8 rounded-r-xl">
+                <div class="flex items-start gap-3">
+                    <i data-lucide="alert-triangle" class="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5"></i>
+                    <div>
+                        <h4 class="text-xs font-bold text-red-800">切れた電線には絶対に触らないでください！</h4>
+                        <p class="text-[11px] text-red-700 mt-1 leading-relaxed">
+                            台風や地震の直後、路上等にちぎれて垂れ下がっている電線を見かけても、絶対に近づいたり触れたりせず、すぐに最寄りの一般送配電事業者（電力会社ネットワーク窓口）へご連絡ください。
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 1: Diagnosis -->
+            <section class="bg-white rounded-2xl border border-eparkGray-border p-6 sm:p-8 mb-8 shadow-sm">
+                <div class="flex items-center gap-2 mb-6">
+                    <span class="bg-eparkGreen text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center">1</span>
+                    <h2 class="text-base sm:text-lg font-black text-eparkDark">まず、停電している範囲を確認してください</h2>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Area-wide Blackout -->
+                    <div class="border border-eparkGray-border rounded-xl p-5 hover:border-eparkGreen/30 hover:shadow-md transition duration-200">
+                        <div class="flex items-center gap-2 text-eparkOrange font-bold mb-3 text-xs sm:text-sm">
+                            <i data-lucide="globe" class="w-5 h-5"></i>
+                            ご近所も一帯が停電している
+                        </div>
+                        <p class="text-[11px] text-gray-600 leading-relaxed mb-4">
+                            道路の信号機が消えている、あるいは近隣店舗や近所の家々も一斉に電気が消えている場合は、電力会社の配電設備（送電網）トラブルや落雷・台風等の外的要因による停電です。
+                        </p>
+                        <div class="bg-eparkGray-light p-3.5 rounded-lg border border-eparkGray-border text-[11px] text-gray-500">
+                            <strong>対処方法：</strong><br>
+                            送配電事業者（各地域の電力会社ネットワーク）が現在、復旧作業を進めています。下記の「送配電事業者のお問い合わせ窓口一覧」より復旧情報をご確認ください。
+                        </div>
+                    </div>
+
+                    <!-- Individual Blackout -->
+                    <div class="border border-eparkGray-border rounded-xl p-5 hover:border-eparkGreen/30 hover:shadow-md transition duration-200">
+                        <div class="flex items-center gap-2 text-eparkGreen font-bold mb-3 text-xs sm:text-sm">
+                            <i data-lucide="home" class="w-5 h-5"></i>
+                            自分の店舗・家だけが停電している
+                        </div>
+                        <p class="text-[11px] text-gray-600 leading-relaxed mb-4">
+                            隣近所の電気はついているのに、ご自身の店舗や家屋だけが消えている場合は、電気の使いすぎ等により宅内の分電盤（ブレーカー）が作動した可能性や、部分的な漏電が考えられます。
+                        </p>
+                        <div class="bg-eparkGray-light p-3.5 rounded-lg border border-eparkGray-border text-[11px] text-gray-500">
+                            <strong>対処方法：</strong><br>
+                            分電盤のある場所（レジ裏、給湯室、玄関など）へ移動し、ブレーカーが落ちていないか次の「ブレーカー操作手順」に沿ってご確認ください。
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 2: Breaker Guide -->
+            <section class="bg-white rounded-2xl border border-eparkGray-border p-6 sm:p-8 mb-8 shadow-sm">
+                <div class="flex items-center gap-2 mb-6">
+                    <span class="bg-eparkGreen text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center">2</span>
+                    <h2 class="text-base sm:text-lg font-black text-eparkDark">分電盤（ブレーカー）の確認と復旧手順</h2>
+                </div>
+
+                <p class="text-[11px] text-gray-500 leading-relaxed mb-6">
+                    分電盤のフタを開け、どのスイッチが「切（下側）」になっているかを確認し、以下に沿って操作してください。
+                </p>
+
+                <div class="space-y-6">
+                    <!-- Type A: Ampere Breaker -->
+                    <div class="border border-eparkGray-border/60 rounded-xl p-5 flex flex-col md:flex-row gap-5 items-start">
+                        <div class="bg-eparkGray-light p-4 rounded-lg w-full md:w-48 text-center shrink-0 border border-eparkGray-border">
+                            <span class="text-[10px] font-bold text-gray-400 block mb-1">分電盤の左端</span>
+                            <span class="text-xs font-black text-eparkDark block mb-2">アンペアブレーカー</span>
+                            <div class="w-12 h-12 mx-auto bg-gray-200 rounded-md flex items-center justify-center text-gray-500 font-bold text-lg border border-gray-300">
+                                40A
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <h4 class="font-bold text-xs sm:text-sm text-eparkDark">電気全体の使いすぎにより、これが「切」になっている場合</h4>
+                            <p class="text-[11px] text-gray-600 leading-relaxed">
+                                建物全体で同時に使用する電化製品の合計消費電力が、現在ご契約中のアンペア容量の上限を超えたため安全装置が働きました。
+                            </p>
+                            <div class="text-[11px] bg-eparkGreen/5 p-3 rounded-lg border border-eparkGreen/20">
+                                <strong>復旧手順：</strong><br>
+                                使用中の電化製品（エアコン、ケトル、レンジ、大型オーブン等）の電源をいくつか切ってから、アンペアブレーカーのスイッチを「入（上側）」に戻してください。
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Type B: Earth Leakage Breaker -->
+                    <div class="border border-eparkGray-border/60 rounded-xl p-5 flex flex-col md:flex-row gap-5 items-start">
+                        <div class="bg-red-50/50 p-4 rounded-lg w-full md:w-48 text-center shrink-0 border border-red-100">
+                            <span class="text-[10px] font-bold text-red-400 block mb-1">分電盤の中央（ボタン付）</span>
+                            <span class="text-xs font-black text-red-800 block mb-2">漏電ブレーカー</span>
+                            <div class="w-12 h-12 mx-auto bg-red-100 rounded-md flex items-center justify-center text-gray-500 font-bold border border-red-200">
+                                <i data-lucide="shield-alert" class="w-6 h-6 text-red-600"></i>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <h4 class="font-bold text-xs sm:text-sm text-red-800">配線や電化製品の「漏電」を検知してこれが「切」になっている場合</h4>
+                            <p class="text-[11px] text-gray-600 leading-relaxed">
+                                建物内の配線、または接続されている特定の電化製品が漏電しており、火災や感電を防ぐために自動的に電気を遮断しました。
+                            </p>
+                            <div class="text-[11px] bg-red-50 p-4 rounded-lg border border-red-200 space-y-2 text-red-900">
+                                <strong class="font-bold block">【漏電箇所の安全な切り分け・特定手順】</strong>
+                                <ol class="list-decimal list-inside space-y-1 pl-1 text-[11px] leading-relaxed">
+                                    <li>安全ブレーカー（右側に並む小さなスイッチ）を<strong>すべて「切」</strong>にします。</li>
+                                    <li>アンペアブレーカーと、この<strong>「漏電ブレーカー」を「入」</strong>にします。</li>
+                                    <li>安全ブレーカーを、<strong>左から右へ一つずつ「入」</strong>にしていきます。</li>
+                                    <li>特定の安全ブレーカーを入れた瞬間に、<strong>再び漏電ブレーカーが落ちた場合</strong>、そのスイッチの電気系統（その部屋・エリア、または接続製品）に漏電原因があります。</li>
+                                    <li><strong>漏電原因の安全ブレーカーのみを「切」</strong>のまま残し、漏電ブレーカーと他のすべてのスイッチを再度「入」に戻せば、その他の安全なエリアは電気が復旧します。</li>
+                                </ol>
+                                <p class="text-[10px] text-red-700 mt-2">
+                                    ※漏電箇所が特定されましたら、直ちに使用を中止し、電気工事店や専門業者へ点検・修理をご依頼ください。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Type C: Safety Breaker -->
+                    <div class="border border-eparkGray-border/60 rounded-xl p-5 flex flex-col md:flex-row gap-5 items-start">
+                        <div class="bg-eparkGray-light p-4 rounded-lg w-full md:w-48 text-center shrink-0 border border-eparkGray-border">
+                            <span class="text-[10px] font-bold text-gray-400 block mb-1">分電盤の右側に並む小スイッチ</span>
+                            <span class="text-xs font-black text-eparkDark block mb-2">安全ブレーカー</span>
+                            <div class="w-12 h-12 mx-auto bg-gray-200 rounded-md flex items-center justify-center text-gray-500 font-bold border border-gray-300">
+                                <i data-lucide="toggle-right" class="w-6 h-6 text-gray-500"></i>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <h4 class="font-bold text-xs sm:text-sm text-eparkDark">特定の小さなスイッチだけが「切」になっている場合</h4>
+                            <p class="text-[11px] text-gray-600 leading-relaxed">
+                                その特定の安全ブレーカーがカバーしているエリア（給湯室のみ、レジ周りのコンセントのみ等）で、部分的に電化製品を使いすぎた、または故障が起きたため個別保護装置が働きました。
+                            </p>
+                            <div class="text-[11px] bg-eparkGreen/5 p-3 rounded-lg border border-eparkGreen/20">
+                                <strong>復旧手順：</strong><br>
+                                停電したエリアで使用していたコンセントから電化製品のプラグを一度抜き、その安全ブレーカーを「入（上側）」に上げてください。
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Step 3: Regional Grid contacts -->
+            <section class="bg-white rounded-2xl border border-eparkGray-border p-6 sm:p-8 mb-8 shadow-sm">
+                <div class="flex items-center gap-2 mb-4">
+                    <span class="bg-eparkGreen text-white text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center">3</span>
+                    <h2 class="text-base sm:text-lg font-black text-eparkDark">送配電事業者（ネットワークエリア）のお問い合わせ窓口一覧</h2>
+                </div>
+                <p class="text-[11px] text-gray-500 leading-relaxed mb-6">
+                    停電情報の照会や送電線トラブルの緊急通報は、地域のインフラ基盤を維持する「一般送配電事業者」がお問い合わせ窓口となります。お住まい・店舗の電力エリアから該当する窓口をご確認ください。
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    
+                    <!-- 北海道 -->
+                    <div class="border border-eparkGray-border rounded-xl p-4 bg-eparkGray-light/40 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-xs font-black text-eparkDark">北海道電力ネットワーク</h4>
+                            <span class="text-[10px] text-gray-400 font-medium">北海道エリア</span>
+                        </div>
+                        <div class="flex flex-col gap-1.5 text-[11px]">
+                            <a href="https://www.hepco.co.jp/network/corporate/company/branch/index.html" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 text-eparkGreen hover:underline font-bold">
+                                <i data-lucide="phone" class="w-3.5 h-3.5"></i>
+                                お問い合わせ先を確認する
+                            </a>
+                            <a href="https://www.hepco.co.jp/network/power_outage/index.html" target="_blank" class="flex items-center gap-1.5 text-gray-500 hover:text-eparkGreen transition">
+                                <i data-lucide="external-link" class="w-3.5 h-3.5 text-gray-400"></i>
+                                リアルタイム停電情報
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 東北 -->
+                    <div class="border border-eparkGray-border rounded-xl p-4 bg-eparkGray-light/40 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-xs font-black text-eparkDark">東北電力ネットワーク</h4>
+                            <span class="text-[10px] text-gray-400 font-medium">東北・新潟エリア</span>
+                        </div>
+                        <div class="flex flex-col gap-1.5 text-[11px]">
+                            <a href="https://nw.tohoku-epco.co.jp/contact/tel/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 text-eparkGreen hover:underline font-bold">
+                                <i data-lucide="phone" class="w-3.5 h-3.5"></i>
+                                お問い合わせ先を確認する
+                            </a>
+                            <a href="https://nw.tohoku-epco.co.jp/app/" target="_blank" class="flex items-center gap-1.5 text-gray-500 hover:text-eparkGreen transition">
+                                <i data-lucide="external-link" class="w-3.5 h-3.5 text-gray-400"></i>
+                                リアルタイム停電情報
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 東京 -->
+                    <div class="border border-eparkGray-border rounded-xl p-4 bg-eparkGray-light/40 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-xs font-black text-eparkDark">東京電力パワーグリッド</h4>
+                            <span class="text-[10px] text-gray-400 font-medium">関東・山梨・静岡東部</span>
+                        </div>
+                        <div class="flex flex-col gap-1.5 text-[11px]">
+                            <a href="https://www.tepco.co.jp/pg/user/contact.html" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 text-eparkGreen hover:underline font-bold">
+                                <i data-lucide="phone" class="w-3.5 h-3.5"></i>
+                                お問い合わせ先を確認する
+                            </a>
+                            <a href="https://teideninfo.tepco.co.jp/" target="_blank" class="flex items-center gap-1.5 text-gray-500 hover:text-eparkGreen transition">
+                                <i data-lucide="external-link" class="w-3.5 h-3.5 text-gray-400"></i>
+                                リアルタイム停電情報
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 中部 -->
+                    <div class="border border-eparkGray-border rounded-xl p-4 bg-eparkGray-light/40 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-xs font-black text-eparkDark">中部電力パワーグリッド</h4>
+                            <span class="text-[10px] text-gray-400 font-medium">東海5県・長野エリア</span>
+                        </div>
+                        <div class="flex flex-col gap-1.5 text-[11px]">
+                            <a href="https://powergrid.chuden.co.jp/corporate/company/officelist/com_office/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 text-eparkGreen hover:underline font-bold">
+                                <i data-lucide="phone" class="w-3.5 h-3.5"></i>
+                                お問い合わせ先を確認する
+                            </a>
+                            <a href="https://powergrid.chuden.co.jp/goannai/ippan/safety/taishoho/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-5 text-gray-500 hover:text-eparkGreen transition">
+                                <i data-lucide="external-link" class="w-3.5 h-3.5 text-gray-400"></i>
+                                リアルタイム停電情報
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 北陸 -->
+                    <div class="border border-eparkGray-border rounded-xl p-4 bg-eparkGray-light/40 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-xs font-black text-eparkDark">北陸電力送配電</h4>
+                            <span class="text-[10px] text-gray-400 font-medium">北陸エリア</span>
+                        </div>
+                        <div class="flex flex-col gap-1.5 text-[11px]">
+                            <a href="https://www.rikuden.co.jp/nw_toiawase/index.html" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 text-eparkGreen hover:underline font-bold">
+                                <i data-lucide="phone" class="w-3.5 h-3.5"></i>
+                                お問い合わせ先を確認する
+                            </a>
+                            <a href="https://www.rikuden.co.jp/nw/teiden/otj010.html" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 text-gray-500 hover:text-eparkGreen transition">
+                                <i data-lucide="external-link" class="w-3.5 h-3.5 text-gray-400"></i>
+                                リアルタイム停電情報
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 関西 -->
+                    <div class="border border-eparkGray-border rounded-xl p-4 bg-eparkGray-light/40 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-xs font-black text-eparkDark">関西電力送配電</h4>
+                            <span class="text-[10px] text-gray-400 font-medium">近畿・関西エリア</span>
+                        </div>
+                        <div class="flex flex-col gap-1.5 text-[11px]">
+                            <a href="https://kansai-td.support-navi.jp/t01/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 text-eparkGreen hover:underline font-bold">
+                                <i data-lucide="phone" class="w-3.5 h-3.5"></i>
+                                お問い合わせ先を確認する
+                            </a>
+                            <a href="https://www.kansai-td.co.jp/teiden-info/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 text-gray-500 hover:text-eparkGreen transition">
+                                <i data-lucide="external-link" class="w-3.5 h-3.5 text-gray-400"></i>
+                                リアルタイム停電情報
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+
+            </section>
+        </div>
+
+        <!-- Back to Home Action Button -->
+        <div class="mt-12 text-center pb-12">
+            <button onclick="navigateTo('lp')" class="inline-flex items-center gap-2 border border-eparkGreen text-eparkGreen hover:bg-eparkGreen hover:text-white transition duration-300 font-bold px-6 py-3 rounded text-xs shadow-sm">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                トップページへ戻る
+            </button>
+        </div>
+
+    </div>
+
+    <!-- ==========================================
+         VIEW 5: DENKI CHARGE PAGE（電源調達調整費とは）
+         ========================================== -->
+    <div id="denkiChargeView" class="view-transition hidden bg-eparkGray-light py-12">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <!-- Breadcrumbs -->
+            <div class="flex items-center gap-2 text-xs text-gray-500 mb-6">
+                <a href="javascript:void(0)" onclick="navigateTo('lp')" class="hover:text-eparkGreen transition font-bold">ホーム</a>
+                <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+                <span class="text-gray-700 font-bold">電源調達調整費とは</span>
+            </div>
+
+            <!-- Page Header -->
+            <div class="mb-10">
+                <span class="text-[12px] font-bold tracking-widest text-eparkGreen block mb-1">ABOUT FUEL ADJUSTMENT</span>
+                <h1 class="text-3xl font-black text-eparkDark mb-2">電源調達調整費とは</h1>
+                <p class="text-xs text-gray-500 leading-relaxed">
+                    EPARK集客でんきにおける電源調達調整費の仕組みと算定方法についてご説明します。
+                </p>
+            </div>
+
+            <!-- Main Content -->
+            <div class="space-y-6">
+
+                <!-- Section 1: 概要 -->
+                <div class="bg-white rounded-2xl border border-eparkGray-border p-6 sm:p-8 shadow-sm">
+                    <div class="flex items-center gap-2 mb-5">
+                        <div class="bg-eparkGreen text-white p-2 rounded-lg">
+                            <i data-lucide="zap" class="w-5 h-5"></i>
+                        </div>
+                        <h2 class="text-base sm:text-lg font-black text-eparkDark">電源調達調整費とは？</h2>
+                    </div>
+                    <div class="space-y-4 text-sm text-gray-600 leading-relaxed">
+                        <p>
+                            EPARK集客でんきでは、日本卸電力取引所（JEPX）が公開する電力取引価格に連動した「電源調達調整費」を導入しております。本調整費は、JEPXの市場取引価格の変動を電気料金に適正に反映するための項目です。
+                        </p>
+                        <p>
+                            電気を市場から安定調達するための平均コストが一定の「基準単価」を下回った月は、電気料金から自動的にマイナス値引き（調達調整還元）を行います。逆に、冷暖房期や世界的なエネルギー燃料高騰などにより、調達コストが基準値を超過した場合は、差額実費分を追加調整費として算定いたします。
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Section 2: 算定方法 -->
+                <div class="bg-white rounded-2xl border border-eparkGray-border p-6 sm:p-8 shadow-sm">
+                    <div class="flex items-center gap-2 mb-5">
+                        <div class="bg-eparkGreen text-white p-2 rounded-lg">
+                            <i data-lucide="calculator" class="w-5 h-5"></i>
+                        </div>
+                        <h2 class="text-base sm:text-lg font-black text-eparkDark">算定方法</h2>
+                    </div>
+
+                    <!-- 算定式 -->
+                    <div class="bg-eparkGray-light p-5 rounded-xl border border-eparkGray-border mb-6">
+                        <p class="font-bold text-eparkGreen-dark mb-3 text-sm">【調達調整単価の算定数式】</p>
+                        <div class="bg-white px-4 py-4 rounded-lg border border-gray-200 text-center font-mono text-sm sm:text-base text-eparkDark font-bold shadow-sm">
+                            電源調達調整費 ＝ (調達単価 － 基準単価) × (1 ＋ 消費税率)
+                        </div>
+                        <p class="text-[11px] text-gray-500 mt-3 leading-relaxed">
+                            ※調達単価は、前々月11日から前月10日までのJEPXスポット取引市場の各エリアプライス1ヵ月単純平均値に基づき決定されます。<br>
+                            また、2026年4月以降に適用される国の環境基準に則った「カーボンフリー促進費（0.30円/kWhなど）」等、小売電気事業の最新要件に準じた変動係数も適正に加減算調整されます。
+                        </p>
+                    </div>
+
+                    <!-- 用語説明 -->
+                    <div class="space-y-3">
+                        <div class="flex gap-4 p-4 rounded-xl bg-eparkGray-light border border-eparkGray-border">
+                            <span class="text-xs font-black text-white bg-eparkGreen px-2.5 py-1 rounded shrink-0 h-fit">調達単価</span>
+                            <p class="text-xs text-gray-600 leading-relaxed">前々月11日〜前月10日のJEPXスポット取引市場における各エリアプライスの1ヶ月単純平均値。</p>
+                        </div>
+                        <div class="flex gap-4 p-4 rounded-xl bg-eparkGray-light border border-eparkGray-border">
+                            <span class="text-xs font-black text-white bg-eparkGreen-dark px-2.5 py-1 rounded shrink-0 h-fit">基準単価</span>
+                            <p class="text-xs text-gray-600 leading-relaxed">契約時に設定された電力調達の基準となる単価。この値との差分が調整費として加減算されます。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 3: 過去の単価リンク -->
+                <div class="bg-white rounded-2xl border border-eparkGray-border p-6 sm:p-8 shadow-sm">
+                    <div class="flex items-center gap-2 mb-5">
+                        <div class="bg-eparkGreen text-white p-2 rounded-lg">
+                            <i data-lucide="history" class="w-5 h-5"></i>
+                        </div>
+                        <h2 class="text-base sm:text-lg font-black text-eparkDark">過去の電源調達調整費単価</h2>
+                    </div>
+                    <p class="text-xs text-gray-500 leading-relaxed mb-5">
+                        各月に適用された電源調達調整費単価はこちらからご確認いただけます。
+                    </p>
+                    <a href="javascript:void(0)" onclick="navigateTo('fuel-adjustment')"
+                       class="inline-flex items-center gap-2 bg-eparkGreen-dark hover:bg-eparkGreen text-white transition duration-300 font-bold px-6 py-3 rounded text-xs shadow-sm">
+                        過去の調整単価一覧を見る
+                        <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+
+            </div>
+
+            <!-- Back to Home -->
+            <div class="mt-10 text-center">
+                <button onclick="navigateTo('lp')" class="inline-flex items-center gap-2 border border-eparkGreen text-eparkGreen hover:bg-eparkGreen hover:text-white transition duration-300 font-bold px-6 py-3 rounded text-xs shadow-sm">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    トップページへ戻る
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ==========================================
+         VIEW 6: RULE LIST PAGE（約款・規約一覧）
+         ========================================== -->
+    <div id="ruleListView" class="view-transition hidden bg-eparkGray-light py-12">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <!-- Breadcrumbs -->
+            <div class="flex items-center gap-2 text-xs text-gray-500 mb-6">
+                <a href="javascript:void(0)" onclick="navigateTo('lp')" class="hover:text-eparkGreen transition font-bold">ホーム</a>
+                <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+                <span class="text-gray-700 font-bold">約款・規約一覧</span>
+            </div>
+
+            <!-- Page Header -->
+            <div class="mb-10">
+                <span class="text-[12px] font-bold tracking-widest text-eparkGreen block mb-1">TERMS & RULES</span>
+                <h1 class="text-3xl font-black text-eparkDark mb-2">約款・規約一覧</h1>
+                <p class="text-xs text-gray-500 leading-relaxed">
+                    EPARK集客でんきに関する各種約款・利用規約をご確認いただけます。<br>
+                    各項目のリンクをクリックするとPDFが別タブで開きます。
+                </p>
+            </div>
+
+            <!-- Rule List -->
+            <div class="bg-white rounded-xl shadow-sm border border-eparkGray-border overflow-hidden">
+
+                <div class="px-6 py-4 border-b border-eparkGray-border bg-eparkGreen-dark">
+                    <h2 class="text-sm font-black text-white">契約・約款</h2>
+                </div>
+
+                <!-- 電気供給約款 -->
+                <a href="https://epark.jp/special/denki/clause/yakkan.pdf" target="_blank"
+                   class="flex items-center justify-between p-5 border-b border-eparkGray-border hover:bg-eparkGreen/5 transition duration-200 group">
+                    <div class="flex items-center gap-4">
+                        <div class="bg-red-100 text-red-600 p-2.5 rounded-lg shrink-0">
+                            <i data-lucide="file-text" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <span class="text-sm font-bold text-eparkDark block group-hover:text-eparkGreen transition">電気供給約款</span>
+                            <span class="text-[11px] text-gray-400">epark.jp/special/denki/clause/yakkan.pdf</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1.5 text-xs font-bold text-eparkGreen group-hover:text-eparkGreen-dark shrink-0 ml-4">
+                        <span>PDFを開く</span>
+                        <i data-lucide="external-link" class="w-4 h-4"></i>
+                    </div>
+                </a>
+
+                <!-- インフルエンサー店舗紹介サービス利用規約 -->
+                <a href="https://epark.jp/special/denki/clause/influencer1.pdf" target="_blank"
+                   class="flex items-center justify-between p-5 border-b border-eparkGray-border hover:bg-eparkGreen/5 transition duration-200 group">
+                    <div class="flex items-center gap-4">
+                        <div class="bg-red-100 text-red-600 p-2.5 rounded-lg shrink-0">
+                            <i data-lucide="file-text" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <span class="text-sm font-bold text-eparkDark block group-hover:text-eparkGreen transition">インフルエンサー店舗紹介サービス利用規約</span>
+                            <span class="text-[11px] text-gray-400">epark.jp/special/denki/clause/influencer1.pdf</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1.5 text-xs font-bold text-eparkGreen group-hover:text-eparkGreen-dark shrink-0 ml-4">
+                        <span>PDFを開く</span>
+                        <i data-lucide="external-link" class="w-4 h-4"></i>
+                    </div>
+                </a>
+
+                <!-- AIスマート・ホームページ制作利用規約 -->
+                <a href="https://epark.jp/special/denki/clause/homepage.pdf" target="_blank"
+                   class="flex items-center justify-between p-5 hover:bg-eparkGreen/5 transition duration-200 group">
+                    <div class="flex items-center gap-4">
+                        <div class="bg-red-100 text-red-600 p-2.5 rounded-lg shrink-0">
+                            <i data-lucide="file-text" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <span class="text-sm font-bold text-eparkDark block group-hover:text-eparkGreen transition">AIスマート・ホームページ制作利用規約</span>
+                            <span class="text-[11px] text-gray-400">epark.jp/special/denki/clause/homepage.pdf</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1.5 text-xs font-bold text-eparkGreen group-hover:text-eparkGreen-dark shrink-0 ml-4">
+                        <span>PDFを開く</span>
+                        <i data-lucide="external-link" class="w-4 h-4"></i>
+                    </div>
+                </a>
+
+            </div>
+
+            <!-- Note -->
+            <p class="text-[11px] text-gray-400 mt-4 leading-relaxed">
+                ※ 今後、重要事項説明書は<a href="javascript:void(0)" onclick="navigateTo('important-matters')" class="text-eparkGreen hover:underline font-bold">重要事項説明書ページ</a>に掲載されます。
+            </p>
+
+            <!-- Back to Home -->
+            <div class="mt-10 text-center">
+                <button onclick="navigateTo('lp')" class="inline-flex items-center gap-2 border border-eparkGreen text-eparkGreen hover:bg-eparkGreen hover:text-white transition duration-300 font-bold px-6 py-3 rounded text-xs shadow-sm">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    トップページへ戻る
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ==========================================
+         VIEW 9: PARTNER RECRUITMENT PAGE（パートナー募集）
+         ========================================== -->
+    <div id="partnerView" class="view-transition hidden bg-white">
+
+        <!-- Hero -->
+        <section class="relative bg-eparkGreen-dark overflow-hidden">
+            <div class="absolute inset-0 opacity-10">
+                <svg viewBox="0 0 1440 400" fill="none" class="w-full h-full" preserveAspectRatio="xMidYMid slice">
+                    <circle cx="200" cy="80" r="200" fill="white"/>
+                    <circle cx="1300" cy="320" r="260" fill="white"/>
+                    <circle cx="800" cy="400" r="180" fill="white"/>
+                </svg>
+            </div>
+            <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center space-y-6">
+                <span class="inline-block text-[11px] font-bold tracking-widest text-eparkOrange bg-eparkOrange/10 border border-eparkOrange/40 px-4 py-1.5 rounded-full">PARTNER RECRUITMENT</span>
+                <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">
+                    一緒に、お店の未来を<br class="hidden sm:inline">変えませんか？
+                </h1>
+                <p class="text-sm sm:text-base text-white/80 leading-relaxed max-w-2xl mx-auto">
+                    EPARK集客でんきの販売パートナーとして、<br class="hidden sm:inline">
+                    電力切替と集客支援をセットでご提案。<br class="hidden sm:inline">
+                    安定した収益と、飲食店オーナーから感謝される仕事を実現できます。
+                </p>
+                <div class="flex flex-col sm:flex-row gap-3 justify-center pt-2">
+                    <button onclick="openModal('partnerContactModal')"
+                        class="inline-flex items-center justify-center gap-2 bg-eparkOrange hover:bg-orange-500 text-white font-black px-8 py-4 rounded-lg text-sm shadow-lg transition duration-300 hover:-translate-y-0.5">
+                        <i data-lucide="handshake" class="w-5 h-5"></i>
+                        パートナー登録のお問い合わせ
+                    </button>
+                    <button onclick="document.getElementById('partner-merit').scrollIntoView({behavior:'smooth'})"
+                        class="inline-flex items-center justify-center gap-2 border border-white/60 text-white hover:bg-white/10 font-bold px-8 py-4 rounded-lg text-sm transition duration-300">
+                        詳細を見る
+                        <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 数字で見るEPARK -->
+        <section class="bg-eparkGray-light border-b border-eparkGray-border py-12">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <p class="text-center text-xs font-bold text-eparkGreen tracking-widest mb-8">EPARK の強み</p>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-6 text-center">
+                    <div class="space-y-1">
+                        <p class="text-3xl sm:text-4xl font-black text-eparkGreen">6,000<span class="text-lg">万人</span></p>
+                        <p class="text-[11px] text-gray-500 font-medium">EPARK会員数</p>
+                    </div>
+                    <div class="space-y-1">
+                        <p class="text-3xl sm:text-4xl font-black text-eparkGreen">0<span class="text-lg">円</span></p>
+                        <p class="text-[11px] text-gray-500 font-medium">パートナー登録費用</p>
+                    </div>
+                    <div class="space-y-1">
+                        <p class="text-3xl sm:text-4xl font-black text-eparkGreen">成約<span class="text-lg">ごとに</span></p>
+                        <p class="text-[11px] text-gray-500 font-medium">ショット報酬が発生</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- パートナーのメリット -->
+        <section id="partner-merit" class="py-16 bg-white">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <span class="text-[12px] font-bold tracking-widest text-eparkGreen block mb-2">MERIT</span>
+                    <h2 class="text-2xl sm:text-3xl font-black text-eparkDark">パートナーになる<span class="text-eparkGreen">3つのメリット</span></h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Merit 1 -->
+                    <div class="rounded-2xl border border-eparkGray-border p-7 space-y-4 hover:shadow-md hover:border-eparkGreen/30 transition duration-300">
+                        <div class="w-12 h-12 rounded-xl bg-eparkGreen/10 flex items-center justify-center">
+                            <i data-lucide="trending-up" class="w-6 h-6 text-eparkGreen"></i>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-bold text-eparkGreen tracking-wider">MERIT 01</span>
+                            <h3 class="text-base font-black text-eparkDark mt-1 mb-2">成約のたびに<br>報酬が得られる</h3>
+                            <p class="text-xs text-gray-500 leading-relaxed">電気の切り替えが完了するごとにショット報酬が発生します。提案件数を増やすほど収益に直結するシンプルな仕組みです。</p>
+                        </div>
+                    </div>
+                    <!-- Merit 2 -->
+                    <div class="rounded-2xl border border-eparkGray-border p-7 space-y-4 hover:shadow-md hover:border-eparkGreen/30 transition duration-300">
+                        <div class="w-12 h-12 rounded-xl bg-eparkGreen/10 flex items-center justify-center">
+                            <i data-lucide="package" class="w-6 h-6 text-eparkGreen"></i>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-bold text-eparkGreen tracking-wider">MERIT 02</span>
+                            <h3 class="text-base font-black text-eparkDark mt-1 mb-2">電力＋集客支援の<br>唯一無二の提案が可能</h3>
+                            <p class="text-xs text-gray-500 leading-relaxed">「電気代を下げながら、EPARKで集客もできる」という他社にはない提案ができます。飲食店オーナーに刺さる価値をセットでお届けできるのがEPARK集客でんきの強みです。</p>
+                        </div>
+                    </div>
+                    <!-- Merit 3 -->
+                    <div class="rounded-2xl border border-eparkGray-border p-7 space-y-4 hover:shadow-md hover:border-eparkGreen/30 transition duration-300">
+                        <div class="w-12 h-12 rounded-xl bg-eparkGreen/10 flex items-center justify-center">
+                            <i data-lucide="shield-check" class="w-6 h-6 text-eparkGreen"></i>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-bold text-eparkGreen tracking-wider">MERIT 03</span>
+                            <h3 class="text-base font-black text-eparkDark mt-1 mb-2">EPARKブランドの<br>信頼力で提案しやすい</h3>
+                            <p class="text-xs text-gray-500 leading-relaxed">EPARK（株式会社イーパーク）は全国6,000万人以上が利用する予約・集客プラットフォームを運営。その知名度・信頼性を背景に、法人への提案がスムーズに行えます。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- こんな方におすすめ -->
+        <section class="py-16 bg-eparkGray-light">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-10">
+                    <span class="text-[12px] font-bold tracking-widest text-eparkGreen block mb-2">FOR WHOM</span>
+                    <h2 class="text-2xl sm:text-3xl font-black text-eparkDark">こんな方に<span class="text-eparkGreen">おすすめ</span>です</h2>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl mx-auto">
+                    <div class="bg-white rounded-xl p-5 border border-eparkGray-border flex items-start gap-4">
+                        <div class="w-8 h-8 rounded-full bg-eparkGreen flex items-center justify-center shrink-0 mt-0.5">
+                            <i data-lucide="check" class="w-4 h-4 text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-eparkDark">飲食店・美容室など</p>
+                            <p class="text-xs text-gray-500 mt-0.5 leading-relaxed">既存顧客に飲食・美容関係の法人をお持ちの方</p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl p-5 border border-eparkGray-border flex items-start gap-4">
+                        <div class="w-8 h-8 rounded-full bg-eparkGreen flex items-center justify-center shrink-0 mt-0.5">
+                            <i data-lucide="check" class="w-4 h-4 text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-eparkDark">保険・通信・POS代理店</p>
+                            <p class="text-xs text-gray-500 mt-0.5 leading-relaxed">既存の営業リソースを活用して副収入・新たな収益柱を作りたい方</p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl p-5 border border-eparkGray-border flex items-start gap-4">
+                        <div class="w-8 h-8 rounded-full bg-eparkGreen flex items-center justify-center shrink-0 mt-0.5">
+                            <i data-lucide="check" class="w-4 h-4 text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-eparkDark">新規事業・収益源を探している法人</p>
+                            <p class="text-xs text-gray-500 mt-0.5 leading-relaxed">既存の営業リソースを活用して新たな収益柱を作りたい法人様</p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-xl p-5 border border-eparkGray-border flex items-start gap-4">
+                        <div class="w-8 h-8 rounded-full bg-eparkGreen flex items-center justify-center shrink-0 mt-0.5">
+                            <i data-lucide="check" class="w-4 h-4 text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-eparkDark">商工会・士業・コンサル</p>
+                            <p class="text-xs text-gray-500 mt-0.5 leading-relaxed">中小企業・飲食店オーナーへのコスト削減提案を付加価値として加えたい方</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- パートナー参加の流れ -->
+        <section class="py-16 bg-white">
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-12">
+                    <span class="text-[12px] font-bold tracking-widest text-eparkGreen block mb-2">FLOW</span>
+                    <h2 class="text-2xl sm:text-3xl font-black text-eparkDark">パートナー参加までの<span class="text-eparkGreen">流れ</span></h2>
+                </div>
+                <div class="relative">
+                    <!-- 縦ライン（PC） -->
+                    <div class="hidden md:block absolute left-1/2 top-8 bottom-8 w-0.5 bg-eparkGray-border -translate-x-1/2"></div>
+                    <div class="space-y-6 md:space-y-0 md:grid md:grid-cols-1 md:gap-0">
+
+                        <!-- Step 1 -->
+                        <div class="relative md:flex md:items-center md:gap-8 md:pb-10">
+                            <div class="md:w-1/2 md:text-right md:pr-12">
+                                <div class="bg-eparkGray-light rounded-2xl p-6 border border-eparkGray-border inline-block text-left md:text-right w-full">
+                                    <span class="text-[10px] font-bold text-eparkGreen tracking-wider">STEP 01</span>
+                                    <h3 class="text-sm font-black text-eparkDark mt-1 mb-1">お問い合わせ・ご相談</h3>
+                                    <p class="text-xs text-gray-500 leading-relaxed">本ページ下部のフォーム、またはお電話にてお気軽にご連絡ください。パートナー担当者がご対応いたします。</p>
+                                </div>
+                            </div>
+                            <div class="hidden md:flex absolute left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-eparkGreen text-white font-black text-sm items-center justify-center shadow-md">1</div>
+                            <div class="md:w-1/2 md:pl-12 hidden md:block"></div>
+                        </div>
+
+                        <!-- Step 2 -->
+                        <div class="relative md:flex md:items-center md:gap-8 md:pb-10">
+                            <div class="md:w-1/2 md:pr-12 hidden md:block"></div>
+                            <div class="hidden md:flex absolute left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-eparkGreen text-white font-black text-sm items-center justify-center shadow-md">2</div>
+                            <div class="md:w-1/2 md:pl-12">
+                                <div class="bg-eparkGray-light rounded-2xl p-6 border border-eparkGray-border w-full">
+                                    <span class="text-[10px] font-bold text-eparkGreen tracking-wider">STEP 02</span>
+                                    <h3 class="text-sm font-black text-eparkDark mt-1 mb-1">パートナー契約・研修</h3>
+                                    <p class="text-xs text-gray-500 leading-relaxed">パートナー契約締結後、サービス説明・営業ツール提供・研修を実施します。初期費用は一切かかりません。</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 3 -->
+                        <div class="relative md:flex md:items-center md:gap-8 md:pb-10">
+                            <div class="md:w-1/2 md:text-right md:pr-12">
+                                <div class="bg-eparkGray-light rounded-2xl p-6 border border-eparkGray-border inline-block text-left md:text-right w-full">
+                                    <span class="text-[10px] font-bold text-eparkGreen tracking-wider">STEP 03</span>
+                                    <h3 class="text-sm font-black text-eparkDark mt-1 mb-1">営業活動スタート</h3>
+                                    <p class="text-xs text-gray-500 leading-relaxed">提供された営業ツール・資料をもとに、既存顧客や新規先への提案を開始。担当サポートが伴走します。</p>
+                                </div>
+                            </div>
+                            <div class="hidden md:flex absolute left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-eparkGreen text-white font-black text-sm items-center justify-center shadow-md">3</div>
+                            <div class="md:w-1/2 md:pl-12 hidden md:block"></div>
+                        </div>
+
+                        <!-- Step 4 -->
+                        <div class="relative md:flex md:items-center md:gap-8">
+                            <div class="md:w-1/2 md:pr-12 hidden md:block"></div>
+                            <div class="hidden md:flex absolute left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-eparkOrange text-white font-black text-sm items-center justify-center shadow-md">
+                                <i data-lucide="star" class="w-5 h-5"></i>
+                            </div>
+                            <div class="md:w-1/2 md:pl-12">
+                                <div class="bg-eparkOrange/5 rounded-2xl p-6 border border-eparkOrange/30 w-full">
+                                    <span class="text-[10px] font-bold text-eparkOrange tracking-wider">GOAL</span>
+                                    <h3 class="text-sm font-black text-eparkDark mt-1 mb-1">成約・ショット報酬発生</h3>
+                                    <p class="text-xs text-gray-500 leading-relaxed">電気の切り替えが完了した月にショット報酬が発生します。成約件数に応じて収益が積み上がっていきます。</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- よくある質問（パートナー向け） -->
+        <section class="py-16 bg-eparkGray-light">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-10">
+                    <span class="text-[12px] font-bold tracking-widest text-eparkGreen block mb-2">FAQ</span>
+                    <h2 class="text-2xl font-black text-eparkDark">よくあるご質問</h2>
+                </div>
+                <div class="space-y-3">
+                    <!-- Q1 -->
+                    <div class="bg-white rounded-xl border border-eparkGray-border overflow-hidden shadow-sm">
+                        <button onclick="togglePartnerFaq(0)" id="pfaq-btn-0"
+                            class="w-full flex items-center justify-between gap-4 p-5 text-left hover:bg-eparkGreen/5 transition duration-200 group">
+                            <div class="flex items-start gap-3">
+                                <span class="shrink-0 w-6 h-6 rounded-full bg-eparkGreen text-white text-[11px] font-black flex items-center justify-center mt-0.5">Q</span>
+                                <span class="text-[13px] font-bold text-eparkDark group-hover:text-eparkGreen transition leading-snug">個人でもパートナーになれますか？</span>
+                            </div>
+                            <i data-lucide="chevron-down" id="pfaq-icon-0" class="w-4 h-4 text-eparkGreen shrink-0 transition-transform duration-300"></i>
+                        </button>
+                        <div id="pfaq-body-0" class="hidden border-t border-eparkGray-border">
+                            <div class="flex items-start gap-3 p-5 bg-eparkGray-light/60">
+                                <span class="shrink-0 w-6 h-6 rounded-full bg-eparkOrange text-white text-[11px] font-black flex items-center justify-center mt-0.5">A</span>
+                                <p class="text-xs text-gray-600 leading-relaxed">パートナー登録は<strong>法人様のみ</strong>を対象としております。個人・フリーランスの方はお申込みいただけません。詳細はお問い合わせフォームよりご相談ください。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Q2 -->
+                    <div class="bg-white rounded-xl border border-eparkGray-border overflow-hidden shadow-sm">
+                        <button onclick="togglePartnerFaq(1)" id="pfaq-btn-1"
+                            class="w-full flex items-center justify-between gap-4 p-5 text-left hover:bg-eparkGreen/5 transition duration-200 group">
+                            <div class="flex items-start gap-3">
+                                <span class="shrink-0 w-6 h-6 rounded-full bg-eparkGreen text-white text-[11px] font-black flex items-center justify-center mt-0.5">Q</span>
+                                <span class="text-[13px] font-bold text-eparkDark group-hover:text-eparkGreen transition leading-snug">登録にかかる費用はありますか？</span>
+                            </div>
+                            <i data-lucide="chevron-down" id="pfaq-icon-1" class="w-4 h-4 text-eparkGreen shrink-0 transition-transform duration-300"></i>
+                        </button>
+                        <div id="pfaq-body-1" class="hidden border-t border-eparkGray-border">
+                            <div class="flex items-start gap-3 p-5 bg-eparkGray-light/60">
+                                <span class="shrink-0 w-6 h-6 rounded-full bg-eparkOrange text-white text-[11px] font-black flex items-center justify-center mt-0.5">A</span>
+                                <p class="text-xs text-gray-600 leading-relaxed">登録費用・初期費用は一切かかりません。営業ツールや研修も無償でご提供しています。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Q3 -->
+                    <div class="bg-white rounded-xl border border-eparkGray-border overflow-hidden shadow-sm">
+                        <button onclick="togglePartnerFaq(2)" id="pfaq-btn-2"
+                            class="w-full flex items-center justify-between gap-4 p-5 text-left hover:bg-eparkGreen/5 transition duration-200 group">
+                            <div class="flex items-start gap-3">
+                                <span class="shrink-0 w-6 h-6 rounded-full bg-eparkGreen text-white text-[11px] font-black flex items-center justify-center mt-0.5">Q</span>
+                                <span class="text-[13px] font-bold text-eparkDark group-hover:text-eparkGreen transition leading-snug">報酬はどのように支払われますか？</span>
+                            </div>
+                            <i data-lucide="chevron-down" id="pfaq-icon-2" class="w-4 h-4 text-eparkGreen shrink-0 transition-transform duration-300"></i>
+                        </button>
+                        <div id="pfaq-body-2" class="hidden border-t border-eparkGray-border">
+                            <div class="flex items-start gap-3 p-5 bg-eparkGray-light/60">
+                                <span class="shrink-0 w-6 h-6 rounded-full bg-eparkOrange text-white text-[11px] font-black flex items-center justify-center mt-0.5">A</span>
+                                <p class="text-xs text-gray-600 leading-relaxed">電気の切り替え完了月より、翌月末に指定口座へお振込みいたします。報酬の詳細は契約締結時にご案内いたします。</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Q4 -->
+                    <div class="bg-white rounded-xl border border-eparkGray-border overflow-hidden shadow-sm">
+                        <button onclick="togglePartnerFaq(3)" id="pfaq-btn-3"
+                            class="w-full flex items-center justify-between gap-4 p-5 text-left hover:bg-eparkGreen/5 transition duration-200 group">
+                            <div class="flex items-start gap-3">
+                                <span class="shrink-0 w-6 h-6 rounded-full bg-eparkGreen text-white text-[11px] font-black flex items-center justify-center mt-0.5">Q</span>
+                                <span class="text-[13px] font-bold text-eparkDark group-hover:text-eparkGreen transition leading-snug">どのような業種の企業が対象になりますか？</span>
+                            </div>
+                            <i data-lucide="chevron-down" id="pfaq-icon-3" class="w-4 h-4 text-eparkGreen shrink-0 transition-transform duration-300"></i>
+                        </button>
+                        <div id="pfaq-body-3" class="hidden border-t border-eparkGray-border">
+                            <div class="flex items-start gap-3 p-5 bg-eparkGray-light/60">
+                                <span class="shrink-0 w-6 h-6 rounded-full bg-eparkOrange text-white text-[11px] font-black flex items-center justify-center mt-0.5">A</span>
+                                <p class="text-xs text-gray-600 leading-relaxed">飲食店・美容室・整骨院・クリニックなど、低圧電力を使用している事業所が主な対象です。フードデリバリー導入済みの飲食店にはデリバリー支援パックのご提案も可能です。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="py-16 bg-eparkGreen-dark">
+            <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-6">
+                <h2 class="text-2xl sm:text-3xl font-black text-white leading-tight">
+                    まずはお気軽に<br>ご相談ください
+                </h2>
+                <p class="text-sm text-white/80 leading-relaxed">
+                    パートナー登録に関するご質問・詳細資料のご請求は<br class="hidden sm:inline">
+                    下記フォームよりお問い合わせください。<br>
+                    担当者より2営業日以内にご連絡いたします。
+                </p>
+                <button onclick="openModal('partnerContactModal')"
+                    class="inline-flex items-center justify-center gap-2 bg-eparkOrange hover:bg-orange-500 text-white font-black px-10 py-4 rounded-lg text-sm shadow-lg transition duration-300 hover:-translate-y-0.5">
+                    <i data-lucide="send" class="w-5 h-5"></i>
+                    パートナー登録のお問い合わせ
+                </button>
+            </div>
+        </section>
+
+        <!-- Back to Home -->
+        <div class="py-8 bg-eparkGray-light text-center border-t border-eparkGray-border">
+            <button onclick="navigateTo('lp')" class="inline-flex items-center gap-2 border border-eparkGreen text-eparkGreen hover:bg-eparkGreen hover:text-white transition duration-300 font-bold px-6 py-3 rounded text-xs shadow-sm">
+                <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                トップページへ戻る
+            </button>
+        </div>
+
+    </div>
+
+    <!-- ==========================================
+         VIEW 8: FAQ PAGE（よくあるご質問）
+         ========================================== -->
+    <div id="faqView" class="view-transition hidden bg-eparkGray-light py-12">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <!-- Breadcrumbs -->
+            <div class="flex items-center gap-2 text-xs text-gray-500 mb-6">
+                <a href="javascript:void(0)" onclick="navigateTo('lp')" class="hover:text-eparkGreen transition font-bold">ホーム</a>
+                <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+                <span class="text-gray-700 font-bold">よくあるご質問</span>
+            </div>
+
+            <!-- Page Header -->
+            <div class="mb-10">
+                <span class="text-[12px] font-bold tracking-widest text-eparkGreen block mb-1">FAQ</span>
+                <h1 class="text-3xl font-black text-eparkDark mb-2">よくあるご質問</h1>
+                <p class="text-xs text-gray-500 leading-relaxed">
+                    EPARK集客でんきについてよくいただくご質問をまとめました。<br>
+                    解決しない場合は、お気軽にお問い合わせください。
+                </p>
+            </div>
+
+            <!-- Category Filter -->
+            <div class="flex flex-wrap gap-2 mb-8" id="faqCategoryFilter">
+                <button onclick="filterFaq('all')" data-cat="all"
+                    class="faq-cat-btn px-4 py-1.5 rounded-full text-xs font-bold border border-eparkGreen bg-eparkGreen text-white transition duration-200">
+                    すべて
+                </button>
+                <button onclick="filterFaq('contract')" data-cat="contract"
+                    class="faq-cat-btn px-4 py-1.5 rounded-full text-xs font-bold border border-eparkGray-border bg-white text-gray-500 hover:border-eparkGreen hover:text-eparkGreen transition duration-200">
+                    お申込み・契約
+                </button>
+                <button onclick="filterFaq('billing')" data-cat="billing"
+                    class="faq-cat-btn px-4 py-1.5 rounded-full text-xs font-bold border border-eparkGray-border bg-white text-gray-500 hover:border-eparkGreen hover:text-eparkGreen transition duration-200">
+                    料金・お支払い
+                </button>
+                <button onclick="filterFaq('service')" data-cat="service"
+                    class="faq-cat-btn px-4 py-1.5 rounded-full text-xs font-bold border border-eparkGray-border bg-white text-gray-500 hover:border-eparkGreen hover:text-eparkGreen transition duration-200">
+                    サービス内容
+                </button>
+                <button onclick="filterFaq('trouble')" data-cat="trouble"
+                    class="faq-cat-btn px-4 py-1.5 rounded-full text-xs font-bold border border-eparkGray-border bg-white text-gray-500 hover:border-eparkGreen hover:text-eparkGreen transition duration-200">
+                    トラブル・停電
+                </button>
+                <button onclick="filterFaq('mypage')" data-cat="mypage"
+                    class="faq-cat-btn px-4 py-1.5 rounded-full text-xs font-bold border border-eparkGray-border bg-white text-gray-500 hover:border-eparkGreen hover:text-eparkGreen transition duration-200">
+                    マイページ
+                </button>
+            </div>
+
+            <!-- FAQ Accordion List -->
+            <div id="faqAccordionList" class="space-y-3"></div>
+
+            <!-- Empty State -->
+            <div id="faqEmptyState" class="hidden bg-white rounded-xl border border-eparkGray-border p-12 text-center">
+                <i data-lucide="search-x" class="w-12 h-12 text-gray-300 mx-auto mb-3"></i>
+                <p class="text-xs font-bold text-gray-500">該当するご質問が見つかりませんでした。</p>
+            </div>
+
+            <!-- Contact CTA -->
+            <div class="mt-12 bg-eparkGreen-dark rounded-2xl p-8 text-center space-y-4">
+                <h3 class="text-base font-black text-white">解決しない場合はお気軽にご相談ください</h3>
+                <p class="text-xs text-white/80 leading-relaxed">
+                    担当スタッフが丁寧にご対応いたします。お問い合わせフォームよりお気軽にご連絡ください。
+                </p>
+                <button onclick="openModal('contactModal')"
+                    class="inline-flex items-center gap-2 bg-white text-eparkGreen-dark hover:bg-eparkGreen hover:text-white border border-white transition duration-300 font-bold px-8 py-3 rounded text-xs shadow-sm">
+                    <i data-lucide="mail" class="w-4 h-4"></i>
+                    お問い合わせフォームへ
+                </button>
+            </div>
+
+            <!-- Back to Home -->
+            <div class="mt-8 text-center pb-12">
+                <button onclick="navigateTo('lp')" class="inline-flex items-center gap-2 border border-eparkGreen text-eparkGreen hover:bg-eparkGreen hover:text-white transition duration-300 font-bold px-6 py-3 rounded text-xs shadow-sm">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    トップページへ戻る
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- ==========================================
+         VIEW 7: IMPORTANT MATTERS PAGE（重要事項説明書）
+         ========================================== -->
+    <div id="importantMattersView" class="view-transition hidden bg-eparkGray-light py-12">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <!-- Breadcrumbs -->
+            <div class="flex items-center gap-2 text-xs text-gray-500 mb-6">
+                <a href="javascript:void(0)" onclick="navigateTo('lp')" class="hover:text-eparkGreen transition font-bold">ホーム</a>
+                <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+                <span class="text-gray-700 font-bold">重要事項説明書</span>
+            </div>
+
+            <!-- Page Header -->
+            <div class="mb-10">
+                <span class="text-[12px] font-bold tracking-widest text-eparkGreen block mb-1">IMPORTANT MATTERS</span>
+                <h1 class="text-3xl font-black text-eparkDark mb-2">重要事項説明書</h1>
+                <p class="text-xs text-gray-500 leading-relaxed">
+                    EPARK集客でんきに関する重要事項説明書をご確認いただけます。<br>
+                    各項目のリンクをクリックするとPDFが別タブで開きます。
+                </p>
+            </div>
+
+            <!-- Important Matters List -->
+            <div class="bg-white rounded-xl shadow-sm border border-eparkGray-border overflow-hidden">
+
+                <div class="px-6 py-4 border-b border-eparkGray-border bg-eparkGreen-dark">
+                    <h2 class="text-sm font-black text-white">重要事項説明書一覧</h2>
+                </div>
+
+                <!-- 低圧（従量電灯プラン） -->
+                <a href="https://epark.jp/special/denki/clause/important_low.pdf" target="_blank"
+                   class="flex items-center justify-between p-5 border-b border-eparkGray-border hover:bg-eparkGreen/5 transition duration-200 group">
+                    <div class="flex items-center gap-4">
+                        <div class="bg-red-100 text-red-600 p-2.5 rounded-lg shrink-0">
+                            <i data-lucide="file-text" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <span class="text-sm font-bold text-eparkDark block group-hover:text-eparkGreen transition">重要事項説明書（低圧・従量電灯プラン）</span>
+                            <span class="text-[11px] text-gray-400">epark.jp/special/denki/clause/important_low.pdf</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1.5 text-xs font-bold text-eparkGreen group-hover:text-eparkGreen-dark shrink-0 ml-4">
+                        <span>PDFを開く</span>
+                        <i data-lucide="external-link" class="w-4 h-4"></i>
+                    </div>
+                </a>
+
+                <!-- デリバリー支援パック -->
+                <a href="https://epark.jp/special/denki/clause/important_delivery.pdf" target="_blank"
+                   class="flex items-center justify-between p-5 border-b border-eparkGray-border hover:bg-eparkGreen/5 transition duration-200 group">
+                    <div class="flex items-center gap-4">
+                        <div class="bg-red-100 text-red-600 p-2.5 rounded-lg shrink-0">
+                            <i data-lucide="file-text" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <span class="text-sm font-bold text-eparkDark block group-hover:text-eparkGreen transition">重要事項説明書（デリバリー支援パック）</span>
+                            <span class="text-[11px] text-gray-400">epark.jp/special/denki/clause/important_delivery.pdf</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1.5 text-xs font-bold text-eparkGreen group-hover:text-eparkGreen-dark shrink-0 ml-4">
+                        <span>PDFを開く</span>
+                        <i data-lucide="external-link" class="w-4 h-4"></i>
+                    </div>
+                </a>
+
+                <!-- インフルエンサー店舗紹介サービス -->
+                <a href="https://epark.jp/special/denki/clause/important_influencer.pdf" target="_blank"
+                   class="flex items-center justify-between p-5 hover:bg-eparkGreen/5 transition duration-200 group">
+                    <div class="flex items-center gap-4">
+                        <div class="bg-red-100 text-red-600 p-2.5 rounded-lg shrink-0">
+                            <i data-lucide="file-text" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <span class="text-sm font-bold text-eparkDark block group-hover:text-eparkGreen transition">重要事項説明書（インフルエンサー店舗紹介サービス）</span>
+                            <span class="text-[11px] text-gray-400">epark.jp/special/denki/clause/important_influencer.pdf</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1.5 text-xs font-bold text-eparkGreen group-hover:text-eparkGreen-dark shrink-0 ml-4">
+                        <span>PDFを開く</span>
+                        <i data-lucide="external-link" class="w-4 h-4"></i>
+                    </div>
+                </a>
+
+            </div>
+
+            <!-- Note -->
+            <p class="text-[11px] text-gray-400 mt-4 leading-relaxed">
+                ※ 今後、内容の変更に伴い追加・更新される場合があります。
+            </p>
+
+            <!-- Back to Home -->
+            <div class="mt-10 text-center">
+                <button onclick="navigateTo('lp')" class="inline-flex items-center gap-2 border border-eparkGreen text-eparkGreen hover:bg-eparkGreen hover:text-white transition duration-300 font-bold px-6 py-3 rounded text-xs shadow-sm">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    トップページへ戻る
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+</main>
+
+<!-- DECORATIVE ECOLOGICAL LANDSCAPE SILHOUETTE -->
+<div class="relative w-full bg-gradient-to-t from-eparkGreen-light/40 to-white pt-8">
+    <svg class="w-full h-auto min-h-[70px]" viewBox="0 0 1440 100" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+        <path d="M50,100 L50,75 L65,75 L65,82 L80,82 L80,68 L95,68 L95,100" fill="#d2ede3" />
+        <path d="M120,100 L120,60 L140,60 L140,100" fill="#d2ede3" />
+        <path d="M180,100 L180,70 L205,70 L205,100" fill="#d2ede3" />
+        <path d="M310,100 L310,80 L330,80 L330,100" fill="#d2ede3" />
+        <path d="M520,100 L520,65 L545,65 L545,100" fill="#d2ede3" />
+        <path d="M720,100 L720,70 L740,70 L740,100" fill="#d2ede3" />
+        <path d="M910,100 L910,55 L940,55 L940,100" fill="#d2ede3" />
+        <path d="M1120,100 L1120,75 L1145,75 L1145,100" fill="#d2ede3" />
+        <path d="M1300,100 L1300,60 L1320,60 L1320,100" fill="#d2ede3" />
+
+        <path d="M0,100 L0,80 L25,80 L25,100" fill="#b0dfce" />
+        <path d="M100,100 L100,75 L115,75 L115,100" fill="#b0dfce" />
+        <path d="M220,100 L220,85 L245,85 L245,100" fill="#b0dfce" />
+        <path d="M270,100 L270,70 L295,70 L295,100" fill="#b0dfce" />
+        <path d="M400,100 L400,50 L420,50 L420,100" fill="#b0dfce" />
+        <path d="M450,100 L450,80 L470,80 L470,100" fill="#b0dfce" />
+        <path d="M580,100 L580,75 L600,75 L600,100" fill="#b0dfce" />
+        <path d="M640,100 L640,60 L665,60 L665,100" fill="#b0dfce" />
+        <path d="M800,100 L800,75 L830,75 L830,100" fill="#b0dfce" />
+        <path d="M860,100 L860,85 L880,85 L880,100" fill="#b0dfce" />
+        <path d="M990,100 L990,70 L1010,70 L1010,100" fill="#b0dfce" />
+        <path d="M1040,100 L1040,60 L1065,60 L1065,100" fill="#b0dfce" />
+        <path d="M1200,100 L1200,80 L1225,80 L1225,100" fill="#b0dfce" />
+        <path d="M1250,100 L1250,70 L1270,70 L1270,100" fill="#b0dfce" />
+        <path d="M1360,100 L1360,80 L1395,80 L1395,100" fill="#b0dfce" />
+
+        <path d="M0,100 Q350,90 720,95 T1440,97 L1440,100 L0,100 Z" fill="#9bcba4" />
+        
+        <circle cx="150" cy="92" r="6" fill="#589e67" />
+        <circle cx="156" cy="94" r="5" fill="#4d8f5c" />
+        <circle cx="340" cy="92" r="5" fill="#589e67" />
+        <circle cx="500" cy="90" r="7" fill="#589e67" />
+        <circle cx="507" cy="93" r="5" fill="#4d8f5c" />
+        <circle cx="690" cy="94" r="6" fill="#589e67" />
+        <circle cx="780" cy="92" r="5" fill="#4d8f5c" />
+        <circle cx="950" cy="91" r="8" fill="#589e67" />
+        <circle cx="1110" cy="92" r="6" fill="#589e67" />
+        <circle cx="1280" cy="94" r="5" fill="#4d8f5c" />
+    </svg>
+</div>
+
+<!-- FOOTER SECTION -->
+<footer id="footer" class="bg-eparkGray-light border-t border-eparkGray-border pt-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Structured footer navigation sitemap -->
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-6 text-xs text-gray-600 mb-10">
+            <!-- Services -->
+            <div class="space-y-3">
+                <h4 class="font-bold text-eparkGreen text-[13px]">サービス</h4>
+                <ul class="space-y-2">
+                    <li><a href="javascript:void(0)" onclick="navigateTo('lp', 'about')" class="hover:text-eparkGreen transition">EPARK集客でんきとは</a></li>
+                    <!-- 詳細ページを廃止したため、LP内の同セクションにスクロールするように変更 -->
+                    <li><a href="javascript:void(0)" onclick="navigateTo('lp', 'delivery-pack')" class="hover:text-eparkGreen transition">デリバリー支援パック</a></li>
+                </ul>
+            </div>
+
+            <!-- Updates -->
+            <div class="space-y-3">
+                <h4 class="font-bold text-eparkGreen text-[13px]">お知らせ・ご案内</h4>
+                <ul class="space-y-2">
+                    <li><a href="javascript:void(0)" onclick="navigateTo('news-list')" class="hover:text-eparkGreen transition">お知らせ</a></li>
+                    <li><a href="javascript:void(0)" onclick="navigateTo('denki-charge')" class="hover:text-eparkGreen transition">電源調達調整費とは</a></li>
+                    <li><a href="javascript:void(0)" onclick="navigateTo('fuel-adjustment')" class="hover:text-eparkGreen transition">過去の調整単価</a></li>
+                    <li><a href="javascript:void(0)" onclick="navigateTo('teiden')" class="hover:text-eparkGreen transition">停電時の対応方法</a></li>
+                </ul>
+            </div>
+
+            <!-- Regulations -->
+            <div class="space-y-3">
+                <h4 class="font-bold text-eparkGreen text-[13px]">規約・重要事項</h4>
+                <ul class="space-y-2">
+                    <li><a href="javascript:void(0)" onclick="navigateTo('rule-list')" class="hover:text-eparkGreen transition">約款・規約一覧</a></li>
+                    <li><a href="javascript:void(0)" onclick="navigateTo('important-matters')" class="hover:text-eparkGreen transition">重要事項説明書</a></li>
+                    <li><a href="https://epark.co.jp/privacy" target="_blank" class="hover:text-eparkGreen transition">情報セキュリティポリシー</a></li>
+                </ul>
+            </div>
+
+            <!-- Company -->
+            <div class="space-y-3">
+                <h4 class="font-bold text-eparkGreen text-[13px]">企業情報</h4>
+                <ul class="space-y-2">
+                    <li><a href="https://epark.co.jp" target="_blank" class="hover:text-eparkGreen transition">会社概要</a></li>
+                </ul>
+            </div>
+
+            <!-- Partner -->
+            <div class="space-y-3">
+                <h4 class="font-bold text-eparkGreen text-[13px]">パートナー募集</h4>
+                <ul class="space-y-2">
+                    <li><a href="javascript:void(0)" onclick="navigateTo('partner')" class="hover:text-eparkGreen transition">パートナー募集とは</a></li>
+                    <li><a href="javascript:void(0)" onclick="openModal('partnerContactModal')" class="hover:text-eparkGreen transition">パートナー登録のお問い合わせ</a></li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bottom Deep Green Bar -->
+    <div class="bg-eparkGreen-dark text-white/90 py-5">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs font-medium">
+            <div class="flex items-center gap-3">
+                <span onclick="navigateTo('lp')" class="text-base font-black tracking-wider flex items-center cursor-pointer">
+                    <span class="text-eparkGreen">EPARK</span>
+                    <span class="text-eparkOrange ml-1">集客でんき</span>
+                </span>
+                <span class="text-[10px] text-white/70">集客も、売上も、電気代もまるごとサポート。</span>
+            </div>
+            <div class="text-[10px] text-white/50">
+                &copy; EPARK, Inc. All Rights Reserved.
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- MY PAGE LOGIN MODAL -->
+<div id="mypageModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 opacity-0 pointer-events-none transition-opacity duration-300 px-4">
+    <div class="bg-white rounded-lg shadow-xl max-w-md w-full overflow-hidden transform scale-95 transition-transform duration-300">
+        <!-- Modal Header -->
+        <div class="bg-eparkGreen-dark text-white px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <i data-lucide="lock" class="w-5 h-5 text-eparkOrange"></i>
+                <h3 class="font-bold text-[15px]">マイページ ログイン</h3>
+            </div>
+            <button onclick="closeModal('mypageModal')" class="text-white/80 hover:text-white">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+        </div>
+        <!-- Modal Body -->
+        <form onsubmit="handleLogin(event)" class="p-6 space-y-4">
+            <div>
+                <label class="block text-xs font-bold text-gray-700 mb-1">事業者ログインID / メールアドレス</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                        <i data-lucide="user" class="w-4 h-4"></i>
+                    </span>
+                    <input type="text" placeholder="example@epark.co.jp" required class="w-full pl-9 pr-3 py-2 border border-eparkGray-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-eparkGreen">
+                </div>
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-gray-700 mb-1">パスワード</label>
+                <div class="relative">
+                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
+                        <i data-lucide="key-round" class="w-4 h-4"></i>
+                    </span>
+                    <input type="password" placeholder="••••••••" required class="w-full pl-9 pr-3 py-2 border border-eparkGray-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-eparkGreen">
+                </div>
+            </div>
+            <div class="flex items-center justify-between text-[11px] pt-1">
+                <label class="flex items-center gap-1.5 text-gray-500 cursor-pointer">
+                    <input type="checkbox" class="rounded border-gray-300 text-eparkGreen focus:ring-eparkGreen">
+                    ログイン状態を保存
+                </label>
+                <a href="javascript:void(0)" class="text-eparkGreen hover:underline font-bold">パスワードを忘れた方</a>
+            </div>
+            <button type="submit" class="w-full py-2.5 bg-eparkGreen hover:bg-eparkGreen-dark text-white rounded font-bold text-xs transition duration-200 shadow-sm flex items-center justify-center gap-1.5">
+                <i data-lucide="log-in" class="w-4 h-4"></i>
+                ログイン
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- CONTACT INQUIRY MODAL -->
+<div id="contactModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 opacity-0 pointer-events-none transition-opacity duration-300 px-4">
+    <div class="bg-white rounded-lg shadow-xl max-w-lg w-full overflow-hidden transform scale-95 transition-transform duration-300">
+        <!-- Modal Header -->
+        <div class="bg-eparkGreen-dark text-white px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <i data-lucide="mail" class="w-5 h-5 text-eparkOrange"></i>
+                <h3 class="font-bold text-[15px]">お問い合わせフォーム</h3>
+            </div>
+            <button onclick="closeModal('contactModal')" class="text-white/80 hover:text-white">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+        </div>
+        <!-- Modal Body -->
+        <form onsubmit="handleContact(event)" class="p-6 space-y-4 max-h-[75vh] overflow-y-auto">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">貴社名 / 店舗名 <span class="text-red-500">*</span></label>
+                    <input type="text" required placeholder="株式会社〇〇" class="w-full px-3 py-2 border border-eparkGray-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-eparkGreen">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">ご担当者様氏名 <span class="text-red-500">*</span></label>
+                    <input type="text" required placeholder="山田 太郎" class="w-full px-3 py-2 border border-eparkGray-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-eparkGreen">
+                </div>
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-gray-700 mb-1">メールアドレス <span class="text-red-500">*</span></label>
+                <input type="email" required placeholder="example@epark.co.jp" class="w-full px-3 py-2 border border-eparkGray-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-eparkGreen">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-gray-700 mb-1">電話番号 <span class="text-red-500">*</span></label>
+                <input type="tel" required placeholder="03-1234-5678" class="w-full px-3 py-2 border border-eparkGray-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-eparkGreen">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-gray-700 mb-1">お問い合わせ内容 <span class="text-red-500">*</span></label>
+                <textarea required rows="4" placeholder="ご質問やご相談内容をご記入ください" class="w-full px-3 py-2 border border-eparkGray-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-eparkGreen resize-none"></textarea>
+            </div>
+            <div class="text-[10px] text-gray-500 leading-normal">
+                ※ご入力いただいた個人情報は、情報セキュリティポリシーに基づき、お問い合わせ対応の目的のみに使用いたします。
+            </div>
+            <input type="submit" style="display:none"> <!-- hidden trigger -->
+            <button type="submit" class="w-full py-2.5 bg-eparkGreen hover:bg-eparkGreen-dark text-white rounded font-bold text-xs transition duration-200 shadow-sm">
+                送信する
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- NEWS DETAIL MODAL -->
+<div id="newsDetailModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 opacity-0 pointer-events-none transition-opacity duration-300 px-4">
+    <div class="bg-white rounded-2xl shadow-xl max-w-2xl w-full overflow-hidden transform scale-95 transition-transform duration-300">
+        <!-- Modal Header -->
+        <div class="bg-eparkGreen-dark text-white px-6 py-5 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <span id="detailBadge" class="text-[10px] font-bold px-2 py-0.5 rounded text-white"></span>
+                <span id="detailDate" class="text-xs text-white/80 font-medium"></span>
+            </div>
+            <button onclick="closeModal('newsDetailModal')" class="text-white/80 hover:text-white transition">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+        </div>
+        <!-- Modal Body -->
+        <div class="p-8 space-y-6 max-h-[70vh] overflow-y-auto">
+            <h2 id="detailTitle" class="text-lg sm:text-xl font-black text-eparkDark leading-relaxed"></h2>
+            
+            <div id="detailBody" class="text-xs sm:text-sm text-gray-600 leading-relaxed space-y-4 border-t border-eparkGray-border pt-6">
+                <!-- Javascriptによって動的注入 -->
+            </div>
+        </div>
+        <!-- Modal Footer -->
+        <div class="bg-eparkGray-light px-6 py-4 flex justify-end border-t border-eparkGray-border">
+            <button onclick="closeModal('newsDetailModal')" class="bg-eparkDark hover:bg-black text-white text-xs font-bold px-5 py-2.5 rounded-lg transition duration-200">
+                閉じる
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- COMPANY MODAL -->
+<div id="companyModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 opacity-0 pointer-events-none transition-opacity duration-300 px-4">
+    <div class="bg-white rounded-lg shadow-xl max-w-md w-full overflow-hidden transform scale-95 transition-transform duration-300 p-6 space-y-4">
+        <h3 class="text-base font-bold text-eparkGreen-dark">会社概要</h3>
+        <div class="text-xs text-gray-600 space-y-2 leading-relaxed">
+            <p><strong>会社名：</strong>株式会社EPARK</p>
+            <p><strong>所在地：</strong>〒105-0011 東京都港区芝公園2-4-1</p>
+            <p><strong>事業内容：</strong>EPARK集客でんきの小売販売、集客ソリューションプラットフォームの運営</p>
+        </div>
+        <button onclick="closeModal('companyModal')" class="w-full py-2 bg-eparkDark text-white text-xs font-bold rounded">閉じる</button>
+    </div>
+</div>
+
+<!-- RULE MODAL -->
+<div id="ruleModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 opacity-0 pointer-events-none transition-opacity duration-300 px-4">
+    <div class="bg-white rounded-lg shadow-xl max-w-md w-full overflow-hidden transform scale-95 transition-transform duration-300 p-6 space-y-4">
+        <h3 class="text-base font-bold text-eparkGreen-dark">各種規約・約款（デモ）</h3>
+        <p class="text-xs text-gray-600 leading-relaxed">
+            お申込み時の約款・重要事項説明書等、大切な契約書類の情報です。お申込み後に別途マイページ上でもご確認いただけます。
+        </p>
+        <button onclick="closeModal('ruleModal')" class="w-full py-2 bg-eparkDark text-white text-xs font-bold rounded">閉じる</button>
+    </div>
+</div>
+
+<!-- DELIVERY DETAIL MODAL -->
+<div id="deliveryDetailModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 opacity-0 pointer-events-none transition-opacity duration-300 px-4">
+    <div class="bg-white rounded-lg shadow-xl max-w-md w-full overflow-hidden transform scale-95 transition-transform duration-300 p-6 space-y-4">
+        <h3 class="text-base font-bold text-eparkGreen-dark">デリバリー支援パック詳細</h3>
+        <p class="text-xs text-gray-600 leading-relaxed">
+            飲食店様限定のお得なプランです。EPARKの強力な約6,000万人の会員基盤を活用したデリバリーメール配信に加え、サイト掲載特典がまるごとセットになっています。
+        </p>
+        <button onclick="closeModal('deliveryDetailModal')" class="w-full py-2 bg-eparkDark text-white text-xs font-bold rounded flex justify-center items-center">閉じる</button>
+    </div>
+</div>
+
+<!-- PARTNER CONTACT MODAL -->
+<div id="partnerContactModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 opacity-0 pointer-events-none transition-opacity duration-300 px-4">
+    <div class="bg-white rounded-lg shadow-xl max-w-lg w-full overflow-hidden transform scale-95 transition-transform duration-300">
+        <!-- Modal Header -->
+        <div class="bg-eparkGreen-dark text-white px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <i data-lucide="handshake" class="w-5 h-5 text-eparkOrange"></i>
+                <h3 class="font-bold text-[15px]">パートナー登録のお問い合わせ</h3>
+            </div>
+            <button onclick="closeModal('partnerContactModal')" class="text-white/80 hover:text-white">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+        </div>
+        <!-- Modal Body -->
+        <form onsubmit="handlePartnerContact(event)" class="p-6 space-y-4 max-h-[75vh] overflow-y-auto">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">貴社名 / 屋号 <span class="text-red-500">*</span></label>
+                    <input type="text" required placeholder="株式会社〇〇" class="w-full px-3 py-2 border border-eparkGray-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-eparkGreen">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-gray-700 mb-1">ご担当者様氏名 <span class="text-red-500">*</span></label>
+                    <input type="text" required placeholder="山田 太郎" class="w-full px-3 py-2 border border-eparkGray-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-eparkGreen">
+                </div>
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-gray-700 mb-1">メールアドレス <span class="text-red-500">*</span></label>
+                <input type="email" required placeholder="example@epark.co.jp" class="w-full px-3 py-2 border border-eparkGray-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-eparkGreen">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-gray-700 mb-1">電話番号 <span class="text-red-500">*</span></label>
+                <input type="tel" required placeholder="03-1234-5678" class="w-full px-3 py-2 border border-eparkGray-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-eparkGreen">
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-gray-700 mb-1">現在のご職業・業種</label>
+                <select class="w-full px-3 py-2 border border-eparkGray-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-eparkGreen bg-white">
+                    <option value="">選択してください</option>
+                    <option>保険代理店</option>
+                    <option>通信・IT関連</option>
+                    <option>POS・決済端末販売</option>
+                    <option>士業・コンサルタント</option>
+                    <option>その他</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-gray-700 mb-1">お問い合わせ内容</label>
+                <textarea rows="3" placeholder="ご質問・ご要望などをご記入ください" class="w-full px-3 py-2 border border-eparkGray-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-eparkGreen resize-none"></textarea>
+            </div>
+            <div class="text-[10px] text-gray-500 leading-normal">
+                ※ご入力いただいた個人情報は、パートナー登録対応の目的のみに使用いたします。
+            </div>
+            <button type="submit" class="w-full py-2.5 bg-eparkOrange hover:bg-orange-500 text-white rounded font-bold text-xs transition duration-200 shadow-sm flex items-center justify-center gap-1.5">
+                <i data-lucide="send" class="w-4 h-4"></i>
+                送信する
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- INTERACTIVE LEGAL MODAL CONTAINER (service1.html 統合) -->
+<div id="legal-modal" class="hidden fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[80vh] overflow-hidden shadow-2xl border border-gray-100 flex flex-col transform scale-95 transition-all duration-300">
+        <!-- Modal Header -->
+        <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+            <h3 id="modal-title" class="text-lg font-bold text-gray-900">個人情報保護方針</h3>
+            <button onclick="closeModal('legal-modal')" class="text-gray-400 hover:text-gray-600 text-2xl font-semibold leading-none p-1 focus:outline-none">&times;</button>
+        </div>
+        <!-- Modal Content (Scrollable) -->
+        <div id="modal-body" class="p-6 overflow-y-auto text-sm text-gray-600 leading-relaxed space-y-4">
+            <p class="font-bold text-gray-900 text-lg mb-4">EPARKプライバシーポリシー</p>
+            <p class="mb-4 text-xs sm:text-sm">
+                株式会社EPARK（以下「当社」という）では、インターネットを利用した service 提供を中心にさまざまな事業活動を行っています。当社では、お客様および当社の事業活動に関わるすべての方々（株主様、従業者などを含み、以下総称して「ご本人様」といいます）の個人情報が、個人情報保護法並びに個人の人格尊重（プライバシー保護）の理念の下に適正かつ慎重に取扱われるべきものであり、法令遵守のみならず、個人の権利利益と密接に関わるものであるという認識に基づき、個人情報の取扱いに際して以下の事項を誓約させていただきます。
+            </p>
+            
+            <div class="space-y-4 text-xs sm:text-sm">
+                <p><span class="font-bold">1.</span> 個人情報の保護に関する法律、同法についての個人情報保護委員会ガイドラインその他の関係法令などを遵守するとともに、一般に公正妥当と認められる個人情報の取扱いに関する慣行に準拠し、適切に取扱います。また、適宜、取扱いの改善に努めます。</p>
+                <p><span class="font-bold">2.</span> 個人情報の取扱いに関する規定を明確にし、従業員などに周知徹底します。また、取引先などに対しても適切に個人情報を取扱うように要請します。</p>
+                <p><span class="font-bold">3.</span> 個人情報の取得に際しては、利用目的を特定して通知または公表し、必要な場合は利用の同意を得た上で、その利用目的に従って個人情報を取扱います。</p>
+                <p><span class="font-bold">4.</span> 個人情報を取扱うに当たっては、原則として利用目的（お問い合わせへの返答、サービスのご提案等）に必要な範囲内で保存期間を定めるものとし、法令により例外として扱うことが認められている場合を除き、保存期間経過または利用目的を達成した後は、個人情報を遅滞なく消去します。</p>
+                <p><span class="font-bold">5.</span> 個人情報の漏えい、滅失、またはき損の防止を図るため、組織的、人的、物理的および技術的な安全管理措置を行います。並びに不適合が発生した場合、その原因を除去し再発しないようにし、是正処置を行います。</p>
+                <p><span class="font-bold">6.</span> 保有する個人情報について、お客様ご本人からの開示、訂正、削除、利用停止の依頼を所定の窓口でお受けして、誠意をもって対応します。</p>
+                <p><span class="font-bold">7.</span> 定期的な内部監査、社会情勢の変化や技術の進歩などを通して、個人情報保護マネジメントシステムの継続的改善を行います。</p>
+            </div>
+
+            <div class="bg-gray-50 p-4 rounded-xl space-y-1 text-xs mt-6 border border-gray-100">
+                <p>制定日：2007年8月28日</p>
+                <p>最終改訂日：2024年2月8日</p>
+                <p class="font-bold text-gray-900 mt-2">株式会社EPARK</p>
+                <p class="text-gray-700 font-semibold">代表取締役社長 押切 孝平</p>
+            </div>
+        </div>
+        <!-- Modal Footer -->
+        <div class="px-6 py-4 border-t border-gray-100 bg-gray-50 text-right">
+            <button onclick="closeModal('legal-modal')" class="bg-gray-900 text-white font-bold px-6 py-2 rounded-full hover:bg-gray-800 transition text-sm">
+                閉じる
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- TOAST NOTIFICATION CONTAINER -->
+<div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+<script>
+    // ==========================================
+    // DATA: NEWS SOURCE OF TRUTH
+    // ==========================================
+    const newsData = [
+        {
+            date: "2025.05.01",
+            category: "info",
+            categoryLabel: "お知らせ",
+            title: "電源調達調整費単価（2025年6月分）のお知らせ",
+            body: `
+                <p>いつもEPARK集客でんきをご利用いただき、誠にありがとうございます。</p>
+                <p>2025年6月分の電気料金に適用される、一般送配電事業者エリア別の電源調達調整費単価が確定いたしましたので、下記の通りお知らせいたします。</p>
+                <div class="bg-eparkGray-light p-4 rounded-lg my-3 space-y-1.5 border border-eparkGray-border">
+                    <p class="font-bold text-eparkGreen-dark">【エリア別電源調達調整費単価】</p>
+                    <p>・東京電力エリア: 2.14円/kWh (税込)</p>
+                    <p>・関西電力エリア: 1.85円/kWh (税込)</p>
+                    <p>・中部電力エリア: 1.98円/kWh (税込)</p>
+                    <p class="text-[11px] text-gray-400">※その他のエリアにつきましては、マイページの詳細資料をご確認ください。</p>
+                </div>
+                <p>本調整費は市場の電力取引価格の変動を反映したものであり、皆様に安心・安全な電力供給体制を維持するため、誠に恐縮ながら毎月算出しております。何卒ご理解賜りますようお願い申し上げます。</p>
+            `
+        },
+        {
+            date: "2025.04.15",
+            category: "maintenance",
+            categoryLabel: "メンテナンス",
+            title: "システムメンテナンスのお知らせ (5/20)",
+            body: `
+                <p>下記の日程におきまして、安定したシステム稼働を目的としたサーバーメンテナンスを実施いたします。</p>
+                <p>メンテナンス作業期間中は、マイページおよび一部のお申込み・シミュレーション機能が一時的にご利用いただけなくなります。</p>
+                <div class="bg-eparkOrange-light p-4 rounded-lg my-3 space-y-1 text-eparkDark border border-eparkOrange/20">
+                    <p class="font-bold text-eparkOrange">【メンテナンス日時】</p>
+                    <p>2025年5月20日（火） 午前2:00 ～ 午前6:00 (予定)</p>
+                    <p class="font-bold mt-2">【影響を受けるサービス】</p>
+                    <p>・マイページへのログイン</p>
+                    <p>・新規お申込み受付・Webでのお問い合わせ窓口</p>
+                </div>
+                <p>※実際の送電や電気のご使用には一切影響ございませんのでご安心ください。</p>
+                <p>ご不便をおかけいたしますが、システムの安定稼働のため、ご理解とご協力のほどよろしくお願い申し上げます。</p>
+            `
+        },
+        {
+            date: "2025.04.01",
+            category: "info",
+            categoryLabel: "お知らせ",
+            title: "電源調達調整費単価（2025年5月分）のお知らせ",
+            body: `
+                <p>2025年5月分の電気料金に適用される電源調達調整費単価をお知らせいたします。</p>
+                <div class="bg-eparkGray-light p-4 rounded-lg my-3 space-y-1 border border-eparkGray-border">
+                    <p class="font-bold text-eparkGreen-dark">【5月分適用調整費単価】</p>
+                    <p>・東京電力エリア: 2.05円/kWh (税込)</p>
+                    <p>・関西電力エリア: 1.76円/kWh (税込)</p>
+                </div>
+                <p>市場価格の落ち着きに伴い、前月比でわずかな低減となっております。今後ともよりよい省エネサービスとあわせ、最適なプラン運用を目指してまいります。</p>
+            `
+        },
+        {
+            date: "2025.03.15",
+            category: "info",
+            categoryLabel: "お知らせ",
+            title: "約款改定のお知らせ",
+            body: `
+                <p>この度、電気供給約款の一部を以下の通り改定することとなりました。</p>
+                <p>本改定は、お支払い方法に関する利便性の向上およびセキュリティ規格の強化に伴う変更を主な内容としております。</p>
+                <div class="bg-eparkGray-light p-4 rounded-lg my-3 space-y-2 border border-eparkGray-border">
+                    <p class="font-bold text-eparkGreen-dark">【主な変更点】</p>
+                    <p class="font-semibold">1. クレジットカード決済システムの移行</p>
+                    <p class="text-gray-500 pl-3">新しい3Dセキュア規格に対応し、安全なお取引を実現します。</p>
+                    <p class="font-semibold">2. 口座振替お引落日の微調整</p>
+                    <p class="text-gray-500 pl-3">従来「毎月26日」のお引落を、金融機関休業日の都合を考慮した細則に刷新します。</p>
+                </div>
+                <p>改定後の約款全文は、規約・重要事項の約款一覧ページよりご確認いただけます。今後とも、変わらぬご愛顧を賜りますようお願い申し上げます。</p>
+            `
+        },
+        {
+            date: "2026.06.25",
+            category: "info",
+            categoryLabel: "お知らせ",
+            title: "電源調達調整費の算定方法と連動ルール",
+            body: `
+                <p class="font-bold text-eparkDark">電源調達調整費とは？</p>
+                <p>EPARK集客でんきでは、日本卸電力取引所（JEPX）が公開する電力取引価格に連動した「電源調達調整費」を導入しております。本調整費は、JEPXの市場取引価格の変動を電気料金に適正に反映するための項目です。</p>
+                <p class="mt-4">電気を市場から安定調達するための平均コストが一定の「基準単価」を下回った月は、電気料金から自動的にマイナス値引き（調達調整還元）を行います。逆に、冷暖房期や世界的なエネルギー燃料高騰などにより、調達コストが基準値を超過した場合は、差額実費分を追加調整費として算定いたします。</p>
+                <div class="bg-eparkGray-light p-5 rounded-xl border border-eparkGray-border my-5">
+                    <p class="font-bold text-eparkGreen-dark mb-2.5">【調達調整単価の算定数式】</p>
+                    <div class="bg-white px-4 py-3.5 rounded-lg border border-gray-200 text-center font-mono text-xs sm:text-sm md:text-base text-eparkDark font-bold shadow-sm">
+                        電源調達調整費 ＝ (調達単価 － 基準単価) × (1 ＋ 消費税率)
+                    </div>
+                    <p class="text-[11px] text-gray-500 mt-3 leading-relaxed">
+                        ※調達単価は、前々月11日から前月10日までのJEPXスポット取引市場の各エリアプライス1ヵ月単純平均値に基づき決定されます。<br>
+                        また、2026年4月以降に適用される国の環境基準に則った「カーボンフリー促進費（0.30円/kWhなど）」等、小売電気事業の最新要件に準じた変動係数も適正に加減算調整されます。
+                    </p>
+                </div>
+            `
+        },
+        {
+            date: "2025.01.10",
+            category: "info",
+            categoryLabel: "お知らせ",
+            title: "万が一、停電が発生した場合の対応方法について",
+            body: `
+                <p>停電が発生した際、慌てずに対処していただくためのガイドです。</p>
+                <p>EPARK集客でんきをご利用中におきましても、送配電設備は地域の電力会社（一般送配電事業者）が管理しておりますので、停電復旧の仕組みは同様です。</p>
+                <div class="bg-eparkGray-light p-4 rounded-lg my-3 space-y-2 border border-eparkGray-border">
+                    <p class="font-bold text-eparkGreen-dark">【ステップ別チェック】</p>
+                    <p>1. ご近所様も停電していますか？</p>
+                    <p class="text-gray-500 pl-3">→ ご近所も消えている場合、地域一帯の送電トラブルです。電力会社公式の停電情報をご確認ください。</p>
+                    <p>2. お店・お宅だけが停電していますか？</p>
+                    <p class="text-gray-500 pl-3">→ ブレーカーが落ちていないか確認してください。電気の使いすぎ（許容量オーバー）が原因の場合があります。</p>
+                </div>
+            `
+        }
+    ];
+
+    let currentFilter = 'all';
+
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // ==========================================
+    // HAMBURGER DRAWER
+    // ==========================================
+    function toggleDrawer() {
+        const menu = document.getElementById('drawerMenu');
+        const overlay = document.getElementById('drawerOverlay');
+        const isOpen = !menu.classList.contains('translate-x-full');
+        if (isOpen) {
+            closeDrawer();
+        } else {
+            openDrawer();
+        }
+    }
+
+    // Drawerを開く
+    function openDrawer() {
+        const menu = document.getElementById('drawerMenu');
+        const overlay = document.getElementById('drawerOverlay');
+        menu.classList.remove('translate-x-full');
+        overlay.classList.remove('opacity-0', 'pointer-events-none');
+        overlay.classList.add('opacity-100');
+        document.body.style.overflow = 'hidden';
+        lucide.createIcons();
+    }
+
+    // Drawerを閉じる
+    function closeDrawer() {
+        const menu = document.getElementById('drawerMenu');
+        const overlay = document.getElementById('drawerOverlay');
+        menu.classList.add('translate-x-full');
+        overlay.classList.add('opacity-0', 'pointer-events-none');
+        overlay.classList.remove('opacity-100');
+        document.body.style.overflow = '';
+    }
+
+    // ==========================================
+    // VIEW NAVIGATION LOGIC
+    // ==========================================
+    const VIEW_HASH = {
+        'lp':               '#',
+        'news-list':        '#news-list',
+        'fuel-adjustment':  '#fuel-adjustment',
+        'teiden':           '#teiden',
+        'rule-list':        '#rule-list',
+        'denki-charge':     '#denki-charge',
+        'important-matters': '#important-matters',
+        'faq':              '#faq',
+        'partner':          '#partner'
+    };
+
+    function hideAllViews() {
+        ['lpView','newsListView','fuelAdjustmentListView','teidenView','ruleListView','denkiChargeView','importantMattersView','faqView','partnerView'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.classList.add('hidden');
+        });
+        const searchInput = document.getElementById('newsSearchInput');
+        if (searchInput) searchInput.value = '';
+    }
+
+    function showView(viewId, targetElementId = null) {
+        hideAllViews();
+
+        if (viewId === 'lp') {
+            document.getElementById('lpView').classList.remove('hidden');
+            if (targetElementId) {
+                setTimeout(() => {
+                    const el = document.getElementById(targetElementId);
+                    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 50);
+            } else {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        } else if (viewId === 'news-list') {
+            document.getElementById('newsListView').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            renderInteractiveNews();
+        } else if (viewId === 'fuel-adjustment') {
+            document.getElementById('fuelAdjustmentListView').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else if (viewId === 'teiden') {
+            document.getElementById('teidenView').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else if (viewId === 'rule-list') {
+            document.getElementById('ruleListView').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else if (viewId === 'denki-charge') {
+            document.getElementById('denkiChargeView').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else if (viewId === 'important-matters') {
+            document.getElementById('importantMattersView').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        } else if (viewId === 'faq') {
+            document.getElementById('faqView').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            renderFaqList('all');
+        } else if (viewId === 'partner') {
+            document.getElementById('partnerView').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        lucide.createIcons();
+    }
+
+    function navigateTo(viewId, targetElementId = null) {
+        const hash = VIEW_HASH[viewId] || '#';
+        if (viewId === 'lp' && !targetElementId) {
+            history.pushState({ viewId, targetElementId }, '', location.pathname);
+        } else {
+            history.pushState({ viewId, targetElementId }, '', hash);
+        }
+        showView(viewId, targetElementId);
+    }
+
+    window.addEventListener('popstate', function(e) {
+        if (e.state && e.state.viewId) {
+            showView(e.state.viewId, e.state.targetElementId);
+        } else {
+            routeByHash();
+        }
+    });
+
+    function routeByHash() {
+        const hash = location.hash;
+        if      (hash === '#news-list')       showView('news-list');
+        else if (hash === '#fuel-adjustment') showView('fuel-adjustment');
+        else if (hash === '#teiden')          showView('teiden');
+        else if (hash === '#rule-list')       showView('rule-list');
+        else if (hash === '#denki-charge')    showView('denki-charge');
+        else if (hash === '#important-matters') showView('important-matters');
+        else if (hash === '#faq')             showView('faq');
+        else if (hash === '#partner')         showView('partner');
+        else                                  showView('lp');
+    }
+
+    window.addEventListener('DOMContentLoaded', function() {
+        routeByHash();
+    });
+
+    // ==========================================
+    // NEWS LIST RENDERING & FILTERING
+    // ==========================================
+    function renderInteractiveNews() {
+        const container = document.getElementById('interactiveNewsContainer');
+        const emptyState = document.getElementById('newsEmptyState');
+        const searchQuery = document.getElementById('newsSearchInput').value.trim().toLowerCase();
+        
+        container.innerHTML = '';
+        
+        const filtered = newsData.filter(item => {
+            const matchesCategory = (currentFilter === 'all' || item.category === currentFilter);
+            const matchesSearch = item.title.toLowerCase().includes(searchQuery) || item.body.toLowerCase().includes(searchQuery);
+            return matchesCategory && matchesSearch;
+        });
+
+        if (filtered.length === 0) {
+            emptyState.classList.remove('hidden');
+            return;
+        }
+        emptyState.classList.add('hidden');
+
+        filtered.forEach((item, index) => {
+            const originalIndex = newsData.indexOf(item);
+            const badgeBg = item.category === 'maintenance' ? 'bg-eparkOrange' : 'bg-eparkGreen';
+
+            const card = document.createElement('div');
+            card.onclick = () => openNewsDetail(originalIndex);
+            card.className = "bg-white p-5 rounded-xl border border-eparkGray-border hover:border-eparkGreen/50 cursor-pointer shadow-sm hover:shadow-md transition-all duration-300 flex flex-col sm:flex-row sm:items-center justify-between gap-4 group";
+
+            card.innerHTML = `
+                <div class="space-y-2">
+                    <div class="flex items-center gap-2.5">
+                        <span class="text-xs text-gray-400 font-medium">${item.date}</span>
+                        <span class="${badgeBg} text-white text-[9px] font-bold px-2 py-0.5 rounded">${item.categoryLabel}</span>
+                    </div>
+                    <h3 class="text-[13px] sm:text-[14px] font-bold text-eparkDark group-hover:text-eparkGreen transition duration-200 leading-snug">
+                        ${item.title}
+                    </h3>
+                </div>
+                <div class="flex-shrink-0 flex items-center gap-1 text-[11px] font-bold text-eparkGreen group-hover:translate-x-1 transition-transform duration-300">
+                    詳細を見る
+                    <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+
+        lucide.createIcons();
+    }
+
+    function filterNews(category) {
+        currentFilter = category;
+        ['all', 'info', 'maintenance'].forEach(cat => {
+            const tab = document.getElementById(`tab-${cat}`);
+            if (!tab) return;
+            if (cat === category) {
+                tab.className = "px-4 py-2 text-xs font-bold text-eparkGreen border-b-2 border-eparkGreen transition-all duration-200";
+            } else {
+                tab.className = "px-4 py-2 text-xs font-bold text-gray-500 hover:text-eparkGreen transition-all duration-200";
+            }
+        });
+        renderInteractiveNews();
+    }
+
+    function searchNews() {
+        renderInteractiveNews();
+    }
+
+    function openNewsDetail(index) {
+        const item = newsData[index];
+        if (!item) return;
+
+        document.getElementById('detailTitle').innerHTML = item.title;
+        document.getElementById('detailDate').textContent = item.date;
+        document.getElementById('detailBadge').textContent = item.categoryLabel;
+        document.getElementById('detailBody').innerHTML = item.body;
+
+        const badge = document.getElementById('detailBadge');
+        if (item.category === 'maintenance') {
+            badge.className = "text-[10px] font-bold px-2 py-0.5 rounded text-white bg-eparkOrange";
+        } else {
+            badge.className = "text-[10px] font-bold px-2 py-0.5 rounded text-white bg-eparkGreen";
+        }
+
+        openModal('newsDetailModal');
+    }
+
+    function handlePdfLinkRedirect(month) {
+        showToast(`${month} の電源調達調整費単価PDFへのアクセスを模したリンクを開きます。（デモ動作）`, 'success');
+    }
+
+    // ==========================================
+    // MODAL WINDOW CONTROL
+    // ==========================================
+    function openModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (!modal) return;
+        
+        modal.classList.remove('pointer-events-none', 'opacity-0');
+        modal.classList.add('opacity-100');
+        
+        const card = modal.querySelector('div');
+        if (card) {
+            card.classList.remove('scale-95');
+            card.classList.add('scale-100');
+        }
+    }
+
+    // Modalを閉じる
+    function closeModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (!modal) return;
+        
+        modal.classList.add('pointer-events-none', 'opacity-0');
+        modal.classList.remove('opacity-100');
+        
+        const card = modal.querySelector('div');
+        if (card) {
+            card.classList.remove('scale-100');
+            card.classList.add('scale-95');
+        }
+    }
+
+    // Toast Notification System
+    function showToast(message, type = 'success') {
+        const container = document.getElementById('toastContainer');
+        if (!container) return;
+
+        const toast = document.createElement('div');
+        toast.className = `flex items-center gap-2.5 px-4 py-3 rounded shadow-md bg-white border-l-4 text-xs font-bold transition-all duration-300 transform translate-y-2 opacity-0 pointer-events-auto ${
+            type === 'success' ? 'border-eparkGreen text-eparkDark' : 'border-red-500 text-red-700'
+        }`;
+        
+        const iconName = type === 'success' ? 'check-circle' : 'alert-circle';
+        toast.innerHTML = `
+            <i data-lucide="${iconName}" class="w-4 h-4 ${type === 'success' ? 'text-eparkGreen' : 'text-red-500'}"></i>
+            <span>${message}</span>
+        `;
+        
+        container.appendChild(toast);
+        lucide.createIcons();
+
+        setTimeout(() => {
+            toast.classList.remove('translate-y-2', 'opacity-0');
+        }, 10);
+
+        setTimeout(() => {
+            toast.classList.add('translate-y-2', 'opacity-0');
+            setTimeout(() => {
+                toast.remove();
+            }, 300);
+        }, 4000);
+    }
+
+    function handleLogin(event) {
+        event.preventDefault();
+        closeModal('mypageModal');
+        showToast('マイページにログインしました。（デモ動作）', 'success');
+    }
+
+    // ==========================================
+    // FAQ DATA & LOGIC
+    // ==========================================
+    const faqData = [
+        {
+            cat: 'contract', catLabel: 'お申込み・契約',
+            q: 'EPARK集客でんきに申込むにはどうすればよいですか？',
+            a: 'お問い合わせフォームよりご連絡いただくか、ページ上部の「お問い合わせ」ボタンからご相談ください。担当スタッフが申込み手続きをご案内いたします。'
+        },
+        {
+            cat: 'contract', catLabel: 'お申込み・契約',
+            q: '申込みから切り替え完了まで、どのくらいかかりますか？',
+            a: 'お申込み受付後、通常1〜2ヶ月程度で切り替えが完了します。切り替えにあたって工事は不要で、電気の供給が途切れることもありません。'
+        },
+        {
+            cat: 'contract', catLabel: 'お申込み・契約',
+            q: '契約期間・解約の縛りはありますか？',
+            a: '最低契約期間や解約違約金は設けておりません。お客様のご都合に合わせて解約いただけます。なお、解約手続きはマイページまたはお問い合わせフォームにてお承りします。'
+        },
+        {
+            cat: 'contract', catLabel: 'お申込み・契約',
+            q: '対象となる電力エリアはどこですか？',
+            a: '北海道・東北・東京・中部・北陸・関西・中国・四国・九州の各電力エリアを対象としております。沖縄エリアは現在対応しておりませんので、あらかじめご了承ください。'
+        },
+        {
+            cat: 'billing', catLabel: '料金・お支払い',
+            q: '電源調達調整費とは何ですか？',
+            a: '日本卸電力取引所（JEPX）の市場取引価格に連動して毎月算出される調整費用です。市場価格が基準単価を下回った月はマイナス（値引き）となり、上回った月はプラス（追加費用）となります。詳細は「電源調達調整費とは」ページをご確認ください。'
+        },
+        {
+            cat: 'billing', catLabel: '料金・お支払い',
+            q: 'お支払い方法を教えてください。',
+            a: '口座振替またはクレジットカード決済に対応しております。お支払い方法の変更はマイページから手続きいただけます。'
+        },
+        {
+            cat: 'billing', catLabel: '料金・お支払い',
+            q: '毎月の請求書はどこで確認できますか？',
+            a: 'マイページにログインいただくと、過去の請求明細を月別でご確認いただけます。紙の請求書はお送りしておりませんので、マイページからのご確認をお願いします。'
+        },
+        {
+            cat: 'service', catLabel: 'サービス内容',
+            q: 'デリバリー支援パックとはどのようなサービスですか？',
+            a: 'フードデリバリーを導入している飲食店様向けに、電気の切り替えとあわせてデリバリーの集客・売上アップを支援するサービスです。EPARKの約6,000万人の会員へのメール配信やメディア掲載などがセットになっています。'
+        },
+        {
+            cat: 'service', catLabel: 'サービス内容',
+            q: 'EPARKの予約メディアへの掲載はどのように行われますか？',
+            a: 'ご契約内容に応じて、EPARK運営の各種予約・集客メディアにお店の情報を掲載いたします。掲載内容・掲載先については、担当スタッフがご状況に応じてご提案いたします。'
+        },
+        {
+            cat: 'service', catLabel: 'サービス内容',
+            q: '電気の品質や供給は今までと変わりますか？',
+            a: '変わりません。送電設備は引き続き地域の一般送配電事業者が管理・運用しており、電気の品質（電圧・周波数）は同一です。変わるのは電気を販売する事業者（小売電気事業者）のみです。'
+        },
+        {
+            cat: 'trouble', catLabel: 'トラブル・停電',
+            q: '停電が発生した場合、どこに連絡すればよいですか？',
+            a: '停電時は、地域の一般送配電事業者（各電力会社のネットワーク窓口）へご連絡ください。EPARK集客でんきをご利用中でも、送配電設備の管理は地域の電力会社が行っています。詳しくは「停電時の対応方法」ページをご参照ください。'
+        },
+        {
+            cat: 'trouble', catLabel: 'トラブル・停電',
+            q: 'ブレーカーが落ちました。どうすればよいですか？',
+            a: 'まず、電気の使いすぎや漏電の可能性がないかご確認ください。分電盤の確認手順については「停電時の対応方法」ページに詳しく記載しています。解決しない場合はお問い合わせください。'
+        },
+        {
+            cat: 'mypage', catLabel: 'マイページ',
+            q: 'マイページのIDやパスワードを忘れてしまいました。',
+            a: 'マイページのログイン画面にある「パスワードを忘れた方」リンクから再設定手続きを行ってください。ログインIDが不明な場合はお問い合わせフォームよりご連絡ください。'
+        },
+        {
+            cat: 'mypage', catLabel: 'マイページ',
+            q: 'マイページでできることを教えてください。',
+            a: '月別のご利用実績（電気使用量・請求明細）の確認、お支払い方法の変更、契約内容の確認、各種書類の閲覧などができます。'
+        },
+    ];
+
+    let currentFaqCat = 'all';
+
+    function renderFaqList(cat) {
+        currentFaqCat = cat;
+        const list = document.getElementById('faqAccordionList');
+        const empty = document.getElementById('faqEmptyState');
+        if (!list) return;
+
+        const filtered = cat === 'all' ? faqData : faqData.filter(f => f.cat === cat);
+        list.innerHTML = '';
+
+        if (filtered.length === 0) {
+            empty.classList.remove('hidden');
+            return;
+        }
+        empty.classList.add('hidden');
+
+        const groups = {};
+        filtered.forEach(f => {
+            if (!groups[f.catLabel]) groups[f.catLabel] = [];
+            groups[f.catLabel].push(f);
+        });
+
+        Object.entries(groups).forEach(([label, items]) => {
+            if (cat === 'all') {
+                const heading = document.createElement('h2');
+                heading.className = 'text-xs font-black text-eparkGreen-dark mt-6 mb-2 border-l-4 border-eparkGreen pl-3';
+                heading.textContent = label;
+                list.appendChild(heading);
+            }
+
+            items.forEach((item) => {
+                const idx = faqData.indexOf(item);
+                const wrapper = document.createElement('div');
+                wrapper.className = 'bg-white rounded-xl border border-eparkGray-border overflow-hidden shadow-sm';
+
+                wrapper.innerHTML = `
+                    <button onclick="toggleFaq(${idx})" id="faq-btn-${idx}"
+                        class="w-full flex items-center justify-between gap-4 p-5 text-left hover:bg-eparkGreen/5 transition duration-200 group">
+                        <div class="flex items-start gap-3">
+                            <span class="shrink-0 w-6 h-6 rounded-full bg-eparkGreen text-white text-[11px] font-black flex items-center justify-center mt-0.5">Q</span>
+                            <span class="text-[13px] font-bold text-eparkDark group-hover:text-eparkGreen transition leading-snug">${item.q}</span>
+                        </div>
+                        <i data-lucide="chevron-down" id="faq-icon-${idx}" class="w-4 h-4 text-eparkGreen shrink-0 transition-transform duration-300"></i>
+                    </button>
+                    <div id="faq-body-${idx}" class="hidden border-t border-eparkGray-border">
+                        <div class="flex items-start gap-3 p-5 bg-eparkGray-light/60">
+                            <span class="shrink-0 w-6 h-6 rounded-full bg-eparkOrange text-white text-[11px] font-black flex items-center justify-center mt-0.5">A</span>
+                            <p class="text-xs text-gray-600 leading-relaxed">${item.a}</p>
+                        </div>
+                    </div>
+                `;
+                list.appendChild(wrapper);
+            });
+        });
+
+        lucide.createIcons();
+    }
+
+    function toggleFaq(idx) {
+        const body = document.getElementById(`faq-body-${idx}`);
+        const icon = document.getElementById(`faq-icon-${idx}`);
+        if (!body) return;
+        const isOpen = !body.classList.contains('hidden');
+        body.classList.toggle('hidden', isOpen);
+        if (icon) icon.style.transform = isOpen ? '' : 'rotate(180deg)';
+    }
+
+    function filterFaq(cat) {
+        document.querySelectorAll('.faq-cat-btn').forEach(btn => {
+            const isActive = btn.dataset.cat === cat;
+            btn.className = isActive
+                ? 'faq-cat-btn px-4 py-1.5 rounded-full text-xs font-bold border border-eparkGreen bg-eparkGreen text-white transition duration-200'
+                : 'faq-cat-btn px-4 py-1.5 rounded-full text-xs font-bold border border-eparkGray-border bg-white text-gray-500 hover:border-eparkGreen hover:text-eparkGreen transition duration-200';
+        });
+        renderFaqList(cat);
+    }
+
+    function togglePartnerFaq(idx) {
+        const body = document.getElementById(`pfaq-body-${idx}`);
+        const icon = document.getElementById(`pfaq-icon-${idx}`);
+        if (!body) return;
+        const isOpen = !body.classList.contains('hidden');
+        body.classList.toggle('hidden', isOpen);
+        if (icon) icon.style.transform = isOpen ? '' : 'rotate(180deg)';
+    }
+
+    function handlePartnerContact(event) {
+        event.preventDefault();
+        closeModal('partnerContactModal');
+        showToast('パートナー登録のお問い合わせを送信しました。2営業日以内に担当からご連絡いたします。', 'success');
+    }
+
+    function handleContact(event) {
+        event.preventDefault();
+        closeModal('contactModal');
+        showToast('お問い合わせを送信しました。折り返しご連絡いたします。', 'success');
+    }
+
+    // デモ用の遷移トースト処理
+    function handleDetailedPackRedirect() {
+        // 将来的に `location.href = "遷移先URL"` に置き換える用の導線です
+        showToast('デリバリー支援パックの専用詳細ページへリンク遷移します。（デモ動作）', 'success');
+    }
+
+    window.addEventListener('click', function(e) {
+        ['mypageModal', 'contactModal', 'newsDetailModal', 'companyModal', 'ruleModal', 'deliveryDetailModal', 'partnerContactModal', 'legal-modal'].forEach(id => {
+            const modal = document.getElementById(id);
+            if (e.target === modal) {
+                closeModal(id);
+            }
+        });
+    });
+
+    // ==========================================
+    // DETAILED PACK VIEW (service1.html) INTERACTIVE LOGIC
+    // ==========================================
+    let currentRoute = 'customer';
+
+    function switchForm(route) {
+        currentRoute = route;
+
+        const btnCustomer = document.getElementById('btn-route-customer');
+        const btnPartner = document.getElementById('btn-route-partner');
+        const formCustomer = document.getElementById('form-customer');
+        const formPartner = document.getElementById('form-partner');
+
+        const activeClasses = ['bg-brandOrange', 'text-white', 'shadow-md'];
+        const inactiveClasses = ['text-gray-500', 'hover:text-gray-800'];
+
+        if (route === 'customer') {
+            activeClasses.forEach(cls => {
+                btnCustomer.classList.add(cls);
+                btnPartner.classList.remove(cls);
+            });
+            inactiveClasses.forEach(cls => {
+                btnCustomer.classList.remove(cls);
+                btnPartner.classList.add(cls);
+            });
+            formCustomer.classList.remove('hidden');
+            formPartner.classList.add('hidden');
+        } else if (route === 'partner') {
+            activeClasses.forEach(cls => {
+                btnPartner.classList.add(cls);
+                btnCustomer.classList.remove(cls);
+            });
+            inactiveClasses.forEach(cls => {
+                btnPartner.classList.remove(cls);
+                btnCustomer.classList.add(cls);
+            });
+            formPartner.classList.remove('hidden');
+            formCustomer.classList.add('hidden');
+        }
+
+        document.getElementById('deliveryContact').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function handleFormSubmission(event, type) {
+        event.preventDefault();
+        
+        const toast = document.getElementById('success-toast');
+        const toastMessage = document.getElementById('success-toast-message');
+
+        if (type === 'customer') {
+            toastMessage.innerText = 'お申し込み・お見積もりのご相談ありがとうございます。内容を確認の上、担当コンサルタントより折り返しご連絡いたします。';
+        } else {
+            toastMessage.innerText = 'アライアンス（パートナー制度）のご検討ありがとうございます。提携制度や協業条件の資料について、パートナー開拓担当者より折り返しメール、またはお電話にてご連絡させていただきます。';
+        }
+
+        toast.classList.remove('hidden');
+    }
+
+    function resetForm() {
+        const toast = document.getElementById('success-toast');
+        if (toast) toast.classList.add('hidden');
+        
+        if (currentRoute === 'customer') {
+            const shop = document.getElementById('cust-shop-name');
+            const name = document.getElementById('cust-contact-name');
+            const phone = document.getElementById('cust-contact-phone');
+            const email = document.getElementById('cust-contact-email');
+            const msg = document.getElementById('cust-message');
+            const agree = document.getElementById('cust-privacy-agreement');
+            
+            if (shop) shop.value = '';
+            if (name) name.value = '';
+            if (phone) phone.value = '';
+            if (email) email.value = '';
+            if (msg) msg.value = '';
+            if (agree) agree.checked = false;
+        } else {
+            const comp = document.getElementById('part-company-name');
+            const name = document.getElementById('part-contact-name');
+            const phone = document.getElementById('part-contact-phone');
+            const email = document.getElementById('part-contact-email');
+            const msg = document.getElementById('part-message');
+            const agree = document.getElementById('part-privacy-agreement');
+
+            if (comp) comp.value = '';
+            if (name) name.value = '';
+            if (phone) phone.value = '';
+            if (email) email.value = '';
+            if (msg) msg.value = '';
+            if (agree) agree.checked = false;
+        }
+    }
+</script>
+
+</body>
+</html>
