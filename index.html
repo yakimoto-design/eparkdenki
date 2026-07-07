@@ -165,7 +165,7 @@
                 </a>
             </li>
             <li>
-                <a href="javascript:void(0)" onclick="closeDrawer(); navigateTo('news-list')"
+                <a href="javascript:void(0)" onclick="closeDrawer(); navigateTo('partner')"
                     class="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-bold text-eparkDark hover:bg-eparkGreen/5 hover:text-eparkGreen transition duration-200">
                     <i data-lucide="handshake" class="w-4 h-4 text-eparkGreen"></i>
                     パートナー募集
@@ -824,6 +824,60 @@
                         </div>
                     </div>
 
+                    <!-- 中国 -->
+                    <div class="border border-eparkGray-border rounded-xl p-4 bg-eparkGray-light/40 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-xs font-black text-eparkDark">中国電力ネットワーク</h4>
+                            <span class="text-[10px] text-gray-400 font-medium">中国エリア</span>
+                        </div>
+                        <div class="flex flex-col gap-1.5 text-[11px]">
+                            <a href="https://www.energia.co.jp/nw/company/office/freedial/index.html" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 text-eparkGreen hover:underline font-bold">
+                                <i data-lucide="phone" class="w-3.5 h-3.5"></i>
+                                お問い合わせ先を確認する
+                            </a>
+                            <a href="https://www.teideninfo.energia.co.jp/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 text-gray-500 hover:text-eparkGreen transition">
+                                <i data-lucide="external-link" class="w-3.5 h-3.5 text-gray-400"></i>
+                                リアルタイム停電情報
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 四国 -->
+                    <div class="border border-eparkGray-border rounded-xl p-4 bg-eparkGray-light/40 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-xs font-black text-eparkDark">四国電力送配電</h4>
+                            <span class="text-[10px] text-gray-400 font-medium">四国エリア</span>
+                        </div>
+                        <div class="flex flex-col gap-1.5 text-[11px]">
+                            <a href="https://www.yonden.co.jp/nw/faq/tel.html" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 text-eparkGreen hover:underline font-bold">
+                                <i data-lucide="phone" class="w-3.5 h-3.5"></i>
+                                お問い合わせ先を確認する
+                            </a>
+                            <a href="https://www.yonden.co.jp/nw/teiden-info/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 text-gray-500 hover:text-eparkGreen transition">
+                                <i data-lucide="external-link" class="w-3.5 h-3.5 text-gray-400"></i>
+                                リアルタイム停電情報
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 九州 -->
+                    <div class="border border-eparkGray-border rounded-xl p-4 bg-eparkGray-light/40 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h4 class="text-xs font-black text-eparkDark">九州電力送配電</h4>
+                            <span class="text-[10px] text-gray-400 font-medium">九州エリア</span>
+                        </div>
+                        <div class="flex flex-col gap-1.5 text-[11px]">
+                            <a href="https://www.kyuden.co.jp/td/functions/office.html" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 text-eparkGreen hover:underline font-bold">
+                                <i data-lucide="phone" class="w-3.5 h-3.5"></i>
+                                お問い合わせ先を確認する
+                            </a>
+                            <a href="https://www.kyuden.co.jp/td_teiden/kyushu.html" target="_blank" rel="noopener noreferrer" class="flex items-center gap-1.5 text-gray-500 hover:text-eparkGreen transition">
+                                <i data-lucide="external-link" class="w-3.5 h-3.5 text-gray-400"></i>
+                                リアルタイム停電情報
+                            </a>
+                        </div>
+                    </div>
+
                 </div>
 
             </section>
@@ -888,32 +942,196 @@
                         <div class="bg-eparkGreen text-white p-2 rounded-lg">
                             <i data-lucide="calculator" class="w-5 h-5"></i>
                         </div>
-                        <h2 class="text-base sm:text-lg font-black text-eparkDark">算定方法</h2>
+                        <h2 class="text-base sm:text-lg font-black text-eparkDark">調達調整費の算定方法</h2>
                     </div>
 
-                    <!-- 算定式 -->
+                    <!-- 算定式（還元） -->
                     <div class="bg-eparkGray-light p-5 rounded-xl border border-eparkGray-border mb-6">
-                        <p class="font-bold text-eparkGreen-dark mb-3 text-sm">【調達調整単価の算定数式】</p>
-                        <div class="bg-white px-4 py-4 rounded-lg border border-gray-200 text-center font-mono text-sm sm:text-base text-eparkDark font-bold shadow-sm">
-                            電源調達調整費 ＝ (調達単価 － 基準単価) × (1 ＋ 消費税率)
+                        <p class="font-bold text-eparkGreen-dark mb-3 text-sm">【電源調達調整費（還元）】</p>
+                        <div class="bg-white px-4 py-4 rounded-lg border border-gray-200 text-center font-mono text-[11px] sm:text-sm md:text-base text-eparkDark font-bold shadow-sm leading-relaxed">
+                            （JEPXエリアプライスの平均値 × 調達単価係数 － 還元調整基準単価）× 適用係数 × 適用期間補正係数 × 使用電力量（kWh）
                         </div>
-                        <p class="text-[11px] text-gray-500 mt-3 leading-relaxed">
-                            ※調達単価は、前々月11日から前月10日までのJEPXスポット取引市場の各エリアプライス1ヵ月単純平均値に基づき決定されます。<br>
-                            また、2026年4月以降に適用される国の環境基準に則った「カーボンフリー促進費（0.30円/kWhなど）」等、小売電気事業の最新要件に準じた変動係数も適正に加減算調整されます。
+                    </div>
+                    <div class="bg-eparkGray-light p-5 rounded-xl border border-eparkGray-border mb-6">
+                        <p class="font-bold text-eparkOrange mb-3 text-sm">【電源調達調整費（追加）】</p>
+                        <div class="bg-white px-4 py-4 rounded-lg border border-gray-200 text-center font-mono text-[11px] sm:text-sm md:text-base text-eparkDark font-bold shadow-sm leading-relaxed">
+                            （JEPXエリアプライスの平均値 × 調達単価係数 － 追加調整基準単価）× 適用係数 × 適用期間補正係数 × 使用電力量（kWh）
+                        </div>
+                    </div>
+                    <div class="bg-eparkOrange-light border border-eparkOrange/20 p-4 rounded-xl mb-6">
+                        <p class="text-[11px] text-gray-600 leading-relaxed">
+                            ※ N月の検針日からN＋1月の検針日の前日までの期間において使用される電気の料金に適用される調達調整費は、N月1日からN月末日までの期間に係るJEPXエリアプライス平均値に基づき算定した調達単価によって算定するものとします。
+
                         </p>
                     </div>
 
                     <!-- 用語説明 -->
                     <div class="space-y-3">
                         <div class="flex gap-4 p-4 rounded-xl bg-eparkGray-light border border-eparkGray-border">
-                            <span class="text-xs font-black text-white bg-eparkGreen px-2.5 py-1 rounded shrink-0 h-fit">調達単価</span>
-                            <p class="text-xs text-gray-600 leading-relaxed">前々月11日〜前月10日のJEPXスポット取引市場における各エリアプライスの1ヶ月単純平均値。</p>
+                            <span class="text-xs font-black text-white bg-eparkGreen px-2.5 py-1 rounded shrink-0 h-fit">JEPXエリアプライスの平均値</span>
+                            <p class="text-xs text-gray-600 leading-relaxed">日本卸電力取引所（JEPX）のスポット市場において、各エリアごとに算出される取引価格の月間平均値。</p>
                         </div>
                         <div class="flex gap-4 p-4 rounded-xl bg-eparkGray-light border border-eparkGray-border">
-                            <span class="text-xs font-black text-white bg-eparkGreen-dark px-2.5 py-1 rounded shrink-0 h-fit">基準単価</span>
-                            <p class="text-xs text-gray-600 leading-relaxed">契約時に設定された電力調達の基準となる単価。この値との差分が調整費として加減算されます。</p>
+                            <span class="text-xs font-black text-white bg-eparkGreen-dark px-2.5 py-1 rounded shrink-0 h-fit">還元調整基準単価／追加調整基準単価</span>
+                            <p class="text-xs text-gray-600 leading-relaxed">還元・追加それぞれの算定において基準となる単価。市場価格が本単価を上回った分が値引き（還元）または追加費用（追加）として算定されます。エリア・改定時期ごとに定められます。</p>
+                        </div>
+                        <div class="flex gap-4 p-4 rounded-xl bg-eparkGray-light border border-eparkGray-border">
+                            <span class="text-xs font-black text-white bg-gray-500 px-2.5 py-1 rounded shrink-0 h-fit">調達単価係数／適用係数／適用期間補正係数</span>
+                            <p class="text-xs text-gray-600 leading-relaxed">JEPXエリアプライスの平均値や算定結果を調整するための各種係数。エリア・月ごとに定められ、下表にて最新値をご確認いただけます。</p>
                         </div>
                     </div>
+                </div>
+
+                <!-- Section 2-2: 還元基準値および追加請求基準値 -->
+                <div class="bg-white rounded-2xl border border-eparkGray-border p-6 sm:p-8 shadow-sm">
+                    <div class="flex items-center gap-3 mb-5">
+                        <span class="w-7 h-7 rounded bg-eparkGreen text-white text-xs font-black flex items-center justify-center shrink-0">3</span>
+                        <h2 class="text-base sm:text-lg font-black text-eparkDark">2024年度 還元基準値および追加請求基準値</h2>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-center border-collapse text-xs sm:text-sm min-w-[700px]">
+                            <thead>
+                                <tr class="bg-eparkGreen-dark text-white">
+                                    <th class="px-3 py-2.5 font-bold border border-eparkGreen-dark text-left">税込</th>
+                                    <th class="px-3 py-2.5 font-bold border border-eparkGreen-dark">北海道</th>
+                                    <th class="px-3 py-2.5 font-bold border border-eparkGreen-dark">東北</th>
+                                    <th class="px-3 py-2.5 font-bold border border-eparkGreen-dark">東京</th>
+                                    <th class="px-3 py-2.5 font-bold border border-eparkGreen-dark">中部</th>
+                                    <th class="px-3 py-2.5 font-bold border border-eparkGreen-dark">北陸</th>
+                                    <th class="px-3 py-2.5 font-bold border border-eparkGreen-dark">関西</th>
+                                    <th class="px-3 py-2.5 font-bold border border-eparkGreen-dark">中国</th>
+                                    <th class="px-3 py-2.5 font-bold border border-eparkGreen-dark">四国</th>
+                                    <th class="px-3 py-2.5 font-bold border border-eparkGreen-dark">九州</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-eparkDark">
+                                <tr class="bg-eparkGray-light">
+                                    <td class="px-3 py-2 border border-eparkGray-border font-bold text-white bg-eparkGreen text-left">還元調整基準単価</td>
+                                    <td class="px-3 py-2 border border-eparkGray-border">8.40</td>
+                                    <td class="px-3 py-2 border border-eparkGray-border">6.80</td>
+                                    <td class="px-3 py-2 border border-eparkGray-border">6.85</td>
+                                    <td class="px-3 py-2 border border-eparkGray-border">5.60</td>
+                                    <td class="px-3 py-2 border border-eparkGray-border">5.20</td>
+                                    <td class="px-3 py-2 border border-eparkGray-border">5.35</td>
+                                    <td class="px-3 py-2 border border-eparkGray-border">5.20</td>
+                                    <td class="px-3 py-2 border border-eparkGray-border">4.50</td>
+                                    <td class="px-3 py-2 border border-eparkGray-border">5.23</td>
+                                </tr>
+                                <tr class="bg-white">
+                                    <td class="px-3 py-2 border border-eparkGray-border font-bold text-white bg-eparkOrange text-left">追加調整基準単価</td>
+                                    <td class="px-3 py-2 border border-eparkGray-border">11.70</td>
+                                    <td class="px-3 py-2 border border-eparkGray-border">10.10</td>
+                                    <td class="px-3 py-2 border border-eparkGray-border">10.15</td>
+                                    <td class="px-3 py-2 border border-eparkGray-border">8.90</td>
+                                    <td class="px-3 py-2 border border-eparkGray-border">8.50</td>
+                                    <td class="px-3 py-2 border border-eparkGray-border">8.65</td>
+                                    <td class="px-3 py-2 border border-eparkGray-border">8.50</td>
+                                    <td class="px-3 py-2 border border-eparkGray-border">8.35</td>
+                                    <td class="px-3 py-2 border border-eparkGray-border">7.98</td>
+                                </tr>
+                                <tr class="bg-eparkGray-light">
+                                    <td class="px-3 py-2 border border-eparkGray-border font-bold text-white bg-gray-500 text-left">電源調達調整適用係数</td>
+                                    <td class="px-3 py-2 border border-eparkGray-border">1.0</td>
+                                    <td class="px-3 py-2 border border-eparkGray-border">1.0</td>
+                                    <td class="px-3 py-2 border border-eparkGray-border">1.0</td>
+                                    <td class="px-3 py-2 border border-eparkGray-border">1.0</td>
+                                    <td class="px-3 py-2 border border-eparkGray-border">1.0</td>
+                                    <td class="px-3 py-2 border border-eparkGray-border">1.0</td>
+                                    <td class="px-3 py-2 border border-eparkGray-border">1.0</td>
+                                    <td class="px-3 py-2 border border-eparkGray-border">1.0</td>
+                                    <td class="px-3 py-2 border border-eparkGray-border">1.0</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="text-[11px] text-gray-500 mt-4 leading-relaxed">
+                        ※ 調達単価係数、還元基準値および追加請求基準値の改定：当社は、毎年1月、4月、7月及び10月の1日時点において、調達単価係数、還元基準値および追加請求基準値の見直しを行い、当社が必要と判断した場合は、当社が適当と判断した方法によりお客さまに通知し、その内容を改定することができるものといたします。
+                    </p>
+                </div>
+
+                <!-- Section 2-3: 調達単価係数 -->
+                <div class="bg-white rounded-2xl border border-eparkGray-border p-6 sm:p-8 shadow-sm">
+                    <div class="flex items-center gap-2 mb-5">
+                        <div class="bg-eparkGreen text-white p-2 rounded-lg">
+                            <i data-lucide="table" class="w-5 h-5"></i>
+                        </div>
+                        <h2 class="text-base sm:text-lg font-black text-eparkDark">調達単価係数</h2>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-center border-collapse text-xs sm:text-sm min-w-[700px]">
+                            <thead>
+                                <tr class="bg-gray-100 text-eparkDark">
+                                    <th class="px-3 py-2.5 font-bold border border-eparkGray-border"></th>
+                                    <th class="px-3 py-2.5 font-bold border border-eparkGray-border">北海道</th>
+                                    <th class="px-3 py-2.5 font-bold border border-eparkGray-border">東北</th>
+                                    <th class="px-3 py-2.5 font-bold border border-eparkGray-border">東京</th>
+                                    <th class="px-3 py-2.5 font-bold border border-eparkGray-border">中部</th>
+                                    <th class="px-3 py-2.5 font-bold border border-eparkGray-border">北陸</th>
+                                    <th class="px-3 py-2.5 font-bold border border-eparkGray-border">関西</th>
+                                    <th class="px-3 py-2.5 font-bold border border-eparkGray-border">中国</th>
+                                    <th class="px-3 py-2.5 font-bold border border-eparkGray-border">四国</th>
+                                    <th class="px-3 py-2.5 font-bold border border-eparkGray-border">九州</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-eparkDark">
+                                <tr><td class="px-3 py-2 border border-eparkGray-border font-bold bg-gray-800 text-white">1月</td><td class="px-3 py-2 border border-eparkGray-border">1.26</td><td class="px-3 py-2 border border-eparkGray-border">1.32</td><td class="px-3 py-2 border border-eparkGray-border">1.28</td><td class="px-3 py-2 border border-eparkGray-border">1.24</td><td class="px-3 py-2 border border-eparkGray-border">1.34</td><td class="px-3 py-2 border border-eparkGray-border">1.24</td><td class="px-3 py-2 border border-eparkGray-border">1.35</td><td class="px-3 py-2 border border-eparkGray-border">1.28</td><td class="px-3 py-2 border border-eparkGray-border">1.33</td></tr>
+                                <tr class="bg-eparkGray-light"><td class="px-3 py-2 border border-eparkGray-border font-bold bg-gray-800 text-white">2月</td><td class="px-3 py-2 border border-eparkGray-border">1.20</td><td class="px-3 py-2 border border-eparkGray-border">1.21</td><td class="px-3 py-2 border border-eparkGray-border">1.23</td><td class="px-3 py-2 border border-eparkGray-border">1.25</td><td class="px-3 py-2 border border-eparkGray-border">1.20</td><td class="px-3 py-2 border border-eparkGray-border">1.25</td><td class="px-3 py-2 border border-eparkGray-border">1.24</td><td class="px-3 py-2 border border-eparkGray-border">1.27</td><td class="px-3 py-2 border border-eparkGray-border">1.28</td></tr>
+                                <tr><td class="px-3 py-2 border border-eparkGray-border font-bold bg-gray-800 text-white">3月</td><td class="px-3 py-2 border border-eparkGray-border">1.23</td><td class="px-3 py-2 border border-eparkGray-border">1.27</td><td class="px-3 py-2 border border-eparkGray-border">1.26</td><td class="px-3 py-2 border border-eparkGray-border">1.27</td><td class="px-3 py-2 border border-eparkGray-border">1.23</td><td class="px-3 py-2 border border-eparkGray-border">1.28</td><td class="px-3 py-2 border border-eparkGray-border">1.26</td><td class="px-3 py-2 border border-eparkGray-border">1.29</td><td class="px-3 py-2 border border-eparkGray-border">1.29</td></tr>
+                                <tr class="bg-eparkGray-light"><td class="px-3 py-2 border border-eparkGray-border font-bold bg-gray-800 text-white">4月</td><td class="px-3 py-2 border border-eparkGray-border">1.21</td><td class="px-3 py-2 border border-eparkGray-border">1.22</td><td class="px-3 py-2 border border-eparkGray-border">1.22</td><td class="px-3 py-2 border border-eparkGray-border">1.23</td><td class="px-3 py-2 border border-eparkGray-border">1.17</td><td class="px-3 py-2 border border-eparkGray-border">1.26</td><td class="px-3 py-2 border border-eparkGray-border">1.22</td><td class="px-3 py-2 border border-eparkGray-border">1.24</td><td class="px-3 py-2 border border-eparkGray-border">1.24</td></tr>
+                                <tr><td class="px-3 py-2 border border-eparkGray-border font-bold bg-gray-800 text-white">5月</td><td class="px-3 py-2 border border-eparkGray-border">1.20</td><td class="px-3 py-2 border border-eparkGray-border">1.19</td><td class="px-3 py-2 border border-eparkGray-border">1.18</td><td class="px-3 py-2 border border-eparkGray-border">1.21</td><td class="px-3 py-2 border border-eparkGray-border">1.16</td><td class="px-3 py-2 border border-eparkGray-border">1.25</td><td class="px-3 py-2 border border-eparkGray-border">1.20</td><td class="px-3 py-2 border border-eparkGray-border">1.21</td><td class="px-3 py-2 border border-eparkGray-border">1.22</td></tr>
+                                <tr class="bg-eparkGray-light"><td class="px-3 py-2 border border-eparkGray-border font-bold bg-gray-800 text-white">6月</td><td class="px-3 py-2 border border-eparkGray-border">1.22</td><td class="px-3 py-2 border border-eparkGray-border">1.23</td><td class="px-3 py-2 border border-eparkGray-border">1.26</td><td class="px-3 py-2 border border-eparkGray-border">1.27</td><td class="px-3 py-2 border border-eparkGray-border">1.27</td><td class="px-3 py-2 border border-eparkGray-border">1.28</td><td class="px-3 py-2 border border-eparkGray-border">1.27</td><td class="px-3 py-2 border border-eparkGray-border">1.26</td><td class="px-3 py-2 border border-eparkGray-border">1.25</td></tr>
+                                <tr><td class="px-3 py-2 border border-eparkGray-border font-bold bg-gray-800 text-white">7月</td><td class="px-3 py-2 border border-eparkGray-border">1.35</td><td class="px-3 py-2 border border-eparkGray-border">1.34</td><td class="px-3 py-2 border border-eparkGray-border">1.33</td><td class="px-3 py-2 border border-eparkGray-border">1.35</td><td class="px-3 py-2 border border-eparkGray-border">1.48</td><td class="px-3 py-2 border border-eparkGray-border">1.37</td><td class="px-3 py-2 border border-eparkGray-border">1.50</td><td class="px-3 py-2 border border-eparkGray-border">1.41</td><td class="px-3 py-2 border border-eparkGray-border">1.33</td></tr>
+                                <tr class="bg-eparkGray-light"><td class="px-3 py-2 border border-eparkGray-border font-bold bg-gray-800 text-white">8月</td><td class="px-3 py-2 border border-eparkGray-border">1.22</td><td class="px-3 py-2 border border-eparkGray-border">1.18</td><td class="px-3 py-2 border border-eparkGray-border">1.19</td><td class="px-3 py-2 border border-eparkGray-border">1.23</td><td class="px-3 py-2 border border-eparkGray-border">1.21</td><td class="px-3 py-2 border border-eparkGray-border">1.23</td><td class="px-3 py-2 border border-eparkGray-border">1.22</td><td class="px-3 py-2 border border-eparkGray-border">1.23</td><td class="px-3 py-2 border border-eparkGray-border">1.25</td></tr>
+                                <tr><td class="px-3 py-2 border border-eparkGray-border font-bold bg-gray-800 text-white">9月</td><td class="px-3 py-2 border border-eparkGray-border">1.12</td><td class="px-3 py-2 border border-eparkGray-border">1.11</td><td class="px-3 py-2 border border-eparkGray-border">1.17</td><td class="px-3 py-2 border border-eparkGray-border">1.22</td><td class="px-3 py-2 border border-eparkGray-border">1.13</td><td class="px-3 py-2 border border-eparkGray-border">1.23</td><td class="px-3 py-2 border border-eparkGray-border">1.20</td><td class="px-3 py-2 border border-eparkGray-border">1.22</td><td class="px-3 py-2 border border-eparkGray-border">1.22</td></tr>
+                                <tr class="bg-eparkGray-light"><td class="px-3 py-2 border border-eparkGray-border font-bold bg-gray-800 text-white">10月</td><td class="px-3 py-2 border border-eparkGray-border">1.20</td><td class="px-3 py-2 border border-eparkGray-border">1.17</td><td class="px-3 py-2 border border-eparkGray-border">1.16</td><td class="px-3 py-2 border border-eparkGray-border">1.19</td><td class="px-3 py-2 border border-eparkGray-border">1.14</td><td class="px-3 py-2 border border-eparkGray-border">1.21</td><td class="px-3 py-2 border border-eparkGray-border">1.20</td><td class="px-3 py-2 border border-eparkGray-border">1.18</td><td class="px-3 py-2 border border-eparkGray-border">1.20</td></tr>
+                                <tr><td class="px-3 py-2 border border-eparkGray-border font-bold bg-gray-800 text-white">11月</td><td class="px-3 py-2 border border-eparkGray-border">1.15</td><td class="px-3 py-2 border border-eparkGray-border">1.15</td><td class="px-3 py-2 border border-eparkGray-border">1.14</td><td class="px-3 py-2 border border-eparkGray-border">1.21</td><td class="px-3 py-2 border border-eparkGray-border">1.17</td><td class="px-3 py-2 border border-eparkGray-border">1.23</td><td class="px-3 py-2 border border-eparkGray-border">1.18</td><td class="px-3 py-2 border border-eparkGray-border">1.22</td><td class="px-3 py-2 border border-eparkGray-border">1.23</td></tr>
+                                <tr class="bg-eparkGray-light"><td class="px-3 py-2 border border-eparkGray-border font-bold bg-gray-800 text-white">12月</td><td class="px-3 py-2 border border-eparkGray-border">1.19</td><td class="px-3 py-2 border border-eparkGray-border">1.21</td><td class="px-3 py-2 border border-eparkGray-border">1.18</td><td class="px-3 py-2 border border-eparkGray-border">1.24</td><td class="px-3 py-2 border border-eparkGray-border">1.23</td><td class="px-3 py-2 border border-eparkGray-border">1.23</td><td class="px-3 py-2 border border-eparkGray-border">1.23</td><td class="px-3 py-2 border border-eparkGray-border">1.26</td><td class="px-3 py-2 border border-eparkGray-border">1.25</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Section 2-4: 適用期間補正係数 -->
+                <div class="bg-white rounded-2xl border border-eparkGray-border p-6 sm:p-8 shadow-sm">
+                    <div class="flex items-center gap-2 mb-5">
+                        <div class="bg-eparkGreen text-white p-2 rounded-lg">
+                            <i data-lucide="table" class="w-5 h-5"></i>
+                        </div>
+                        <h2 class="text-base sm:text-lg font-black text-eparkDark">適用期間補正係数</h2>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-center border-collapse text-xs sm:text-sm min-w-[700px]">
+                            <thead>
+                                <tr class="bg-gray-100 text-eparkDark">
+                                    <th class="px-3 py-2.5 font-bold border border-eparkGray-border"></th>
+                                    <th class="px-3 py-2.5 font-bold border border-eparkGray-border">北海道</th>
+                                    <th class="px-3 py-2.5 font-bold border border-eparkGray-border">東北</th>
+                                    <th class="px-3 py-2.5 font-bold border border-eparkGray-border">東京</th>
+                                    <th class="px-3 py-2.5 font-bold border border-eparkGray-border">中部</th>
+                                    <th class="px-3 py-2.5 font-bold border border-eparkGray-border">北陸</th>
+                                    <th class="px-3 py-2.5 font-bold border border-eparkGray-border">関西</th>
+                                    <th class="px-3 py-2.5 font-bold border border-eparkGray-border">中国</th>
+                                    <th class="px-3 py-2.5 font-bold border border-eparkGray-border">四国</th>
+                                    <th class="px-3 py-2.5 font-bold border border-eparkGray-border">九州</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-eparkDark">
+                                <tr><td class="px-3 py-2 border border-eparkGray-border font-bold bg-gray-800 text-white">1月</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td></tr>
+                                <tr class="bg-eparkGray-light"><td class="px-3 py-2 border border-eparkGray-border font-bold bg-gray-800 text-white">2月</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td></tr>
+                                <tr><td class="px-3 py-2 border border-eparkGray-border font-bold bg-gray-800 text-white">3月</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td></tr>
+                                <tr class="bg-eparkGray-light"><td class="px-3 py-2 border border-eparkGray-border font-bold bg-gray-800 text-white">4月</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td></tr>
+                                <tr><td class="px-3 py-2 border border-eparkGray-border font-bold bg-gray-800 text-white">5月</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td></tr>
+                                <tr class="bg-eparkGray-light"><td class="px-3 py-2 border border-eparkGray-border font-bold bg-gray-800 text-white">6月</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td></tr>
+                                <tr><td class="px-3 py-2 border border-eparkGray-border font-bold bg-gray-800 text-white">7月</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td></tr>
+                                <tr class="bg-eparkGray-light"><td class="px-3 py-2 border border-eparkGray-border font-bold bg-gray-800 text-white">8月</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td></tr>
+                                <tr><td class="px-3 py-2 border border-eparkGray-border font-bold bg-gray-800 text-white">9月</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td></tr>
+                                <tr class="bg-eparkGray-light"><td class="px-3 py-2 border border-eparkGray-border font-bold bg-gray-800 text-white">10月</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td></tr>
+                                <tr><td class="px-3 py-2 border border-eparkGray-border font-bold bg-gray-800 text-white">11月</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td></tr>
+                                <tr class="bg-eparkGray-light"><td class="px-3 py-2 border border-eparkGray-border font-bold bg-gray-800 text-white">12月</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td><td class="px-3 py-2 border border-eparkGray-border">1.00</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p class="text-[11px] text-gray-400 mt-4 text-right">※2024年4月1日改訂</p>
                 </div>
 
                 <!-- Section 3: 過去の単価リンク -->
@@ -1066,12 +1284,12 @@
             <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center space-y-6">
                 <span class="inline-block text-[11px] font-bold tracking-widest text-eparkOrange bg-eparkOrange/10 border border-eparkOrange/40 px-4 py-1.5 rounded-full">PARTNER RECRUITMENT</span>
                 <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight">
-                    一緒に、お店の未来を<br class="hidden sm:inline">変えませんか？
+                    パートナー募集
                 </h1>
                 <p class="text-sm sm:text-base text-white/80 leading-relaxed max-w-2xl mx-auto">
-                    EPARK集客でんきの販売パートナーとして、<br class="hidden sm:inline">
-                    電力切替と集客支援をセットでご提案。<br class="hidden sm:inline">
-                    安定した収益と、飲食店オーナーから感謝される仕事を実現できます。
+                    貴社のお取引先様や会員様にご案内いただくことで、飲食店様の集客支援につながるだけでなく、貴社サービスの満足度向上や新たな収益機会の創出にもつながります。<br class="hidden sm:inline">
+                    新たな事業・サービスを共に創り、飲食店様の販路拡大と成長を支援していくパートナー企業様を募集しています。
+                    
                 </p>
                 <div class="flex flex-col sm:flex-row gap-3 justify-center pt-2">
                     <button onclick="openModal('partnerContactModal')"
@@ -1089,28 +1307,28 @@
         </section>
 
         <!-- 数字で見るEPARK -->
-        <section class="bg-eparkGray-light border-b border-eparkGray-border py-12">
+        <section class="bg-eparkGray-light border-b border-eparkGray-border py-12 hidden">
             <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-                <p class="text-center text-xs font-bold text-eparkGreen tracking-widest mb-8">EPARK の強み</p>
-                <div class="grid grid-cols-2 md:grid-cols-3 gap-6 text-center">
+                <p class="text-center text-xs font-bold text-eparkGreen tracking-widest mb-8">EPARK MEMBERS</p>
+                <div class="grid grid-cols-1 gap-6 text-center max-w-xs mx-auto">
                     <div class="space-y-1">
                         <p class="text-3xl sm:text-4xl font-black text-eparkGreen">6,000<span class="text-lg">万人</span></p>
                         <p class="text-[11px] text-gray-500 font-medium">EPARK会員数</p>
                     </div>
                     <div class="space-y-1">
-                        <p class="text-3xl sm:text-4xl font-black text-eparkGreen">0<span class="text-lg">円</span></p>
-                        <p class="text-[11px] text-gray-500 font-medium">パートナー登録費用</p>
+
+
                     </div>
                     <div class="space-y-1">
-                        <p class="text-3xl sm:text-4xl font-black text-eparkGreen">成約<span class="text-lg">ごとに</span></p>
-                        <p class="text-[11px] text-gray-500 font-medium">ショット報酬が発生</p>
+
+
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- パートナーのメリット -->
-        <section id="partner-merit" class="py-16 bg-white">
+        <section id="partner-merit" class="py-16 bg-white hidden">
             <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-12">
                     <span class="text-[12px] font-bold tracking-widest text-eparkGreen block mb-2">MERIT</span>
@@ -1161,14 +1379,14 @@
                     <span class="text-[12px] font-bold tracking-widest text-eparkGreen block mb-2">FOR WHOM</span>
                     <h2 class="text-2xl sm:text-3xl font-black text-eparkDark">こんな方に<span class="text-eparkGreen">おすすめ</span>です</h2>
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-3xl mx-auto">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-4xl mx-auto">
                     <div class="bg-white rounded-xl p-5 border border-eparkGray-border flex items-start gap-4">
                         <div class="w-8 h-8 rounded-full bg-eparkGreen flex items-center justify-center shrink-0 mt-0.5">
                             <i data-lucide="check" class="w-4 h-4 text-white"></i>
                         </div>
                         <div>
-                            <p class="text-sm font-bold text-eparkDark">飲食店・美容室など</p>
-                            <p class="text-xs text-gray-500 mt-0.5 leading-relaxed">既存顧客に飲食・美容関係の法人をお持ちの方</p>
+                            <p class="text-sm font-bold text-eparkDark">デリバリー商品販売代理店</p>
+                            <p class="text-xs text-gray-500 mt-0.5 leading-relaxed">デリバリー商材の販売網をお持ちで、新たな提案の幅を広げたい方</p>
                         </div>
                     </div>
                     <div class="bg-white rounded-xl p-5 border border-eparkGray-border flex items-start gap-4">
@@ -1176,8 +1394,8 @@
                             <i data-lucide="check" class="w-4 h-4 text-white"></i>
                         </div>
                         <div>
-                            <p class="text-sm font-bold text-eparkDark">保険・通信・POS代理店</p>
-                            <p class="text-xs text-gray-500 mt-0.5 leading-relaxed">既存の営業リソースを活用して副収入・新たな収益柱を作りたい方</p>
+                            <p class="text-sm font-bold text-eparkDark">コンサル・広告代理店</p>
+                            <p class="text-xs text-gray-500 mt-0.5 leading-relaxed">既存のお取引先へのご提案メニューとして、集客支援サービスを加えたい方</p>
                         </div>
                     </div>
                     <div class="bg-white rounded-xl p-5 border border-eparkGray-border flex items-start gap-4">
@@ -1185,25 +1403,16 @@
                             <i data-lucide="check" class="w-4 h-4 text-white"></i>
                         </div>
                         <div>
-                            <p class="text-sm font-bold text-eparkDark">新規事業・収益源を探している法人</p>
-                            <p class="text-xs text-gray-500 mt-0.5 leading-relaxed">既存の営業リソースを活用して新たな収益柱を作りたい法人様</p>
-                        </div>
-                    </div>
-                    <div class="bg-white rounded-xl p-5 border border-eparkGray-border flex items-start gap-4">
-                        <div class="w-8 h-8 rounded-full bg-eparkGreen flex items-center justify-center shrink-0 mt-0.5">
-                            <i data-lucide="check" class="w-4 h-4 text-white"></i>
-                        </div>
-                        <div>
-                            <p class="text-sm font-bold text-eparkDark">商工会・士業・コンサル</p>
-                            <p class="text-xs text-gray-500 mt-0.5 leading-relaxed">中小企業・飲食店オーナーへのコスト削減提案を付加価値として加えたい方</p>
+                            <p class="text-sm font-bold text-eparkDark">通信・インフルエンサー関連企業</p>
+                            <p class="text-xs text-gray-500 mt-0.5 leading-relaxed">通信サービスやインフルエンサーネットワークを活かした新たな協業を検討したい方</p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- パートナー参加の流れ -->
-        <section class="py-16 bg-white">
+        <!-- パートナー参加の流れ：パートナー募集ページでのみ表示 -->
+        <section id="partnerFlowSection" data-view-only="partner" class="py-16 bg-white hidden">
             <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="text-center mb-12">
                     <span class="text-[12px] font-bold tracking-widest text-eparkGreen block mb-2">FLOW</span>
@@ -1253,20 +1462,7 @@
                             <div class="md:w-1/2 md:pl-12 hidden md:block"></div>
                         </div>
 
-                        <!-- Step 4 -->
-                        <div class="relative md:flex md:items-center md:gap-8">
-                            <div class="md:w-1/2 md:pr-12 hidden md:block"></div>
-                            <div class="hidden md:flex absolute left-1/2 -translate-x-1/2 w-10 h-10 rounded-full bg-eparkOrange text-white font-black text-sm items-center justify-center shadow-md">
-                                <i data-lucide="star" class="w-5 h-5"></i>
-                            </div>
-                            <div class="md:w-1/2 md:pl-12">
-                                <div class="bg-eparkOrange/5 rounded-2xl p-6 border border-eparkOrange/30 w-full">
-                                    <span class="text-[10px] font-bold text-eparkOrange tracking-wider">GOAL</span>
-                                    <h3 class="text-sm font-black text-eparkDark mt-1 mb-1">成約・ショット報酬発生</h3>
-                                    <p class="text-xs text-gray-500 leading-relaxed">電気の切り替えが完了した月にショット報酬が発生します。成約件数に応じて収益が積み上がっていきます。</p>
-                                </div>
-                            </div>
-                        </div>
+
 
                     </div>
                 </div>
@@ -1889,10 +2085,9 @@
                 <label class="block text-xs font-bold text-gray-700 mb-1">現在のご職業・業種</label>
                 <select class="w-full px-3 py-2 border border-eparkGray-border rounded text-xs focus:outline-none focus:ring-1 focus:ring-eparkGreen bg-white">
                     <option value="">選択してください</option>
-                    <option>保険代理店</option>
-                    <option>通信・IT関連</option>
-                    <option>POS・決済端末販売</option>
-                    <option>士業・コンサルタント</option>
+                    <option>デリバリー商品販売代理店</option>
+                    <option>コンサル・広告代理店</option>
+                    <option>通信・インフルエンサー関連企業</option>
                     <option>その他</option>
                 </select>
             </div>
@@ -2045,7 +2240,7 @@
                         電源調達調整費 ＝ (調達単価 － 基準単価) × (1 ＋ 消費税率)
                     </div>
                     <p class="text-[11px] text-gray-500 mt-3 leading-relaxed">
-                        ※調達単価は、前々月11日から前月10日までのJEPXスポット取引市場の各エリアプライス1ヵ月単純平均値に基づき決定されます。<br>
+                        TEMP_MARKER_LINE<br>
                         また、2026年4月以降に適用される国の環境基準に則った「カーボンフリー促進費（0.30円/kWhなど）」等、小売電気事業の最新要件に準じた変動係数も適正に加減算調整されます。
                     </p>
                 </div>
@@ -2130,6 +2325,12 @@
             const el = document.getElementById(id);
             if (el) el.classList.add('hidden');
         });
+
+        // パートナー募集ページ専用セクションは、他ページでは必ず非表示にする
+        document.querySelectorAll('[data-view-only="partner"]').forEach(el => {
+            el.classList.add('hidden');
+        });
+
         const searchInput = document.getElementById('newsSearchInput');
         if (searchInput) searchInput.value = '';
     }
@@ -2173,6 +2374,10 @@
             renderFaqList('all');
         } else if (viewId === 'partner') {
             document.getElementById('partnerView').classList.remove('hidden');
+            // パートナー募集ページ表示時のみ、専用セクションを表示する
+            document.querySelectorAll('[data-view-only="partner"]').forEach(el => {
+                el.classList.remove('hidden');
+            });
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
         lucide.createIcons();
