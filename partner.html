@@ -1,0 +1,888 @@
+<!DOCTYPE html>
+<html lang="ja" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>【公式パートナー募集】EPARK集客でんき デリバリー支援パック</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        epark: {
+                            orange: '#FF5A00',
+                            green: '#009944',
+                            dark: '#0A2540',
+                            lightbg: '#F4F7F6',
+                            text: '#2D3748'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Noto Sans JP', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="font-sans text-epark-text bg-white antialiased">
+
+    <!-- ナビゲーションバー -->
+    <header class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-gray-100 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center">
+                <img 
+                    src="https://github.com/yakimoto-design/eparkdenki/blob/main/img/rogo.png?raw=true" 
+                    alt="EPARK集客でんき" 
+                    class="h-9 sm:h-11 w-auto object-contain"
+                    onerror="this.onerror=null; this.src='https://placehold.co/180x45?text=EPARK集客でんき';"
+                >
+            </div>
+            <div class="hidden md:flex items-center space-x-6">
+                <a href="#about" class="text-sm font-semibold text-gray-600 hover:text-epark-orange transition-colors">仕組み</a>
+                <a href="#service" class="text-sm font-semibold text-gray-600 hover:text-epark-orange transition-colors">サービス内容</a>
+                <a href="#options" class="text-sm font-semibold text-gray-600 hover:text-epark-orange transition-colors">オプション</a>
+                <a href="#target" class="text-sm font-semibold text-gray-600 hover:text-epark-orange transition-colors">対象の企業様</a>
+                <a href="#contact" class="bg-epark-orange text-white text-sm font-bold px-6 py-3 rounded-full hover:bg-opacity-90 shadow-md shadow-epark-orange/20 transition-all hover:scale-105">
+                    お問い合わせ
+                </a>
+            </div>
+            <!-- モバイルメニューボタン -->
+            <button id="mobile-menu-btn" class="md:hidden text-epark-dark hover:text-epark-orange transition-colors">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+
+        <!-- モバイルナビゲーション -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 px-4 pt-2 pb-6 space-y-3 shadow-lg">
+            <a href="#about" class="block py-2 text-base font-semibold text-gray-600 hover:text-epark-orange" onclick="toggleMenu()">仕組み</a>
+            <a href="#service" class="block py-2 text-base font-semibold text-gray-600 hover:text-epark-orange" onclick="toggleMenu()">サービス内容</a>
+            <a href="#options" class="block py-2 text-base font-semibold text-gray-600 hover:text-epark-orange" onclick="toggleMenu()">オプション</a>
+            <a href="#target" class="block py-2 text-base font-semibold text-gray-600 hover:text-epark-orange" onclick="toggleMenu()">対象の企業様</a>
+            <a href="#contact" class="block text-center bg-epark-orange text-white text-base font-bold py-3 rounded-xl shadow-md" onclick="toggleMenu()">
+                お問い合わせはこちら
+            </a>
+        </div>
+    </header>
+
+    <!-- ファーストビュー (ヒーローセクション) -->
+    <section class="relative bg-[#001730] overflow-hidden">
+        <!-- ヒーロー画像エリア -->
+        <div class="w-full">
+            <img 
+                src="https://github.com/yakimoto-design/eparkdenki/blob/main/partner/hero.png?raw=true" 
+                alt="EPARK集客でんき デリバリー支援パック 販売パートナー募集" 
+                class="w-full h-auto block object-cover"
+                onerror="this.onerror=null; this.src='https://via.placeholder.com/1920x800?text=EPARK+集客でんき+デリバリー支援パック+販売パートナー募集';"
+            >
+        </div>
+        
+        <!-- 画像直下のクイックコンバージョン導線 -->
+        <div class="bg-gradient-to-r from-epark-dark to-slate-900 py-6 border-b border-gray-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4">
+                <p class="text-white text-sm sm:text-base font-bold text-center md:text-left flex items-center gap-2">
+                    <span class="flex h-2.5 w-2.5 relative">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-epark-orange opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-epark-orange"></span>
+                    </span>
+                    全国6,000万人の会員基盤を活かして、お店の成長を強力にサポート！
+                </p>
+                <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto shrink-0">
+                    <a href="#contact" class="w-full sm:w-auto text-center bg-epark-orange hover:bg-opacity-90 text-white font-bold text-sm sm:text-base px-8 py-3.5 rounded-xl shadow-lg shadow-epark-orange/30 transition-all transform hover:-translate-y-0.5">
+                        パートナー加盟について相談する（無料）
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- セクション01: デリバリー支援パックの仕組み -->
+    <section id="about" class="py-20 bg-epark-lightbg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-epark-green font-bold text-sm tracking-widest uppercase bg-epark-green/10 px-4 py-1.5 rounded-full">01 SYSTEM</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-epark-dark mt-3">デリバリー支援パックの仕組み</h2>
+                <p class="text-gray-600 mt-4 text-base">全国6,000万人の会員へアプローチし、店舗の売上・集客・リピーター獲得を強力にサポートします。</p>
+            </div>
+
+            <!-- 仕組みの3ステップ -->
+            <div class="grid md:grid-cols-3 gap-8 relative items-stretch">
+                <!-- ステップ1 -->
+                <div class="bg-white rounded-3xl p-6 pt-12 sm:p-8 sm:pt-14 shadow-xl hover:shadow-2xl transition-all border border-gray-100 relative group flex flex-col justify-between">
+                    <div class="absolute -top-6 left-8 bg-epark-green text-white w-12 h-12 rounded-2xl flex items-center justify-center font-black text-xl shadow-lg shadow-epark-green/30">1</div>
+                    <div class="flex-1 flex flex-col justify-between space-y-6">
+                        <div class="text-epark-dark font-black text-lg sm:text-xl tracking-tight text-center md:text-left border-b border-gray-100/50 pb-3">EPARKの会員基盤</div>
+                        
+                        <div class="space-y-4">
+                            <div class="text-4xl sm:text-5xl font-black text-epark-dark flex items-baseline justify-center py-4 bg-gray-50/70 rounded-2xl border border-gray-100 shadow-inner">
+                                <span class="text-epark-green text-5xl sm:text-6xl">6,000</span>
+                                <span class="text-lg font-bold ml-1 text-gray-500">万人</span>
+                            </div>
+                            <div class="text-xs sm:text-sm font-bold text-white bg-epark-green px-4 py-2.5 rounded-xl text-center shadow-lg shadow-epark-green/15 leading-relaxed tracking-wide">
+                                幅広い年代・エリアのユーザーにリーチ可
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ステップ2 -->
+                <div class="bg-white rounded-3xl p-6 pt-12 sm:p-8 sm:pt-14 shadow-xl hover:shadow-2xl transition-all border border-gray-100 relative group flex flex-col justify-between">
+                    <div class="absolute -top-6 left-8 bg-epark-green text-white w-12 h-12 rounded-2xl flex items-center justify-center font-black text-xl shadow-lg shadow-epark-green/30">2</div>
+                    <div class="flex-1 flex flex-col justify-between space-y-6">
+                        <div class="text-epark-dark font-black text-lg sm:text-xl tracking-tight text-center md:text-left border-b border-gray-100/50 pb-3">デリバリー注文を増やす仕組み</div>
+                        
+                        <ul class="space-y-4 text-xs sm:text-sm text-gray-700 font-bold leading-relaxed">
+                            <li class="flex items-start space-x-2.5">
+                                <i data-lucide="check-circle-2" class="w-5 h-5 text-epark-orange shrink-0 mt-0.5"></i>
+                                <span>EPARK店舗ページ・メール内にデリバリー注文導線を設置</span>
+                            </li>
+                            <li class="flex items-start space-x-2.5">
+                                <i data-lucide="check-circle-2" class="w-5 h-5 text-epark-orange shrink-0 mt-0.5"></i>
+                                <span>半径5km圏内の近隣住民に対してターゲットメールの配信</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- ステップ3 -->
+                <div class="bg-white rounded-3xl p-6 pt-12 sm:p-8 sm:pt-14 shadow-xl hover:shadow-2xl transition-all border border-gray-100 relative group flex flex-col justify-between">
+                    <div class="absolute -top-6 left-8 bg-epark-green text-white w-12 h-12 rounded-2xl flex items-center justify-center font-black text-xl shadow-lg shadow-epark-green/30">3</div>
+                    <div class="flex-1 flex flex-col justify-between space-y-6">
+                        <div class="text-epark-dark font-black text-lg sm:text-xl tracking-tight text-center md:text-left border-b border-gray-100/50 pb-3">店舗の売上・集客力向上</div>
+                        
+                        <div class="grid grid-cols-2 gap-2 pb-2">
+                            <div class="bg-emerald-50 text-epark-green p-2.5 rounded-xl flex flex-col items-center justify-center text-center gap-1 border border-emerald-100/50 shadow-sm hover:bg-emerald-100/30 transition-colors">
+                                <i data-lucide="check" class="w-4 h-4 shrink-0"></i>
+                                <span class="text-xs sm:text-[13px] font-bold">新規顧客獲得</span>
+                            </div>
+                            <div class="bg-emerald-50 text-epark-green p-2.5 rounded-xl flex flex-col items-center justify-center text-center gap-1 border border-emerald-100/50 shadow-sm hover:bg-emerald-100/30 transition-colors">
+                                <i data-lucide="check" class="w-4 h-4 shrink-0"></i>
+                                <span class="text-xs sm:text-[13px] font-bold">売上の拡大</span>
+                            </div>
+                            <div class="bg-emerald-50 text-epark-green p-2.5 rounded-xl flex flex-col items-center justify-center text-center gap-1 border border-emerald-100/50 shadow-sm hover:bg-emerald-100/30 transition-colors">
+                                <i data-lucide="check" class="w-4 h-4 shrink-0"></i>
+                                <span class="text-xs sm:text-[13px] font-bold">リピーター増加</span>
+                            </div>
+                            <div class="bg-emerald-50 text-epark-green p-2.5 rounded-xl flex flex-col items-center justify-center text-center gap-1 border border-emerald-100/50 shadow-sm hover:bg-emerald-100/30 transition-colors">
+                                <i data-lucide="check" class="w-4 h-4 shrink-0"></i>
+                                <span class="text-xs sm:text-[13px] font-bold">コスト最適化</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- セクション02: サービス内容と月額費用 -->
+    <section id="service" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-epark-orange font-bold text-sm tracking-widest uppercase bg-epark-orange/10 px-4 py-1.5 rounded-full">02 SERVICE & COST</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-epark-dark mt-3">サービス内容と驚きのパッケージ費用</h2>
+                <p class="text-gray-600 mt-4 text-base">新規集客からリピート獲得まで。本当に必要とされる2つの人気サービスを1つにまとめました。</p>
+            </div>
+
+            <!-- 2大サービス -->
+            <div class="grid lg:grid-cols-11 gap-8 items-stretch">
+                
+                <!-- メディア掲載 -->
+                <div class="lg:col-span-5 bg-white border border-gray-100 rounded-3xl p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all relative overflow-hidden flex flex-col justify-between">
+                    <div class="absolute top-0 right-0 bg-epark-orange text-white text-xs font-bold px-4 py-1 rounded-bl-xl z-10">サービス1</div>
+                    
+                    <div>
+                        <!-- ヘッダー -->
+                        <div class="mb-6">
+                            <h3 class="text-xl sm:text-2xl font-black text-epark-dark flex items-center space-x-2">
+                                <span class="bg-epark-orange/10 text-epark-orange p-1.5 rounded-lg"><i data-lucide="smartphone" class="w-5 h-5"></i></span>
+                                <span>EPARKメディア掲載</span>
+                            </h3>
+                            <div class="mt-2 text-xs font-bold text-gray-500 bg-gray-100 inline-block px-3 py-1 rounded-md">定価 2,900円 / 月相当</div>
+                        </div>
+
+                        <!-- 2カラムコンテンツ -->
+                        <div class="grid md:grid-cols-12 gap-6 items-start">
+                            <!-- 左：モック画像 -->
+                            <div class="md:col-span-5 rounded-2xl overflow-hidden border border-gray-100 flex items-center justify-center p-1.5 bg-gray-50 group shadow-inner">
+                                <img 
+                                    src="https://github.com/yakimoto-design/eparkdenki/blob/main/partner/media.png?raw=true" 
+                                    alt="EPARKメディア掲載プレビュー" 
+                                    class="w-full h-auto object-contain rounded-xl group-hover:scale-105 transition-transform duration-300"
+                                    onerror="this.onerror=null; this.src='https://via.placeholder.com/300x400?text=EPARK+Media';"
+                                >
+                            </div>
+                            
+                            <!-- 右：説明 -->
+                            <div class="md:col-span-7 space-y-4">
+                                <div class="bg-epark-lightbg p-4 rounded-xl border border-gray-100/50">
+                                    <h4 class="font-extrabold text-sm text-epark-dark">お店の魅力をしっかりプロモーション</h4>
+                                    <p class="text-xs text-gray-600 mt-1.5 leading-relaxed">会員約6,000万人に向けて掲載。店舗詳細やメニュー、写真でお店の魅力を余すことなくアピールします。</p>
+                                </div>
+                                <ul class="space-y-3.5 text-xs sm:text-sm text-gray-700 font-bold">
+                                    <li class="flex items-start space-x-2">
+                                        <i data-lucide="check" class="w-4 h-4 text-epark-green mt-1 shrink-0"></i>
+                                        <span><strong>アピール:</strong> 会員に向けてお店の魅力を強力にPR</span>
+                                    </li>
+                                    <li class="flex items-start space-x-2">
+                                        <i data-lucide="check" class="w-4 h-4 text-epark-green mt-1 shrink-0"></i>
+                                        <span><strong>導線確保:</strong> ネット予約やLINE、電話等の導線を一括設置</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 導入効果（最下部） -->
+                    <div class="border-t border-dashed border-gray-200 mt-6 pt-4 flex items-center space-x-3 text-xs bg-orange-50/50 p-3 rounded-xl shrink-0">
+                        <span class="bg-epark-orange text-white px-2 py-1 rounded-md font-extrabold shrink-0">導入効果</span>
+                        <span class="font-bold text-epark-dark">新規顧客獲得 / 認知拡大・ブランディング / 予約・注文増</span>
+                    </div>
+                </div>
+
+                <!-- プラス表示 -->
+                <div class="lg:col-span-1 flex justify-center items-center py-4 lg:py-0">
+                    <div class="bg-epark-orange text-white rounded-full p-4 shadow-lg shadow-epark-orange/30 transform hover:scale-110 transition-transform">
+                        <i data-lucide="plus" class="w-6 h-6"></i>
+                    </div>
+                </div>
+
+                <!-- メール配信サービス -->
+                <div class="lg:col-span-5 bg-white border border-gray-100 rounded-3xl p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all relative overflow-hidden flex flex-col justify-between">
+                    <div class="absolute top-0 right-0 bg-epark-green text-white text-xs font-bold px-4 py-1 rounded-bl-xl z-10">サービス2</div>
+                    
+                    <div>
+                        <!-- ヘッダー -->
+                        <div class="mb-6">
+                            <h3 class="text-xl sm:text-2xl font-black text-epark-dark flex items-center space-x-2">
+                                <span class="bg-epark-green/10 text-epark-green p-1.5 rounded-lg"><i data-lucide="mail" class="w-5 h-5"></i></span>
+                                <span>メール配信サービス</span>
+                            </h3>
+                            <div class="mt-2 text-xs font-bold text-gray-500 bg-gray-100 inline-block px-3 py-1 rounded-md">定価 10,000円 / 月相当</div>
+                        </div>
+
+                        <!-- 2カラムコンテンツ -->
+                        <div class="grid md:grid-cols-12 gap-6 items-start">
+                            <!-- 左：モック画像 -->
+                            <div class="md:col-span-5 rounded-2xl overflow-hidden border border-gray-100 flex items-center justify-center p-1.5 bg-gray-50 group shadow-inner">
+                                <img 
+                                    src="https://github.com/yakimoto-design/eparkdenki/blob/main/partner/mail.png?raw=true" 
+                                    alt="メール配信サービスプレビュー" 
+                                    class="w-full h-auto object-contain rounded-xl group-hover:scale-105 transition-transform duration-300"
+                                    onerror="this.onerror=null; this.src='https://via.placeholder.com/300x400?text=Mail+Service';"
+                                >
+                            </div>
+                            
+                            <!-- 右：説明 -->
+                            <div class="md:col-span-7 space-y-4">
+                                <div class="bg-epark-lightbg p-4 rounded-xl border border-gray-100/50">
+                                    <h4 class="font-extrabold text-sm text-epark-dark">会員へ直接アプローチできるメール配信</h4>
+                                    <p class="text-xs text-gray-600 mt-1.5 leading-relaxed">周辺5kmの会員へ月間最大10,000通を配信。EPARKが原稿・設定を行うため店舗側は待つだけ。</p>
+                                </div>
+                                <ul class="space-y-3.5 text-xs sm:text-sm text-gray-700 font-bold">
+                                    <li class="flex items-start space-x-2">
+                                        <i data-lucide="check" class="w-4 h-4 text-epark-green mt-1 shrink-0"></i>
+                                        <span><strong>効率配信:</strong> 配信可能エリアを指定。ターゲットを絞ってアプローチ</span>
+                                    </li>
+                                    <li class="flex items-start space-x-2">
+                                        <i data-lucide="check" class="w-4 h-4 text-epark-green mt-1 shrink-0"></i>
+                                        <span><strong>手間ゼロ:</strong> 原稿作成・面倒な配信設定はすべてEPARKが代行</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 導入効果（最下部） -->
+                    <div class="border-t border-dashed border-gray-200 mt-6 pt-4 flex items-center space-x-3 text-xs bg-emerald-50/50 p-3 rounded-xl shrink-0">
+                        <span class="bg-epark-green text-white px-2 py-1 rounded-md font-extrabold shrink-0">導入効果</span>
+                        <span class="font-bold text-epark-dark">リピーターの獲得 / 新メニューの訴求 / 売上の底上げ</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- コミコミ価格アピールボード -->
+            <div class="mt-12 bg-gradient-to-br from-epark-dark to-slate-900 text-white rounded-[2.5rem] p-8 sm:p-12 shadow-2xl relative overflow-hidden text-center">
+                <div class="absolute -top-12 -right-12 w-48 h-48 bg-epark-orange/20 rounded-full blur-2xl"></div>
+                
+                <span class="inline-block bg-epark-orange text-white text-xs sm:text-sm font-extrabold px-6 py-2 rounded-full uppercase tracking-widest shadow-md">個別契約より圧倒的にお得な特別パッケージ</span>
+                
+                <h3 class="text-2xl sm:text-3xl font-extrabold mt-6 text-gray-100">2つのサービスが、すべてコミコミで</h3>
+                
+                <div class="my-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <span class="text-xl sm:text-2xl font-bold text-gray-400 line-through">定価合計 12,900円/月</span>
+                    <i data-lucide="chevrons-right" class="w-6 h-6 text-epark-orange hidden sm:block"></i>
+                    <div class="flex items-baseline justify-center">
+                        <span class="text-base font-bold text-epark-orange mr-1">月額</span>
+                        <span class="text-6xl sm:text-7xl font-black text-transparent bg-clip-text bg-gradient-to-r from-epark-orange to-amber-300">500</span>
+                        <span class="text-2xl font-bold text-white ml-2">円<span class="text-xs text-gray-400 font-normal">（税別）</span></span>
+                    </div>
+                </div>
+
+                <p class="text-sm sm:text-base text-gray-300 max-w-2xl mx-auto leading-relaxed">
+                    「EPARKメディア掲載」と「メール配信サービス」を組み合わせて、月額わずか500円でご提供。飲食店様が極めて始めやすく、パートナー企業様にとっても非常にご案内しやすい商品です。
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- セクション03: 活用イメージ -->
+    <section class="py-20 bg-epark-lightbg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-epark-green font-bold text-sm tracking-widest uppercase bg-epark-green/10 px-4 py-1.5 rounded-full">03 CREATIVE IMAGE</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-epark-dark mt-3">活用イメージ・特集例</h2>
+                <p class="text-gray-600 mt-4 text-base">デリバリー需要を確実に引き込むため、年間を通じて多様な切り口のクリエイティブを企画します。</p>
+            </div>
+
+            <!-- クリエイティブ例のグリッド -->
+            <div class="grid md:grid-cols-2 gap-8">
+                <!-- クリエイティブ1 -->
+                <div class="bg-white rounded-3xl p-6 shadow-md hover:shadow-xl transition-all border border-gray-100 flex flex-col sm:flex-row items-center gap-6 group">
+                    <div class="w-full sm:w-1/3 aspect-[3/4] bg-gray-50 rounded-2xl overflow-hidden shrink-0 relative">
+                        <img 
+                            src="https://github.com/yakimoto-design/eparkdenki/blob/main/partner/mail1.png?raw=true" 
+                            alt="特集01イメージ" 
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            onerror="this.onerror=null; this.src='https://via.placeholder.com/300x400?text=Mail+01';"
+                        >
+                        <span class="absolute bottom-2 left-2 bg-black/60 text-[10px] font-bold px-2 py-0.5 rounded text-white">特集01</span>
+                    </div>
+                    <div class="flex-1 space-y-2">
+                        <span class="text-xs font-bold text-epark-orange uppercase tracking-wider">エリア密着型プロモーション</span>
+                        <h4 class="font-bold text-lg text-epark-dark">エリアのおすすめ<br>デリバリー注文対応店舗特集</h4>
+                        <p class="text-xs text-gray-500 leading-relaxed">ファストフードやハンバーガーなど、おうちやオフィスで気軽に楽しめるUber Eatsの人気店をご紹介します。</p>
+                    </div>
+                </div>
+
+                <!-- クリエイティブ2 -->
+                <div class="bg-white rounded-3xl p-6 shadow-md hover:shadow-xl transition-all border border-gray-100 flex flex-col sm:flex-row items-center gap-6 group">
+                    <div class="w-full sm:w-1/3 aspect-[3/4] bg-gray-50 rounded-2xl overflow-hidden shrink-0 relative">
+                        <img 
+                            src="https://github.com/yakimoto-design/eparkdenki/blob/main/partner/mail2.png?raw=true" 
+                            alt="特集02イメージ" 
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            onerror="this.onerror=null; this.src='https://via.placeholder.com/300x400?text=Mail+02';"
+                        >
+                        <span class="absolute bottom-2 left-2 bg-black/60 text-[10px] font-bold px-2 py-0.5 rounded text-white">特集02</span>
+                    </div>
+                    <div class="flex-1 space-y-2">
+                        <span class="text-xs font-bold text-epark-green uppercase tracking-wider">最新トレンドキャッチ</span>
+                        <h4 class="font-bold text-lg text-epark-dark">最近チェックしたい<br>新着店舗をピックアップ</h4>
+                        <p class="text-xs text-gray-500 leading-relaxed">話題の新店や人気エリアのお店を厳選！「気になるお店」を厳選し、新着店舗をおすすめします。</p>
+                    </div>
+                </div>
+
+                <!-- クリエイティブ3 -->
+                <div class="bg-white rounded-3xl p-6 shadow-md hover:shadow-xl transition-all border border-gray-100 flex flex-col sm:flex-row items-center gap-6 group">
+                    <div class="w-full sm:w-1/3 aspect-[3/4] bg-gray-50 rounded-2xl overflow-hidden shrink-0 relative">
+                        <img 
+                            src="https://github.com/yakimoto-design/eparkdenki/blob/main/partner/mail3.png?raw=true" 
+                            alt="特集03イメージ" 
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            onerror="this.onerror=null; this.src='https://via.placeholder.com/300x400?text=Mail+03';"
+                        >
+                        <span class="absolute bottom-2 left-2 bg-black/60 text-[10px] font-bold px-2 py-0.5 rounded text-white">特集03</span>
+                    </div>
+                    <div class="flex-1 space-y-2">
+                        <span class="text-xs font-bold text-epark-orange uppercase tracking-wider">好みに寄り添うジャンル提案</span>
+                        <h4 class="font-bold text-lg text-epark-dark">気分で選べる<br>ジャンル別おすすめ特集</h4>
+                        <p class="text-xs text-gray-500 leading-relaxed">ファストフード、イタリアン、ヘルシー系など、ジャンルごとに厳選されたお店をご紹介します。</p>
+                    </div>
+                </div>
+
+                <!-- クリエイティブ4 -->
+                <div class="bg-white rounded-3xl p-6 shadow-md hover:shadow-xl transition-all border border-gray-100 flex flex-col sm:flex-row items-center gap-6 group">
+                    <div class="w-full sm:w-1/3 aspect-[3/4] bg-gray-50 rounded-2xl overflow-hidden shrink-0 relative">
+                        <img 
+                            src="https://github.com/yakimoto-design/eparkdenki/blob/main/partner/mail4.png?raw=true" 
+                            alt="特集04イメージ" 
+                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            onerror="this.onerror=null; this.src='https://via.placeholder.com/300x400?text=Mail+04';"
+                        >
+                        <span class="absolute bottom-2 left-2 bg-black/60 text-[10px] font-bold px-2 py-0.5 rounded text-white">特集04</span>
+                    </div>
+                    <div class="flex-1 space-y-2">
+                        <span class="text-xs font-bold text-epark-green uppercase tracking-wider">安心価格アピール</span>
+                        <h4 class="font-bold text-lg text-epark-dark">お店と同じ価格で選べる</h4>
+                        <p class="text-xs text-gray-500 leading-relaxed">デリバリーでもお得・同じ価格で楽しめる！「デリバリーでもお得に、同じ価格で楽しめる」お店を厳選しています。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- セクション04: 取り扱い可能なオプションサービス（パートナー向け収益フック） -->
+    <section id="options" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-epark-orange font-bold text-sm tracking-widest uppercase bg-epark-orange/10 px-4 py-1.5 rounded-full">04 OPTIONS</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-epark-dark mt-3">取り扱い可能なオプションサービス</h2>
+                <p class="text-gray-600 mt-4 text-base">デリバリー支援パックに加え、様々な店舗向けDX商材をお取り扱い可能です。<span class="text-epark-orange font-bold">【ストック手数料対象】</span></p>
+            </div>
+
+            <!-- 3列等分割のオプションリスト -->
+            <div class="grid md:grid-cols-3 gap-6 items-stretch">
+                <!-- オプション1 (MEO対策サービス) -->
+                <div class="bg-white border-2 border-epark-orange/30 rounded-2xl overflow-hidden hover:border-epark-orange hover:shadow-lg transition-all duration-300 relative group flex flex-col justify-between">
+                    <!-- 画像 -->
+                    <div class="w-full h-48 sm:h-56 bg-gray-50 overflow-hidden shrink-0 relative">
+                        <img 
+                            src="https://github.com/yakimoto-design/eparkdenki/blob/main/partner/meo.png?raw=true" 
+                            alt="MEO対策サービスイメージ" 
+                            class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300"
+                            onerror="this.onerror=null; this.src='https://via.placeholder.com/600x300?text=MEO対策';"
+                        >
+                        <span class="absolute top-3 right-3 bg-epark-orange text-white text-[10px] font-black px-2.5 py-1 rounded-md tracking-wider shadow-md">
+                            ストック手数料あり
+                        </span>
+                    </div>
+                    <!-- コンテンツ -->
+                    <div class="p-6 flex-1 flex flex-col justify-between bg-white">
+                        <div class="flex items-start space-x-4">
+                            <div class="bg-epark-orange/10 text-epark-orange p-3 rounded-xl shrink-0">
+                                <i data-lucide="map" class="w-6 h-6"></i>
+                            </div>
+                            <div class="flex-1 space-y-2">
+                                <h4 class="font-bold text-xl text-epark-dark">MEO対策サービス</h4>
+                                <p class="text-sm text-gray-600 leading-relaxed">Googleマップでの上位表示を実現し、店舗の認知度を高め、Webからの直接的な集客力を最大化させます。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- オプション2 (AIスマート・ホームページ) -->
+                <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden hover:border-epark-orange hover:shadow-lg transition-all duration-300 relative group flex flex-col justify-between">
+                    <!-- 画像 -->
+                    <div class="w-full h-48 sm:h-56 bg-gray-50 overflow-hidden shrink-0 relative">
+                        <img 
+                            src="https://github.com/yakimoto-design/eparkdenki/blob/main/partner/hp.png?raw=true" 
+                            alt="AIスマート・ホームページイメージ" 
+                            class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300"
+                            onerror="this.onerror=null; this.src='https://via.placeholder.com/600x300?text=AI+HP';"
+                        >
+                        <span class="absolute top-3 right-3 bg-epark-orange text-white text-[10px] font-black px-2.5 py-1 rounded-md tracking-wider shadow-md">
+                            ストック手数料あり
+                        </span>
+                    </div>
+                    <!-- コンテンツ -->
+                    <div class="p-6 flex-1 flex flex-col justify-between bg-white">
+                        <div class="flex items-start space-x-4">
+                            <div class="bg-epark-orange/10 text-epark-orange p-3 rounded-xl shrink-0">
+                                <i data-lucide="laptop" class="w-6 h-6"></i>
+                            </div>
+                            <div class="flex-1 space-y-2">
+                                <h4 class="font-bold text-xl text-epark-dark">AIスマート・ホームページ</h4>
+                                <p class="text-sm text-gray-600 leading-relaxed">最先端のAIを活用することで、極めて低コストかつ短期間で美しく洗練されたHPを作成。更新・サポート体制も充実。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- オプション3 (Instagram運用代行) -->
+                <div class="bg-white border border-gray-200 rounded-2xl overflow-hidden hover:border-epark-orange hover:shadow-lg transition-all duration-300 relative group flex flex-col justify-between">
+                    <!-- 画像 -->
+                    <div class="w-full h-48 sm:h-56 bg-gray-50 overflow-hidden shrink-0 relative">
+                        <img 
+                            src="https://github.com/yakimoto-design/eparkdenki/blob/main/partner/instagram.png?raw=true" 
+                            alt="Instagram運用代行イメージ" 
+                            class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300"
+                            onerror="this.onerror=null; this.src='https://via.placeholder.com/600x300?text=Instagram';"
+                        >
+                        <span class="absolute top-3 right-3 bg-epark-orange text-white text-[10px] font-black px-2.5 py-1 rounded-md tracking-wider shadow-md">
+                            ストック手数料あり
+                        </span>
+                    </div>
+                    <!-- コンテンツ -->
+                    <div class="p-6 flex-1 flex flex-col justify-between bg-white">
+                        <div class="flex items-start space-x-4">
+                            <div class="bg-epark-orange/10 text-epark-orange p-3 rounded-xl shrink-0">
+                                <i data-lucide="instagram" class="w-6 h-6"></i>
+                            </div>
+                            <div class="flex-1 space-y-2">
+                                <h4 class="font-bold text-xl text-epark-dark">Instagram運用代行</h4>
+                                <p class="text-sm text-gray-600 leading-relaxed">飲食店の魅力をビジュアルで最大化。フォロワー増加から投稿作成、ハッシュタグ最適化まで売上アップをトータルでサポート。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- オプション追加のアテンション -->
+            <div class="mt-8 text-center text-xs text-gray-500 font-semibold">
+                ※その他にも、店舗様の集客・コスト削減を支援するオプションサービスを続々追加予定です！
+            </div>
+        </div>
+    </section>
+
+    <!-- セクション05: このような法人様におすすめです -->
+    <section id="target" class="py-20 bg-epark-lightbg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-epark-green font-bold text-sm tracking-widest uppercase bg-epark-green/10 px-4 py-1.5 rounded-full">05 RECOMMENDATION</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-epark-dark mt-3">このような法人様におすすめ</h2>
+                <p class="text-gray-600 mt-4 text-base">様々な事業形態のパートナー企業様が、既存のアセットを活かして収益を上げています。</p>
+            </div>
+
+            <!-- おすすめターゲットの4つ (中央配置かつわかりやすいデザインへ改善) -->
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- ターゲット1 (飲食店向け) -->
+                <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-md border border-gray-100 flex flex-col items-center text-center justify-between hover:shadow-lg transition-all duration-300 group">
+                    <div class="space-y-5 flex flex-col items-center">
+                        <div class="bg-gradient-to-br from-epark-green/20 to-epark-green/5 text-epark-green w-16 h-16 rounded-full flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform duration-300">
+                            <i data-lucide="utensils" class="w-8 h-8"></i>
+                        </div>
+                        <h4 class="font-extrabold text-base text-epark-dark leading-snug">
+                            飲食店向けに商材を<br class="hidden sm:inline">販売している企業様
+                        </h4>
+                        <p class="text-xs text-gray-600 leading-relaxed text-left">POSレジ、決済、広告、予約管理、通信、求人、デリバリー関連などの既存サービスに加えて、強力なアップセル商材としてお使いいただけます。</p>
+                    </div>
+                </div>
+
+                <!-- ターゲット2 (店舗向け営業網) -->
+                <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-md border border-gray-100 flex flex-col items-center text-center justify-between hover:shadow-lg transition-all duration-300 group">
+                    <div class="space-y-5 flex flex-col items-center">
+                        <div class="bg-gradient-to-br from-epark-green/20 to-epark-green/5 text-epark-green w-16 h-16 rounded-full flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform duration-300">
+                            <i data-lucide="network" class="w-8 h-8"></i>
+                        </div>
+                        <h4 class="font-extrabold text-base text-epark-dark leading-snug">
+                            店舗向けの営業網を<br class="hidden sm:inline">お持ちの企業様
+                        </h4>
+                        <p class="text-xs text-gray-600 leading-relaxed text-left">地域密着型で飲食店、小売店、サービス店舗との確固たる接点をお持ちの企業様であれば、スムーズに高成約率な提案が可能です。</p>
+                    </div>
+                </div>
+
+                <!-- ターゲット3 (新規商材開拓) -->
+                <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-md border border-gray-100 flex flex-col items-center text-center justify-between hover:shadow-lg transition-all duration-300 group">
+                    <div class="space-y-5 flex flex-col items-center">
+                        <div class="bg-gradient-to-br from-epark-green/20 to-epark-green/5 text-epark-green w-16 h-16 rounded-full flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform duration-300">
+                            <i data-lucide="lightbulb" class="w-8 h-8"></i>
+                        </div>
+                        <h4 class="font-extrabold text-base text-epark-dark leading-snug">
+                            新たな法人向け商材を<br class="hidden sm:inline">探している企業様
+                        </h4>
+                        <p class="text-xs text-gray-600 leading-relaxed text-left">既存事業に加えて、継続的に提案できる新しいストック型商材を増やし、安定的なサブスクリプション型収益を構築したい企業様に最適です。</p>
+                    </div>
+                </div>
+
+                <!-- ターゲット4 (代理店パートナー) -->
+                <div class="bg-white rounded-3xl p-6 sm:p-8 shadow-md border border-gray-100 flex flex-col items-center text-center justify-between hover:shadow-lg transition-all duration-300 group">
+                    <div class="space-y-5 flex flex-col items-center">
+                        <div class="bg-gradient-to-br from-epark-green/20 to-epark-green/5 text-epark-green w-16 h-16 rounded-full flex items-center justify-center shadow-inner group-hover:scale-110 transition-transform duration-300">
+                            <i data-lucide="handshake" class="w-8 h-8"></i>
+                        </div>
+                        <h4 class="font-extrabold text-base text-epark-dark leading-snug">
+                            代理店・パートナー事業を<br class="hidden sm:inline">展開している企業様
+                        </h4>
+                        <p class="text-xs text-gray-600 leading-relaxed text-left">これまでに培った代理店営業のノウハウをフルに活かし、低価格で訴求力の高い本サービスで一気にシェアを広げたい代理店様にぴったりです。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- パートナー契約導入の流れ -->
+    <section class="py-20 bg-white border-t border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-epark-orange font-bold text-sm tracking-widest uppercase bg-epark-orange/10 px-4 py-1.5 rounded-full">FLOW</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-epark-dark mt-3">パートナー参画までのステップ</h2>
+                <p class="text-gray-600 mt-4 text-base">お問合せからお取扱い開始まで、スムーズに進行いたします。</p>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 relative">
+                <!-- ステップ1 -->
+                <div class="relative bg-white p-6 rounded-2xl border border-gray-100 shadow-sm text-center">
+                    <div class="bg-epark-orange text-white w-10 h-10 rounded-full flex items-center justify-center font-bold mx-auto mb-4">1</div>
+                    <h4 class="font-bold text-base text-epark-dark">Webよりお問い合わせ</h4>
+                    <p class="text-xs text-gray-500 mt-2">下部フォームまたはお電話より、お気軽にお問い合わせください。即日〜1営業日以内に担当よりご連絡します。</p>
+                </div>
+                <!-- ステップ2 -->
+                <div class="relative bg-white p-6 rounded-2xl border border-gray-100 shadow-sm text-center">
+                    <div class="bg-epark-orange text-white w-10 h-10 rounded-full flex items-center justify-center font-bold mx-auto mb-4">2</div>
+                    <h4 class="font-bold text-base text-epark-dark">詳細説明・お打ち合わせ</h4>
+                    <p class="text-xs text-gray-500 mt-2">オンライン面談等にて、具体的なストック手数料率や、代理店制度の詳細な仕組みについてご説明します。</p>
+                </div>
+                <!-- ステップ3 -->
+                <div class="relative bg-white p-6 rounded-2xl border border-gray-100 shadow-sm text-center">
+                    <div class="bg-epark-orange text-white w-10 h-10 rounded-full flex items-center justify-center font-bold mx-auto mb-4">3</div>
+                    <h4 class="font-bold text-base text-epark-dark">パートナー契約の締結</h4>
+                    <p class="text-xs text-gray-500 mt-2">お取扱い内容にご納得いただけましたら、簡単なパートナー契約（代理店締結）を完了します。契約金・保証金等は不要です。</p>
+                </div>
+                <!-- ステップ4 -->
+                <div class="relative bg-white p-6 rounded-2xl border border-gray-100 shadow-sm text-center">
+                    <div class="bg-epark-orange text-white w-10 h-10 rounded-full flex items-center justify-center font-bold mx-auto mb-4">4</div>
+                    <h4 class="font-bold text-base text-epark-dark">営業活動・販売スタート</h4>
+                    <p class="text-xs text-gray-500 mt-2">EPARKが作成した営業パンフレットやデモ、研修コンテンツを活用し、すぐに顧客への提案を開始できます。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- よくあるご質問 (FAQ) -->
+    <section class="py-20 bg-epark-lightbg">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6">
+            <div class="text-center mb-16">
+                <span class="text-epark-green font-bold text-sm tracking-widest uppercase bg-epark-green/10 px-4 py-1.5 rounded-full">FAQ</span>
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-epark-dark mt-3">よくあるご質問</h2>
+            </div>
+
+            <div class="space-y-4">
+                <!-- 質問1 -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                    <button class="faq-toggle w-full p-6 text-left flex justify-between items-center focus:outline-none">
+                        <span class="font-bold text-epark-dark text-sm sm:text-base">Q. 個人事業主やフリーランスでもパートナー登録は可能ですか？</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 text-gray-400 transition-transform"></i>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-6 text-xs sm:text-sm text-gray-600 border-t border-gray-50 pt-4 leading-relaxed">
+                        大変恐れ入りますが、本パートナープログラムへのご登録は<strong>法人の企業様のみ</strong>を対象とさせていただいており、個人事業主様・個人でのご参画は受け付けておりません。何卒ご了承ください。
+                    </div>
+                </div>
+
+                <!-- 質問2 -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                    <button class="faq-toggle w-full p-6 text-left flex justify-between items-center focus:outline-none">
+                        <span class="font-bold text-epark-dark text-sm sm:text-base">Q. パートナー契約時に初期費用や年会費などは発生しますか？</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 text-gray-400 transition-transform"></i>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-6 text-xs sm:text-sm text-gray-600 border-t border-gray-50 pt-4 leading-relaxed">
+                        いいえ、一切発生しません。加盟金、保証金、年会費、登録手数料などは完全に無料となっており、パートナー企業様は一切の費用負担リスクなくスタートいただけます。
+                    </div>
+                </div>
+
+                <!-- 質問3 -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                    <button class="faq-toggle w-full p-6 text-left flex justify-between items-center focus:outline-none">
+                        <span class="font-bold text-epark-dark text-sm sm:text-base">Q. デリバリー支援パックの対象店舗や導入条件を教えてください。</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 text-gray-400 transition-transform"></i>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-6 text-xs sm:text-sm text-gray-600 border-t border-gray-50 pt-4 leading-relaxed">
+                        本パックは、<strong>「飲食店」かつ「すでにデリバリー（Uber Eats、出前館等）を導入されている店舗様」</strong>が対象となります。また、導入にあたっては店舗の電気契約（EPARK集客でんき）の切り替えによる<strong>電気供給とのセット契約が必須</strong>となります。
+                    </div>
+                </div>
+
+                <!-- 質問4 -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                    <button class="faq-toggle w-full p-6 text-left flex justify-between items-center focus:outline-none">
+                        <span class="font-bold text-epark-dark text-sm sm:text-base">Q. ストック手数料の仕組みと支払条件はどうなっていますか？</span>
+                        <i data-lucide="chevron-down" class="w-5 h-5 text-gray-400 transition-transform"></i>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-6 text-xs sm:text-sm text-gray-600 border-t border-gray-50 pt-4 leading-relaxed">
+                        ストック手数料のお支払い対象は<strong>「オプション商材（MEO、AIホームページ、Instagram運用代行）」のみ</strong>となっており（※デリバリー支援パック本体は対象外です）。手数料のお支払いタイミングは、ご紹介いただいた<strong>加盟店様からのご入金が確認でき次第</strong>の支払い処理となります。
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- お問い合わせ・相談セクション (CTA) -->
+    <section id="contact" class="py-24 bg-gradient-to-b from-epark-dark to-slate-900 text-white relative">
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-epark-orange/10 via-transparent to-transparent opacity-50"></div>
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 relative z-10">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl sm:text-4xl font-extrabold">パートナー募集に関するお問い合わせ</h2>
+                <p class="text-gray-300 mt-4 text-sm sm:text-base leading-relaxed">
+                    EPARK集客でんきと一緒に、飲食店の未来を支えましょう。<br class="hidden sm:inline">
+                    デリバリー支援パックの販売パートナーとして、貴社の事業拡大に貢献します。まずはお気軽にご相談ください。
+                </p>
+                <!-- 電話問い合わせ -->
+                <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <a href="tel:0120000000" class="flex items-center space-x-3 bg-white/5 border border-white/20 hover:bg-white/10 transition-colors px-6 py-3 rounded-full font-bold text-sm sm:text-base">
+                        <i data-lucide="phone" class="w-5 h-5 text-epark-green"></i>
+                        <span>お電話でのお問い合わせ： 0120-XXX-XXX (平日10-18時)</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- お問い合わせフォーム -->
+            <div class="bg-white text-epark-dark rounded-3xl p-6 sm:p-10 shadow-2xl">
+                <form id="partner-form" class="space-y-6">
+                    <div class="grid sm:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs sm:text-sm font-bold text-gray-700 mb-2" for="company">
+                                貴社名・組織名 <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" id="company" required class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-epark-orange focus:outline-none transition-all" placeholder="例) 株式会社サンプル">
+                        </div>
+                        <div>
+                            <label class="block text-xs sm:text-sm font-bold text-gray-700 mb-2" for="name">
+                                ご担当者様氏名 <span class="text-red-500">*</span>
+                            </label>
+                            <input type="text" id="name" required class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-epark-orange focus:outline-none transition-all" placeholder="例) 山田 太郎">
+                        </div>
+                    </div>
+
+                    <div class="grid sm:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs sm:text-sm font-bold text-gray-700 mb-2" for="email">
+                                メールアドレス <span class="text-red-500">*</span>
+                            </label>
+                            <input type="email" id="email" required class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-epark-orange focus:outline-none transition-all" placeholder="例) sample@example.com">
+                        </div>
+                        <div>
+                            <label class="block text-xs sm:text-sm font-bold text-gray-700 mb-2" for="phone">
+                                電話番号 <span class="text-red-500">*</span>
+                            </label>
+                            <input type="tel" id="phone" required class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-epark-orange focus:outline-none transition-all" placeholder="例) 090-0000-0000">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs sm:text-sm font-bold text-gray-700 mb-2" for="business-type">
+                            現在の事業内容 (任意)
+                        </label>
+                        <select id="business-type" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-epark-orange focus:outline-none transition-all">
+                            <option value="">選択してください</option>
+                            <option value="1">飲食店向け商材販売</option>
+                            <option value="2">代理店事業/販売パートナー</option>
+                            <option value="3">地域密着型店舗営業</option>
+                            <option value="4">その他</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs sm:text-sm font-bold text-gray-700 mb-2" for="message">
+                            お問い合わせ内容 <span class="text-red-500">*</span>
+                        </label>
+                        <textarea id="message" required rows="4" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-epark-orange focus:outline-none transition-all" placeholder="パートナー制度の具体的な手数料や、お取扱いについてご希望をお聞かせください。"></textarea>
+                    </div>
+
+                    <div class="flex items-center space-x-3 justify-center py-2">
+                        <input type="checkbox" id="privacy" required class="w-4 h-4 text-epark-orange border-gray-300 rounded focus:ring-epark-orange">
+                        <label for="privacy" class="text-xs sm:text-sm text-gray-600 font-medium cursor-pointer">
+                            個人情報の取り扱い・プライバシーポリシーに同意する
+                        </label>
+                    </div>
+
+                    <button type="submit" class="w-full bg-epark-orange hover:bg-opacity-90 text-white font-bold py-4 rounded-xl shadow-lg shadow-epark-orange/20 transition-all text-base sm:text-lg hover:scale-[1.01]">
+                        パートナー募集について相談する
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- フッター -->
+    <footer class="bg-slate-900 border-t border-slate-800 py-12 text-gray-400">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-between gap-6 pb-8 border-b border-slate-800">
+                <div class="flex items-center">
+                    <img 
+                        src="https://github.com/yakimoto-design/eparkdenki/blob/main/img/rogo.png?raw=true" 
+                        alt="EPARK集客でんき" 
+                        class="h-9 w-auto object-contain brightness-0 invert" 
+                        onerror="this.onerror=null; this.src='https://placehold.co/180x45/ffffff/000000?text=EPARK+集客でんき';"
+                    >
+                </div>
+                <div class="flex flex-wrap justify-center gap-6 text-xs font-semibold">
+                    <a href="#about" class="hover:text-white transition-colors">仕組み</a>
+                    <a href="#service" class="hover:text-white transition-colors">サービス内容</a>
+                    <a href="#options" class="hover:text-white transition-colors">オプション</a>
+                    <a href="#target" class="hover:text-white transition-colors">対象の企業様</a>
+                    <a href="#contact" class="hover:text-white transition-colors">お問い合わせ</a>
+                </div>
+            </div>
+            <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] sm:text-xs">
+                <span>※「EPARK」は、株式会社EPARK of 登録商標または商標です。</span>
+                <span>&copy; 2026 EPARK集客でんき Partner Support. All Rights Reserved.</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 送信完了モーダル（ブラウザのalertの代わり） -->
+    <div id="success-modal" class="hidden fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl border border-gray-100 text-center space-y-6 transform scale-95 opacity-0 transition-all duration-300" id="modal-container">
+            <div class="bg-emerald-100 text-epark-green w-16 h-16 rounded-full flex items-center justify-center mx-auto shadow-inner">
+                <i data-lucide="check-circle" class="w-10 h-10"></i>
+            </div>
+            <div class="space-y-2">
+                <h3 class="text-xl font-bold text-epark-dark">お問い合わせが完了しました</h3>
+                <p class="text-sm text-gray-500 leading-relaxed">
+                    この度はお問い合わせいただき、誠にありがとうございます。内容を確認の上、担当者より1営業日以内にご案内メールをお送りさせていただきます。
+                </p>
+            </div>
+            <button onclick="closeModal()" class="w-full bg-epark-dark text-white font-bold py-3 rounded-xl hover:bg-slate-800 transition-colors">
+                閉じる
+            </button>
+        </div>
+    </div>
+
+    <!-- スクリプト -->
+    <script>
+        // Lucideアイコンの初期化
+        lucide.createIcons();
+
+        // モバイルナビゲーションの開閉
+        const mobileBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        function toggleMenu() {
+            mobileMenu.classList.add('hidden');
+        }
+
+        // FAQアコーディオン
+        const faqToggles = document.querySelectorAll('.faq-toggle');
+        faqToggles.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                const content = toggle.nextElementSibling;
+                const icon = toggle.querySelector('[data-lucide="chevron-down"]');
+                
+                // 他を全部閉じる場合
+                faqToggles.forEach(other => {
+                    if (other !== toggle) {
+                        other.nextElementSibling.classList.add('hidden');
+                        const otherIcon = other.querySelector('[data-lucide="chevron-down"]');
+                        if (otherIcon) otherIcon.style.transform = 'rotate(0deg)';
+                    }
+                });
+
+                content.classList.toggle('hidden');
+                
+                // アイコンの回転アニメーション
+                if (content.classList.contains('hidden')) {
+                    icon.style.transform = 'rotate(0deg)';
+                } else {
+                    icon.style.transform = 'rotate(180deg)';
+                }
+            });
+        });
+
+        // お問い合わせフォーム送信完了時のモーダル制御
+        const form = document.getElementById('partner-form');
+        const modal = document.getElementById('success-modal');
+        const modalContainer = document.getElementById('modal-container');
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // モーダル表示
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modalContainer.classList.remove('scale-95', 'opacity-0');
+                modalContainer.classList.add('scale-100', 'opacity-100');
+            }, 50);
+
+            // フォームのリセット
+            form.reset();
+        });
+
+        function closeModal() {
+            modalContainer.classList.remove('scale-100', 'opacity-100');
+            modalContainer.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+    </script>
+</body>
+</html>
