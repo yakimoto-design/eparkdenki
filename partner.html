@@ -73,13 +73,21 @@
 
     <!-- ファーストビュー (ヒーローセクション) -->
     <section class="relative bg-[#001730] overflow-hidden">
-        <!-- ヒーロー画像エリア -->
+        <!-- ヒーロー画像エリア (PC用とSP用をデバイスサイズで切り替え) -->
         <div class="w-full">
+            <!-- PC用画像 (中画面以上 md で表示) -->
             <img 
                 src="https://github.com/yakimoto-design/eparkdenki/blob/main/partner/hero.png?raw=true" 
                 alt="EPARK集客でんき デリバリー支援パック 販売パートナー募集" 
-                class="w-full h-auto block object-cover"
-                onerror="this.onerror=null; this.src='https://via.placeholder.com/1920x800?text=EPARK+集客でんき+デリバリー支援パック+販売パートナー募集';"
+                class="hidden md:block w-full h-auto object-cover"
+                onerror="this.onerror=null; this.src='https://placehold.co/1920x800/001730/ffffff?text=EPARK+デリバリー支援パック+販売パートナー募集(PC)';"
+            >
+            <!-- SP用画像 (中画面未満 md で非表示、スマホで表示) -->
+            <img 
+                src="https://github.com/yakimoto-design/eparkdenki/blob/main/partner/hero(SP).png?raw=true" 
+                alt="EPARK集客でんき デリバリー支援パック 販売パートナー募集" 
+                class="block md:hidden w-full h-auto object-cover"
+                onerror="this.onerror=null; this.src='https://placehold.co/750x1200/001730/ffffff?text=EPARK+デリバリー支援パック+販売パートナー募集(SP)';"
             >
         </div>
         
@@ -326,7 +334,7 @@
                 </div>
 
                 <p class="text-sm sm:text-base text-gray-300 max-w-2xl mx-auto leading-relaxed">
-                    「EPARKメディア掲載」と「メール配信サービス」を組み合わせて、月額わずか500円でご提供。飲食店様が極めて始めやすく、パートナー企業様にとっても非常にご案内しやすい商品です。
+                    「EPARKメディア掲載」と「メール配信サービス」を組み合わせて、月額わずか500円でご提供。飲食店様が極めて始めやすく、パートナー企業様にとっても非常に<span class="inline-block">ご案内しやすい商品です。</span>
                 </p>
             </div>
         </div>
@@ -554,7 +562,7 @@
                         <h4 class="font-extrabold text-base text-epark-dark leading-snug">
                             店舗向けの営業網を<br class="hidden sm:inline">お持ちの企業様
                         </h4>
-                        <p class="text-xs text-gray-600 leading-relaxed text-left">地域密着型で飲食店、小売店、サービス店舗との確固たる接点をお持ちの企業様であれば、スムーズに高成約率な提案が可能です。</p>
+                        <p class="text-xs text-gray-600 leading-relaxed text-left">地域密着型で飲食店、小売店、サービス店舗との確固たる接点をお持ちの企業様であれば、スムーズに高成約率な提案 goggles が可能です。</p>
                     </div>
                 </div>
 
@@ -789,7 +797,7 @@
                 </div>
             </div>
             <div class="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] sm:text-xs">
-                <span>※「EPARK」は、株式会社EPARK of 登録商標または商標です。</span>
+                <span>※「EPARK」は、株式会社EPARKの登録商標または商標です。</span>
                 <span>&copy; 2026 EPARK集客でんき Partner Support. All Rights Reserved.</span>
             </div>
         </div>
